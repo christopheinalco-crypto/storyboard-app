@@ -2,11 +2,21 @@
 .main:has(> .radar-page) { padding-inline:0; padding-top:0; }
 .page.radar-page { max-width:none; width:100%; }
 .radar-frame { display:block; width:100%; height:85dvh; border:0; background:transparent; }
-.v1-photos { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
-.v1-photos .figure { margin:0 0 8px; }
+.photo-credit, .src, .srcs, .cite { text-transform:lowercase; letter-spacing:normal; }
 .photo-credit { margin:.25rem 0; }
-@media(max-width:550px){.v1-photos{grid-template-columns:1fr}}
-</style></head><body>
+.page .course-sequence { display:grid; grid-template-columns:1fr; max-width:none; gap:0; }
+.course-module { display:grid; grid-template-columns:clamp(2.3rem,7vw,5.3rem) minmax(0,1fr); gap:clamp(.6rem,2vw,1.6rem); padding:clamp(1.3rem,3vw,2.8rem) 0; border-top:1px solid var(--line); }
+.course-number { color:var(--volt); font:600 clamp(1.25rem,3vw,2.7rem) var(--f-mono); }
+.course-objective { color:var(--ink-2); margin:.4rem 0 1rem; }
+.course-case { display:grid; grid-template-columns:1fr; gap:1rem; padding:clamp(.75rem,2vw,1.3rem); background:var(--paper); border:1px solid var(--line); border-radius:12px; }
+.course-case:has(figure) { grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); align-items:center; }
+.course-case figure { margin:0; }
+.course-case p { margin:.35rem 0; }
+.course-actions { margin:1rem 0; flex-wrap:wrap; }
+.course-module summary { cursor:pointer; padding:.4rem 0; }
+@media(max-width:650px){.course-case:has(figure){grid-template-columns:minmax(0,1fr)}}
+
+@media(max-width:550px){</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>STORYBOARD</title>
@@ -1813,6 +1823,33 @@ function vPlus() {
     <p class="lede">Le cursus t'a donné les bases. Ici, une page par notion avec les fiches techniques, les paroles de praticiens, l'histoire de l'art et le terrain. ${done < all.length ? `Tu as ouvert ${done} notions sur ${all.length} : finis d'abord le cursus, ce sera plus utile.` : "Tu as fini le cursus : choisis une notion à creuser."}</p></div>
     ${CURSUS.map((m, i) => `<section class="card" style="gap:8px"><span class="eyebrow gel">Étape ${i + 1} · ${esc(m.t)}</span><span class="row" style="gap:6px">${m.n.filter(id => NOT[id]).map(id => `<a class="chip" href="#n-${id}--plus">${esc(NOT[id].titre)} <span class="count">${nx(id)}</span></a>`).join("")}</span></section>`).join("")}</div>`;
 }
+// Each module pairs a DA decision with a case that makes it observable.
+const COURSE_CASES = {
+  voir: ["s-u2-360", "Repérer ce que le public voit selon sa place", "Suis la passerelle autour de la scène et compare la vue sur le plateau depuis deux secteurs."],
+  lumcoul: ["w-direction-couleur-relative", "Rendre le sujet lisible avec la lumière et la couleur", "Compare l’effet d’un même ton sur deux fonds avant de choisir le contraste de ton plateau."],
+  monde: ["s-daftpunk-alive", "Faire du décor un repère à l’échelle de la salle", "Regarde comment la pyramide reste identifiable depuis le public et où les interprètes se placent dans cette silhouette."],
+  temps: ["c-aroundtheworld", "Donner un rythme lisible à une séquence", "Suis un groupe de danseurs à la fois et relie la répétition de ses gestes à la musique."],
+  besoin: ["w-insight-privation", "Extraire du brief un problème concret à résoudre", "Distingue le comportement observé de l’explication qu’on lui donne avant de proposer un dispositif."],
+  intention: ["s-thewall", "Dire ce que le public doit ressentir à un moment précis", "Observe comment la construction progressive du mur matérialise la séparation entre la salle et le groupe."],
+  concept: ["w-direction-concept-visuel", "Trouver une règle qui guide plusieurs choix visuels", "Repère le principe qui reste reconnaissable quand la forme ou le support change."],
+  decider: ["w-intention-garder-une-idee", "Défendre une piste et expliquer ce que tu acceptes de perdre", "Compare les pistes selon leur effet sur le public et leur faisabilité en production."]
+};
+
+function courseModule(module, index, lens) {
+  const [caseId, objective, cue] = COURSE_CASES[module.id];
+  const reference = CAS[caseId];
+  const completed = module.n.filter(id => lens(id) >= 1).length;
+  const next = module.n.find(id => lens(id) < 1) || module.n[0];
+  const visual = reference.img && D.img[reference.img] ? img(reference.img, reference.imgCaption) : "";
+  return '<li class="course-module"><span class="course-number" aria-hidden="true">' + String(index + 1).padStart(2,"0") +
+    '</span><div class="course-body"><h2 class="h2">' + esc(module.t) + '</h2><p class="course-objective">' + esc(objective) +
+    '</p><div class="course-case">' + visual + '<div><p class="eyebrow">Cas à observer</p><a href="#c-' + caseId + '"><b>' + esc(reference.titre) +
+    ' →</b></a><p>' + esc(cue) + '</p></div></div><div class="row course-actions"><a class="btn gel" href="#n-' + next +
+    '">Ouvrir la leçon →</a><span class="small muted">' + completed + '/' + module.n.length + ' notions ouvertes</span></div>' +
+    '<details><summary>Toutes les notions de l’étape</summary><div class="row">' + module.n.map(n => '<a class="chip" href="#n-' + n + '">' +
+    esc(NOT[n].titre) + '</a>').join("") + '</div></details></div></li>';
+}
+
 function vAtlas(sel) {
   const CS = COUCHES.filter(c => !sel || c.id === sel);
   const _lens = id => (S.notions[id] || {}).lens || 0, _all = CURSUS.flatMap(m => m.n), _doneN = _all.filter(id => _lens(id) >= 1).length;
@@ -1827,8 +1864,7 @@ function vAtlas(sel) {
       ${_nx ? `<a class="cn-t" href="#n-${_nx}">${esc(_nm.t)} · ${esc(NOT[_nx].titre)}</a><span class="row"><a class="btn gel" href="#n-${_nx}">${_doneN ? "Continuer le cursus" : "Commencer le cursus"} →</a></span>` : `<b class="cn-t">Cursus terminé : reprends n'importe quelle notion.</b>`}</div>
     <p><a class="chip" href="#atlas--ressources">Dossiers et tendances →</a></p>
     <p class="alt-learn"><a class="chip" href="#histoire">Apprendre en histoire</a><span class="small muted">Une autre façon d'apprendre : 15 histoires de direction artistique à lire quand tu veux.</span></p>
-    <section class="panel v1-cases"><p class="eyebrow">Cas de scène · Photos de production</p><div class="v1-photos"><div>${img("u2-barcelona")}<a href="#c-s-u2-360"><strong>U2 · Une scène entourée →</strong></a></div><div>${img("daft-rockness")}<a href="#c-s-daftpunk-alive"><strong>Daft Punk · Un point focal dans la foule →</strong></a></div></div></section>
-    <ol class="cur-list">${CURSUS.map((m, i) => { const d = m.n.filter(id => _lens(id) >= 1).length, fid = m.n.find(id => NOT[id] && _lens(id) < 1) || m.n.find(id => NOT[id]); return `<li class="cur-m ${d === m.n.length ? "done" : d ? "half" : ""}${_nx && m.n.includes(_nx) ? " next" : ""}"><span class="cur-n">${String(i + 1).padStart(2, "0")}</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#n-${fid}">${esc(m.t)}</a></h2><p class="cur-q">${esc(m.q)}</p><p class="cur-p">${esc(m.p)}</p><span class="row cur-chips">${m.n.filter(id => NOT[id]).map(id => `<a class="chip ${_lens(id) >= 1 ? "on" : ""}" href="#n-${id}">${_lens(id) >= 1 ? "✓ " : ""}${esc(NOT[id].titre)}</a>`).join("")}</span><span class="small muted">${d}/${m.n.length}</span></div></li>`; }).join("")}<li class="cur-m plus ${_doneN >= _all.length ? "half" : ""}"><span class="cur-n">+</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#plus">Pour aller plus loin</a></h2><p class="cur-q">Quand le cursus est fini.</p><p class="cur-p">Fiches techniques, paroles de praticiens, histoire de l'art, terrain : une page par notion.</p></div></li></ol>
+    <ol class="cur-list course-sequence">${CURSUS.map((module, index) => courseModule(module, index, _lens)).join("")}</ol>
     </div><details class="fold lib" ${sel ? "open" : ""}><summary><span class="h3">La bibliothèque : toutes les notions par famille</span></summary><div class="fold-body">
     ${wheelMenu(COUCHES.map(c => ["#atlas--" + c.id, c.nom.split(" : ")[0], c.nom.split(" : ")[1] || "", c.id]), null, "Familles de notions")}
     ${sel ? `<span class="row"><a class="chip" href="#atlas">Toutes les familles</a></span>` : ""}<div data-autoscroll></div>
