@@ -1,4 +1,20 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><style>
+.atelier { --gel: #b9ff48; }
+.atelier .panel { background-color: #121a12; }
+.atelier-posters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.atelier-posters figure { margin: 0; min-width: 0; }
+.atelier-posters img { display: block; width: 100%; height: clamp(220px, 55vw, 490px); object-fit: contain; background: #0a100b; }
+.atelier figcaption { color: #c9d6c8; padding: .6rem 0; font-size: .875rem; }
+.atelier a { overflow-wrap: anywhere; }
+.atelier textarea { display: block; width: 100%; padding: .7rem; color: #f2f7ef; background: #0b120c; border: 1px solid #6a8069; border-radius: .45rem; font: inherit; }
+.atelier [data-quiz][aria-pressed="true"] { border-color: #b9ff48; color: #b9ff48; }
+.atelier [data-quiz] { min-height: 44px; white-space: normal; }
+.atelier dt { color: #b9ff48; margin-top: .8rem; }
+.atelier dd { margin: .2rem 0 .8rem; }
+.atelier summary { min-height: 44px; cursor: pointer; }
+.atelier :focus-visible, .back:focus-visible { outline: 3px solid #b9ff48; outline-offset: 3px; }
+@media (max-width: 420px) { .atelier-posters { gap: .5rem; } .atelier-posters img { height: 54vw; } }
+</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>STORYBOARD</title>
@@ -1670,10 +1686,78 @@ function musicBlock(list) {
     return `<a class="m-row" href="${esc(href)}" target="_blank" rel="noopener"><span class="m-pic">${p ? `<img src="${esc(p.src)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}</span><span class="m-txt"><b>${esc(v.titre || "")}</b><small>${esc(v.rubrique)} · ${esc(String(v.source || "").split(" · ")[1] || "")}</small></span><span class="tag">${lab} ↗</span></a>`; };
   return `<section class="card m-block"><span class="eyebrow">À écouter et à regarder · ${M.length} sur les 3 dernières semaines</span>${M.map(row).join("")}<p class="muted small">Le radar du vendredi retient les grosses sorties de la semaine, en France et à l'international. Chaque ligne ouvre directement le titre sur Spotify, le clip sur YouTube, ou l'article quand il n'y a pas de lien direct.</p></section>`;
 }
+
+const RADAR_URL = "https://christopheinalco-crypto.github.io/storyboard-radar-da/";
+let radarData, radarLoad, radarOffline = false;
+
+function radarLink(value, label) {
+  try {
+    const url = new URL(value);
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      return '<a href="' + esc(url.href) + '" target="_blank" rel="noopener noreferrer">' + esc(label) + ' ↗</a>';
+    }
+  } catch {}
+  return esc(label);
+}
+
+function radarContents() {
+  const { sources, feed } = radarData || D.radar;
+  const categories = [...new Set(sources.map(s => s.category))];
+  const sourceGroups = categories.map(category => {
+    const group = sources.filter(s => s.category === category);
+    return '<details class="fold"><summary>' + esc(category) + ' · ' + group.length + '</summary><ul class="ul">' +
+      group.map(s => '<li><b>' + radarLink(s.url,s.name) + '</b> · ' + esc(s.specialty) +
+        '<br><span class="small muted">' + esc(s.interest) + '</span></li>').join("") + '</ul></details>';
+  }).join("");
+  const publications = feed.items.map(item =>
+    '<li><b>' + radarLink(item.url,item.title) + '</b><br><span class="small muted">' +
+    [item.source,item.category,item.published?.slice(0,10)].filter(Boolean).map(esc).join(" · ") +
+    '</span>' + (item.summary ? '<p>' + esc(item.summary) + '</p>' : '') + '</li>').join("");
+  return '<p class="small muted" role="status">' +
+    (radarOffline ? "Une partie des données RADAR DA est indisponible en ligne. Les données manquantes sont reprises de l’archive locale." :
+      radarData ? "Données chargées depuis RADAR DA." : "Vérification du flux RADAR DA…") + '</p>' +
+    '<h2>Publications repérées · ' + feed.items.length + '</h2>' +
+    (publications ? '<p class="small muted">Publications collectées. Les extraits proviennent des sources.</p><ul class="ul">' + publications + '</ul>' :
+      '<p>Aucune publication dans le flux disponible.</p>') +
+    '<h2>Répertoire · ' + sources.length + ' sources</h2>' + sourceGroups;
+}
+
+function loadRadar() {
+  if (radarLoad) return;
+  const read = async file => {
+    const response = await fetch(RADAR_URL + "data/" + file + ".json", { signal: AbortSignal.timeout(7000) });
+    if (!response.ok) throw new Error("RADAR DA " + response.status);
+    return response.json();
+  };
+  radarLoad = Promise.allSettled([read("sources"), read("feed")]).then(([sources, feed]) => {
+    const liveSources = sources.status === "fulfilled" && Array.isArray(sources.value);
+    const liveFeed = feed.status === "fulfilled" && Array.isArray(feed.value?.items);
+    radarOffline = !liveSources || !liveFeed;
+    radarData = {
+      sources: liveSources ? sources.value : D.radar.sources,
+      feed: liveFeed ? feed.value : D.radar.feed
+    };
+    const panel = document.getElementById("radar-contents");
+    if (panel) {
+      const open = new Set([...panel.querySelectorAll("details[open] summary")].map(summary => summary.textContent));
+      panel.innerHTML = radarContents();
+      panel.querySelectorAll("details").forEach(group => {
+        group.open = open.has(group.querySelector("summary").textContent);
+      });
+    }
+  });
+}
+
 function vVeille(rub) {
+  if (rub === "radar") {
+    loadRadar();
+    return '<div class="page"><a class="chip" href="#veille">← Veille STORYBOARD</a>' +
+      '<div class="n-head"><p class="eyebrow">Veille</p><h1 class="h1">RADAR DA</h1></div>' +
+      '<section class="panel" id="radar-contents">' + radarContents() + '</section></div>';
+  }
   let head = rub ? `<div class="n-head"><span class="eyebrow">Veille · ${esc(rub === "gardes" ? "Gardés" : rub === "tendances" ? "Tendances du mois" : rub)}</span>${rub === "tendances" ? `<h1 class="h1">Les tendances du mois</h1><p class="lede">Une fois par mois, les tendances visuelles qui reviennent dans la scène, la pub, le clip et l'image : ce que c'est, d'où ça vient, comment t'en servir, et quand l'éviter.</p>` : ""}</div>` : `<div class="n-head"><span class="eyebrow">Veille · mise à jour chaque matin</span><h1 class="h1">Ce qui se fait en ce moment</h1><p class="lede">Quelques articles utiles à la DA, résumés en français. Chaque article reste une semaine. Touche « Garder » pour le conserver, ou « OK, vu » : il s'efface alors sous 24 heures.</p><details class="nt-more"><summary>Les sources suivies</summary><p class="muted small">${esc(VEILLE_SOURCES)}.</p></details></div>`;
   const vw = !rub ? wheelMenu([["#veille--f:spectacle", "Spectacle", "Scène, lumière, expo", "coeur"], ["#veille--f:pub", "Pub", "Campagnes, marques", "sens"], ["#veille--f:film", "Film et clip", "Cinéma, clips, motion", "outils"], ["#veille--f:image", "Image", "Photo, identité, typo", "appui"]], ["#veille--tendances", "Ce mois-ci", "Tendances", "Ouvrir →"], "Rubriques de la veille") + `<div class="row" style="gap:8px;flex-wrap:wrap;justify-content:center"><a class="chip" href="#veille--f:musique">♪ Musique</a><a class="chip" href="#veille--gardes">★ Gardés</a><a class="chip" href="#buzz">Campagnes qui font parler</a></div>` : "";
-  head += vw;
+  head += vw + `<p><a class="btn gel" href="#veille--radar">RADAR DA · Publications et répertoire →</a></p>`;
   if (rub === "tendances") return `<div class="page">${head}${tendHtml()}</div>`;
   if (VEILLE === null && rub !== "tendances") return `<div class="page">${head}<div class="empty">${VEILLE_ERR ? "La veille n'est pas disponible dans cette vue (connexion nécessaire)." : "Chargement de la veille…"}</div></div>`;
   if (VEILLE && !VEILLE.length && rub !== "tendances") return `<div class="page">${head}<div class="empty">Aucun article pour l'instant. La prochaine mise à jour arrive demain matin.</div></div>`;
@@ -1797,6 +1881,40 @@ function vPlus() {
     <p class="lede">Le cursus t'a donné les bases. Ici, une page par notion avec les fiches techniques, les paroles de praticiens, l'histoire de l'art et le terrain. ${done < all.length ? `Tu as ouvert ${done} notions sur ${all.length} : finis d'abord le cursus, ce sera plus utile.` : "Tu as fini le cursus : choisis une notion à creuser."}</p></div>
     ${CURSUS.map((m, i) => `<section class="card" style="gap:8px"><span class="eyebrow gel">Étape ${i + 1} · ${esc(m.t)}</span><span class="row" style="gap:6px">${m.n.filter(id => NOT[id]).map(id => `<a class="chip" href="#n-${id}--plus">${esc(NOT[id].titre)} <span class="count">${nx(id)}</span></a>`).join("")}</span></section>`).join("")}</div>`;
 }
+
+function vAtelier(id) {
+  const module = CURSUS.find(m => m.id === id);
+  const a = module && D.ateliers[id];
+  if (!a) return vAtlas();
+  const posters = [
+    ["A", "See America. Visit the national parks", "Cascade encadrée par le relief", "98518589"],
+    ["B", "See America, Dux", "Deux visiteurs dans les grottes de Carlsbad", "96503125"]
+  ];
+  const visual = id === "voir" ? '<div class="atelier-posters">' + posters.map(([key, title, alt, source]) =>
+    '<figure><img src="assets/affiche-' + key.toLowerCase() + '.jpg" alt="' + esc(alt) + '"><figcaption><b>Affiche ' + key + '</b> · ' + esc(title) + ' · <a href="https://www.loc.gov/item/' + source + '/">Library of Congress</a></figcaption></figure>'
+  ).join("") + '</div>' : img(a.image, a.credit);
+  const fields = [["observation", "Observation"], ["effet", "Effet"], ["intention", "Intention"], ["arbitrage", "Arbitrage"]];
+  const quiz = a.quiz;
+  const index = CURSUS.indexOf(module);
+  const next = CURSUS[index + 1];
+  return '<div class="page atelier">' + curBar(index) +
+    '<p class="eyebrow">Atelier · étape ' + (index + 1) + '</p><h1 class="h1">' + esc(a.titre) + '</h1>' +
+    '<section class="panel">' + visual + '<p><a class="chip" href="#c-' + module.pr.cas + '">Cas du cursus · ' + esc(module.pr.t) + '</a></p>' +
+    '<h2>Le geste technique</h2><p>' + esc(a.technique) + '</p>' +
+    '<details class="fold"><summary>Dialogue d’atelier</summary><p><b>Apprenti DA</b> · ' + esc(a.dialogue[2]) +
+    '</p><p><b>Mentor</b> · ' + esc(a.dialogue[3]) + '</p><p class="small muted">Dialogue reconstitué pour l’exercice, d’après ' +
+    esc(a.dialogue[0]) + ', p. ' + a.dialogue[1] + '.</p></details>' +
+    '<h2>À toi de jouer · 20 secondes</h2><p>' + esc(quiz.question) + '</p>' +
+    '<div class="row" role="group" aria-label="Choisis une réponse">' + quiz.choices.map((choice, i) =>
+      '<button type="button" class="btn ghost" data-quiz="' + id + '" data-i="' + i + '" aria-pressed="false">' + esc(choice) + '</button>').join("") +
+    '</div><p class="quiz-feedback" role="status"></p>' +
+    '<details class="fold"><summary>Lecture commentée</summary><dl>' + fields.map(([key, label]) =>
+      '<dt><b>' + label + '</b></dt><dd>' + esc(a[key]) + '</dd>').join("") + '</dl></details>' +
+    '<details class="fold"><summary>Mode mentor · préparer ta deuxième version</summary><p>' + esc(a.mentor) +
+    '</p></details></section><div class="panel-foot"><a class="btn ghost" href="#atlas">Voir le cursus</a>' +
+    (next ? '<a class="btn gel" href="#atelier--' + next.id + '">Atelier suivant →</a>' : '<a class="btn gel" href="#studio">Appliquer au Studio →</a>') + '</div></div>';
+}
+
 function vAtlas(sel) {
   const CS = COUCHES.filter(c => !sel || c.id === sel);
   const _lens = id => (S.notions[id] || {}).lens || 0, _all = CURSUS.flatMap(m => m.n), _doneN = _all.filter(id => _lens(id) >= 1).length;
@@ -1810,7 +1928,7 @@ function vAtlas(sel) {
       <span class="eyebrow gel">${_doneN ? "Ton prochain pas" : "Pour commencer"} · ${_doneN}/${_all.length} notions ouvertes</span>
       ${_nx ? `<a class="cn-t" href="#n-${_nx}">${esc(_nm.t)} · ${esc(NOT[_nx].titre)}</a><span class="row"><a class="btn gel" href="#n-${_nx}">${_doneN ? "Continuer le cursus" : "Commencer le cursus"} →</a></span>` : `<b class="cn-t">Cursus terminé : reprends n'importe quelle notion.</b>`}</div>
     <p class="alt-learn"><a class="chip" href="#histoire">Apprendre en histoire</a><span class="small muted">Une autre façon d'apprendre : 15 histoires de direction artistique à lire quand tu veux.</span></p>
-    <ol class="cur-list">${CURSUS.map((m, i) => { const d = m.n.filter(id => _lens(id) >= 1).length, fid = m.n.find(id => NOT[id] && _lens(id) < 1) || m.n.find(id => NOT[id]); return `<li class="cur-m ${d === m.n.length ? "done" : d ? "half" : ""}${_nx && m.n.includes(_nx) ? " next" : ""}"><span class="cur-n">${String(i + 1).padStart(2, "0")}</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#n-${fid}">${esc(m.t)}</a></h2><p class="cur-q">${esc(m.q)}</p><p class="cur-p">${esc(m.p)}</p><span class="row cur-chips">${m.n.filter(id => NOT[id]).map(id => `<a class="chip ${_lens(id) >= 1 ? "on" : ""}" href="#n-${id}">${_lens(id) >= 1 ? "✓ " : ""}${esc(NOT[id].titre)}</a>`).join("")}</span><span class="small muted">${d}/${m.n.length}</span></div></li>`; }).join("")}<li class="cur-m plus ${_doneN >= _all.length ? "half" : ""}"><span class="cur-n">+</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#plus">Pour aller plus loin</a></h2><p class="cur-q">Quand le cursus est fini.</p><p class="cur-p">Fiches techniques, paroles de praticiens, histoire de l'art, terrain : une page par notion.</p></div></li></ol>
+    <ol class="cur-list">${CURSUS.map((m, i) => { const d = m.n.filter(id => _lens(id) >= 1).length, fid = m.n.find(id => NOT[id] && _lens(id) < 1) || m.n.find(id => NOT[id]); return `<li class="cur-m ${d === m.n.length ? "done" : d ? "half" : ""}${_nx && m.n.includes(_nx) ? " next" : ""}"><span class="cur-n">${String(i + 1).padStart(2, "0")}</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#n-${fid}">${esc(m.t)}</a></h2><p class="cur-q">${esc(m.q)}</p><p class="cur-p">${esc(m.p)}</p><span class="row cur-chips">${m.n.filter(id => NOT[id]).map(id => `<a class="chip ${_lens(id) >= 1 ? "on" : ""}" href="#n-${id}">${_lens(id) >= 1 ? "✓ " : ""}${esc(NOT[id].titre)}</a>`).join("")}</span><a class="chip" href="#atelier--${m.id}">Atelier · observation et pratique →</a><span class="small muted">${d}/${m.n.length}</span></div></li>`; }).join("")}<li class="cur-m plus ${_doneN >= _all.length ? "half" : ""}"><span class="cur-n">+</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#plus">Pour aller plus loin</a></h2><p class="cur-q">Quand le cursus est fini.</p><p class="cur-p">Fiches techniques, paroles de praticiens, histoire de l'art, terrain : une page par notion.</p></div></li></ol>
     </div><details class="fold lib" ${sel ? "open" : ""}><summary><span class="h3">La bibliothèque : toutes les notions par famille</span></summary><div class="fold-body">
     ${wheelMenu(COUCHES.map(c => ["#atlas--" + c.id, c.nom.split(" : ")[0], c.nom.split(" : ")[1] || "", c.id]), null, "Familles de notions")}
     ${sel ? `<span class="row"><a class="chip" href="#atlas">Toutes les familles</a></span>` : ""}<div data-autoscroll></div>
@@ -1914,6 +2032,7 @@ function vNotion(id, lensIdx) {
     <h1 class="h1">${esc(n.titre)}</h1></div>
     <nav class="lenses" aria-label="Étapes de la notion">${LENSES.map((l, i) => `<a class="lens ${i === L ? "on" : ""} ${st.lens > i ? "seen" : ""}" href="#n-${id}--${i}" style="text-decoration:none"><b>${l.t}</b><span>${l.m}</span></a>`).join("")}</nav>
     <section class="panel">${body}
+      ${_mo && D.ateliers[_mo.m.id] ? `<p><a class="chip" href="#atelier--${_mo.m.id}">Exercice de l’étape →</a></p>` : ""}
       <div class="panel-foot">${L > 0 ? `<a class="btn ghost" href="#n-${id}--${L - 1}">← ${LENSES[L - 1].t}</a>` : "<span></span>"}${nextBtn}</div>
     </section>
     ${modDone}
@@ -2090,7 +2209,7 @@ function vProject(pid, stepIdx) {
     const filled = E.filter(x => (p.steps[x.id] || "").trim()).length;
     const r = p.review;
     main = `<section class="panel"><span class="eyebrow">Revue de DA senior</span><h2 class="h2">Ta proposition relue</h2>
-      <p class="prose" style="font-size:17px">Claude relit ton projet comme un directeur artistique expérimenté : ce qui fonctionne, ce qui risque de casser en production, et la question qu'un client poserait. Aucune note.</p>
+      <p class="prose" style="font-size:17px">Si le service de revue est disponible, Claude relit ton projet comme un directeur artistique expérimenté : ce qui fonctionne, ce qui risque de casser en production, et la question qu'un client poserait. Aucune note.</p>
       ${filled < 4 ? `<p class="note">Remplis au moins quatre étapes pour une revue utile (${filled}/${E.length} pour l'instant).</p>` : ""}
       <span class="row"><button class="btn primary" data-review="${pid}" ${filled < 4 || reviewBusy ? "disabled" : ""}>${reviewBusy ? "Relecture en cours…" : r ? "Demander une nouvelle revue" : "Demander la revue"}</button><span class="small muted" id="review-status"></span></span>
       ${r ? `<div class="review"><span class="small muted">Revue du ${fmtDate(r.ts)}</span><div><h4 class="k-fait">Forces</h4><ul class="ul">${r.forces.map(x => `<li>${md(x)}</li>`).join("")}</ul></div><div><h4 class="k-interp">Risques</h4><ul class="ul">${r.risques.map(x => `<li>${md(x)}</li>`).join("")}</ul></div><div><h4 class="k-intent">La question du client</h4><p class="prose" style="font-size:16.5px">${md(r.question)}</p></div>${r.piste ? `<div><h4>Une piste pour la version 2</h4><p class="prose" style="font-size:16.5px">${md(r.piste)}</p></div>` : ""}</div>` : ""}
@@ -2255,7 +2374,11 @@ function vNote(id) {
   }
   const nav = `<div class="nt-nav">${cur > 1 ? `<button class="btn" data-nt-step="${id}" data-to="${cur - 1}">← ${esc(STEPS[cur - 2][1])}</button>` : "<span></span>"}${cur < 4 ? `<button class="btn primary" data-nt-step="${id}" data-to="${cur + 1}">${esc(STEPS[cur][1])} →</button>` : ""}</div>`;
   const finish = cur === 4 ? `<section class="panel"><span class="eyebrow">Relecture</span>
-      <p class="muted small">Claude relit ta proposition comme un DA senior : cohérence entre émotion, phrase unique et choix, faisabilité, et la question qu'un client poserait. Remplis au moins cinq rubriques.</p>
+      <details class="fold" open><summary>Mode mentor · relire ton projet</summary>
+        <ol class="ul"><li>Quel effet le public doit-il percevoir en premier ?</li><li>Quel choix concret crée cet effet ?</li><li>Que sacrifierais-tu si le temps de montage diminuait ?</li></ol>
+        <label class="nt-lab" for="mentor-revision">Mon changement prioritaire et le test prévu</label>
+        <textarea id="mentor-revision" data-nt="${id}" data-k="mentor" rows="3">${esc(n.f.mentor || "")}</textarea></details>
+      <p class="muted small">Si le service de revue est disponible, Claude relit ta proposition comme un DA senior : cohérence entre émotion, phrase unique et choix, faisabilité, et la question qu'un client poserait. Remplis au moins cinq rubriques.</p>
       <span class="row"><button class="btn primary" data-nt-rev="${id}" ${ntRevBusy ? "disabled" : ""}>${ntRevBusy ? "Relecture en cours…" : n.review ? "Nouvelle relecture" : "Demander la relecture"}</button><span class="small muted" id="nt-rev-status"></span></span>
       ${n.review ? `<div class="review"><span class="small muted">Relecture du ${new Date(n.review.ts).toLocaleDateString("fr-FR")}</span>
         <div><h4 class="k-fait">Forces</h4><ul class="ul">${n.review.forces.map(x => `<li>${md(x)}</li>`).join("")}</ul></div>
@@ -2846,13 +2969,14 @@ let backing = false, tabJump = false;
 function navSave() { try { sessionStorage.setItem("cl-nav", JSON.stringify(NAVST.slice(-40))); } catch (e) {} }
 function baseOf(h) { return (h || "#accueil").split("--")[0]; }
 function parentOf(a) {
-  if (a.startsWith("n-")) return "#atlas"; if (a.startsWith("c-") || a === "analyse" || a === "revision" || a === "jeu") return a.startsWith("c-") ? "#analyse" : "#entrainer";
+  if (a === "atelier" || a.startsWith("n-")) return "#atlas"; if (a.startsWith("c-") || a === "analyse" || a === "revision" || a === "jeu") return a.startsWith("c-") ? "#analyse" : "#entrainer";
   if (a.startsWith("e-")) return "#boussole"; if (a.startsWith("note-")) return "#notes"; if (a.startsWith("check-")) return "#check";
   if (a.startsWith("p-")) return "#studio"; if (a === "jour") return "#accueil"; if (a === "erreurs" || a === "labo") return "#studio"; if (a === "buzz") return "#entrainer"; if (a === "musee") return "#entrainer"; if (a === "histoire") return "#atlas"; return "#studio";
 }
 function hashLabel(h) {
   const [a, b] = (h || "#accueil").slice(1).split("--");
   if (!a || a === "accueil") return "Accueil";
+  if (a === "atelier") return D.ateliers[b]?.titre || "Atelier";
   if (a === "plus") return "Pour aller plus loin";
   if (a.startsWith("n-")) return NOT[a.slice(2)] ? NOT[a.slice(2)].titre : "Notion";
   if (a.startsWith("c-")) return CAS[a.slice(2)] ? CAS[a.slice(2)].titre : "Cas";
@@ -3577,7 +3701,8 @@ function route() { const h = (location.hash || "#accueil").slice(1); const [a, b
 function render() {
   const { a, b } = route();
   let html, nav = "accueil";
-  if (a === "atlas") { html = vAtlas(b); nav = "atlas"; }
+  if (a === "atelier") { html = vAtelier(b); nav = "atlas"; }
+  else if (a === "atlas") { html = vAtlas(b); nav = "atlas"; }
   else if (a === "histoire") { html = vHist(b); nav = "atlas"; }
   else if (a === "plus") { html = vPlus(); nav = "atlas"; }
   else if (a.startsWith("n-")) { html = vNotion(a.slice(2), b && b.startsWith("plus") ? b : +b || 0); nav = "atlas"; }
@@ -3652,7 +3777,19 @@ let ENTER = true;
 /* Le bouton son s'efface quand on lit vers le bas, revient en remontant */
 (() => { let y = 0; addEventListener("scroll", () => { const d = scrollY - y; y = scrollY; const w = document.getElementById("snd"); if (!w) return; if (scrollY < 80 || d < -6) w.classList.remove("away"); else if (d > 6) w.classList.add("away"); }, { passive: true }); })();
 let lastHash = null;
+const reading = new Map();
+history.scrollRestoration = "manual";
+function rememberReading(hash) {
+  if (hash === null) return;
+  reading.set(hash, {
+    top: window.scrollY,
+    folds: [...root.querySelectorAll("main details")].map(fold => fold.open)
+  });
+}
+
 window.addEventListener("hashchange", () => {
+  rememberReading(lastHash);
+  const resume = reading.get(location.hash);
   if (tabJump) { NAVST = []; navSave(); }
   else if (!backing && lastHash && baseOf(lastHash) !== baseOf(location.hash)) { if (NAVST[NAVST.length - 1] !== lastHash) NAVST.push(lastHash); navSave(); }
   if (baseOf(location.hash) === "#jeu" && baseOf(lastHash) !== "#jeu") G = null;
@@ -3663,7 +3800,12 @@ window.addEventListener("hashchange", () => {
   const before = bar ? bar.getBoundingClientRect().top : null;
   ENTER = !isVeille;
   render();
-  if (isVeille) {
+  if (resume && !isVeille) {
+    root.querySelectorAll("main details").forEach((fold, index) => {
+      if (index < resume.folds.length) fold.open = resume.folds[index];
+    });
+    window.scrollTo(0, resume.top);
+  } else if (isVeille) {
     const nb = document.querySelector(".v-filters"); const anchor = document.querySelector(".v-anchor");
     if (anchor) { const top = anchor.getBoundingClientRect().top + window.scrollY - 8; if (window.scrollY > top) window.scrollTo(0, top); }
     else if (nb && before != null) window.scrollBy(0, nb.getBoundingClientRect().top - before);
@@ -3674,6 +3816,19 @@ window.addEventListener("hashchange", () => {
 });
 
 // ---------- Actions ----------
+document.addEventListener("click", ev => {
+  const button = ev.target.closest("[data-quiz]");
+  if (!button) return;
+  const a = D.ateliers[button.dataset.quiz];
+  const correct = Number(button.dataset.i) === a.quiz.answer;
+  for (const option of button.parentElement.children) {
+    option.setAttribute("aria-pressed", String(option === button));
+  }
+  button.parentElement.nextElementSibling.textContent = correct
+    ? "Oui. " + a.effet
+    : "Regarde encore. " + a.observation;
+});
+
 document.addEventListener("click", ev => {
   const t = ev.target.closest("[data-reveal],[data-geste],[data-geste-reset],[data-filter],[data-calque],[data-calque-all],[data-etsi],[data-an-save],[data-new],[data-step],[data-pnotion],[data-review],[data-export],[data-reset],[data-reset-ok],[data-go]");
   if (!t) return;
