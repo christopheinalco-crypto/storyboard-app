@@ -37,7 +37,7 @@
 .visual-reading summary { cursor:pointer; padding:.7rem 0; color:var(--volt); font-weight:600; }
 .visual-reading p { max-width:67ch; }
 .visual-clip { margin:.4rem 0; }
-</style><style>.theory-depth summary { cursor:pointer; padding:.65rem 0; color:var(--ink-2); }</style></head><body>
+</style><style>.theory-depth summary { cursor:pointer; padding:.65rem 0; color:var(--ink-2); }</style><style>.show-opening h2{margin:.2em 0}.show-opening p{max-width:65ch}.show-opening{border-left:3px solid var(--volt)}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>STORYBOARD</title>
@@ -1863,7 +1863,7 @@ function courseModule(module, index, lens) {
   const next = module.n.find(id => lens(id) < 1) || module.n[0];
   return '<li class="course-module"><span class="course-number" aria-hidden="true">' + String(index + 1).padStart(2,"0") +
     '</span><div class="course-body"><h2 class="h2">' + esc(module.t) + '</h2><p class="course-objective">' + esc(objective) +
-    '</p><div class="course-case">' + '<div><p class="eyebrow">Cas à observer</p><a href="#c-' + caseId + '"><b>' + esc(reference.titre) +
+    '</p><div class="course-case">' + '<div><p class="eyebrow">Référence à observer</p><a href="#c-' + caseId + '"><b>' + esc(reference.titre) +
     ' →</b></a><p>' + esc(cue) + '</p></div></div><div class="row course-actions"><a class="btn gel" href="#n-' + next +
     '">Ouvrir la leçon →</a><span class="small muted">' + completed + '/' + module.n.length + ' notions ouvertes</span></div>' +
     '<details><summary>Toutes les notions de l’étape</summary><div class="row">' + module.n.map(n => '<a class="chip" href="#n-' + n + '">' +
@@ -1953,6 +1953,12 @@ function visualLesson(lesson) {
     '</p><p><b>À tester sur ton projet.</b> ' + esc(lesson.apply) + '</p></details></section>';
 }
 
+function showOpening(module) {
+  const [title, decision] = D.showOpening[module.id];
+  return '<section class="panel show-opening"><p class="eyebrow">Fil rouge · ouverture de show</p><h2>' +
+    esc(title) + '</h2><p>' + esc(decision) + '</p></section>';
+}
+
 function vNotion(id, lensIdx) {
   const n = NOT[id]; if (!n) return vAtlas();
   const plus = typeof lensIdx === "string" && lensIdx.startsWith("plus"), ptab = plus ? lensIdx.slice(5).replace(/^-/, "") : ""; const st = nState(id); const L = plus ? 3 : Math.max(0, Math.min(3, lensIdx || 0));
@@ -2007,6 +2013,7 @@ function vNotion(id, lensIdx) {
     <div class="n-head"><div class="crumbs"><a href="#atlas">Cursus</a><span>/</span><span class="tag">${esc(couche.nom)}</span></div>
     <h1 class="h1">${esc(n.titre)}</h1></div>
     <nav class="lenses" aria-label="Étapes de la notion">${LENSES.map((l, i) => `<a class="lens ${i === L ? "on" : ""} ${st.lens > i ? "seen" : ""}" href="#n-${id}--${i}" style="text-decoration:none"><b>${l.t}</b><span>${l.m}</span></a>`).join("")}</nav>
+    ${L === 0 && _mo && _mo.m.n[0] === id ? showOpening(_mo.m) : ""}
     ${L === 0 && D.visualLessons[id] ? visualLesson(D.visualLessons[id]) : L === 0 && _mo && _mo.m.n[0] === id ? reflexLesson(_mo.m) : ""}
     <section class="panel">${body}
       <div class="panel-foot">${L > 0 ? `<a class="btn ghost" href="#n-${id}--${L - 1}">← ${LENSES[L - 1].t}</a>` : "<span></span>"}${nextBtn}</div>
