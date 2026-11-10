@@ -26,6 +26,17 @@
 .visual-pair .figure { margin:0; min-width:0; }
 .visual-pair .figure svg { display:block; width:100%; height:auto; }
 .visual-pair figcaption { text-align:left; }
+</style><style>
+.visual-lesson { padding:clamp(16px,3.5vw,38px); }
+.visual-lesson h2 { font:700 clamp(1.55rem,3.5vw,2.55rem)/1.12 var(--f-display); max-width:27ch; }
+.visual-question { max-width:60ch; color:var(--ink-2); }
+.visual-pair .figure svg { border-radius:8px; background:#0c151b; }
+.visual-pair.visual-single { grid-template-columns:minmax(0,1fr); }
+.visual-pair figcaption { margin:.35rem 0; font-size:.84rem; }
+.visual-reading { border-top:1px solid var(--line); margin-top:1rem; }
+.visual-reading summary { cursor:pointer; padding:.7rem 0; color:var(--volt); font-weight:600; }
+.visual-reading p { max-width:67ch; }
+.visual-clip { margin:.4rem 0; }
 </style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
@@ -1932,9 +1943,14 @@ function reflexLesson(module) {
 }
 
 function visualLesson(lesson) {
-  return '<section class="panel visual-lesson"><h2>' + esc(lesson.title) + '</h2><p>' + esc(lesson.prompt) +
-    '</p><div class="visual-pair">' + lesson.images.map(([key, caption]) => img(key, caption)).join("") +
-    '</div><p><b>Lecture.</b> ' + esc(lesson.read) + '</p><p><b>Sur ton projet.</b> ' + esc(lesson.apply) + '</p></section>';
+  const media = lesson.images.length
+    ? '<div class="visual-pair' + (lesson.images.length === 1 ? ' visual-single' : '') + '">' +
+      lesson.images.map(([key, caption]) => img(key, caption)).join("") + '</div>'
+    : '<a class="btn ghost visual-clip" href="' + esc(lesson.clip) + '" target="_blank" rel="noopener">Voir le clip officiel ↗</a>';
+  return '<section class="panel visual-lesson"><p class="eyebrow">Étude visuelle</p><h2>' + esc(lesson.title) +
+    '</h2><p class="visual-question">' + esc(lesson.prompt) + '</p>' + media +
+    '<details class="visual-reading"><summary>Voir l’analyse</summary><p><b>Ce qui guide le regard.</b> ' + esc(lesson.read) +
+    '</p><p><b>À tester sur ton projet.</b> ' + esc(lesson.apply) + '</p></details></section>';
 }
 
 function vNotion(id, lensIdx) {
