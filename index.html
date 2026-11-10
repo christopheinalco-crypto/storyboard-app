@@ -37,7 +37,12 @@
 .visual-reading summary { cursor:pointer; padding:.7rem 0; color:var(--volt); font-weight:600; }
 .visual-reading p { max-width:67ch; }
 .visual-clip { margin:.4rem 0; }
-</style><style>.theory-depth summary { cursor:pointer; padding:.65rem 0; color:var(--ink-2); }</style><style>.show-opening h2{margin:.2em 0}.show-opening p{max-width:65ch}.show-opening{border-left:3px solid var(--volt)}</style></head><body>
+</style><style>.theory-depth summary { cursor:pointer; padding:.65rem 0; color:var(--ink-2); }</style><style>.show-opening h2{margin:.2em 0}.show-opening p{max-width:65ch}.show-opening{border-left:3px solid var(--volt)}</style><style>
+.production-brief h2{margin:.2em 0}
+.production-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px;margin:16px 0}
+.production-fields>div{padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+.production-fields p{margin:.4rem 0;color:var(--ink-2)}
+</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>STORYBOARD</title>
@@ -1588,7 +1593,7 @@ const CURSUS = [
   { id: "lumcoul", t: "Lumière et couleur", q: "Comment je dirige l'attention et l'émotion ?", p: "Tu sauras choisir une source de lumière, composer une palette, placer une couleur d'accent et décider d'un look.", n: ["lumiere-source", "lumiere-designe", "couleur-relative", "palette", "couleur-accent", "look"], pr: { t: "La couleur est relative", cas: "w-direction-couleur-relative" } },
   { id: "monde", t: "Matière, costume et espace", q: "Dans quel monde le spectateur entre-t-il ?", p: "Tu sauras construire un décor, un costume, un espace et un parcours qui parlent avant le premier mot.", n: ["matiere-decor", "costume-personnage", "espace-echelle", "seuils-parcours", "scenographie"], pr: { t: "Les objets d'un appartement", cas: "w-direction-objets" } },
   { id: "temps", t: "Rythme, son et mots", q: "Comment j'organise le temps, le son et le texte ?", p: "Tu sauras construire une courbe d'intensité, régler un rythme de montage, marier image et musique, choisir une typographie.", n: ["courbe-intensite", "rythme-montage", "image-musique", "typographie"], pr: { t: "Around the World", cas: "c-aroundtheworld" } },
-  { id: "besoin", t: "Comprendre le besoin", q: "Pour qui, et pourquoi maintenant ?", p: "Tu sauras lire un brief, trouver l'insight, relier une marque à une idée et situer le projet dans son époque.", n: ["brief", "observation-insight", "questionner", "insight-idee", "marque-efficacite", "tendances"], pr: { t: "L'insight de privation", cas: "w-insight-privation" } },
+  { id: "besoin", t: "Lire une commande de production", q: "Que doit voir le public et que doit livrer la réalisation ?", p: "Transforme la commande en critères de visibilité, de timing et de faisabilité.", n: ["brief", "questionner"], pr: { t: "Le brief en une phrase", cas: "w-intention-brief" } },
   { id: "intention", t: "Formuler l'intention", q: "Que veut-on faire ressentir, et à qui ?", p: "Tu sauras écrire une intention en une phrase et la traduire en décisions de point de vue, d'émotion et de dévoilement.", n: ["formuler-intention", "intention-decisions", "point-de-vue", "emotion-ecart", "reveler-cacher"], pr: { t: "Le brief en une phrase", cas: "w-intention-brief" } },
   { id: "concept", t: "Trouver le concept", q: "Quelle idée visuelle porte l'intention ?", p: "Tu sauras chercher plusieurs pistes, choisir un concept, t'appuyer sur des références sans copier et bâtir un univers.", n: ["methode", "concept-visuel", "references", "univers-visuel"], pr: { t: "Vingt idées avant la bonne", cas: "w-intention-vingt-idees" } },
   { id: "decider", t: "Décider, réaliser, présenter", q: "Que je garde, que je sacrifie, comment je convaincs ?", p: "Tu sauras renoncer, tenir la cohérence, composer avec les contraintes, travailler en équipe et défendre ta proposition.", n: ["contraste-affinite", "choisir", "coherence", "contraintes", "collaborer", "presenter"], pr: { t: "Garder une idée", cas: "w-intention-garder-une-idee" } }
@@ -1847,10 +1852,10 @@ function vPlus() {
 // Each module pairs a DA decision with a case that makes it observable.
 const COURSE_CASES = {
   voir: ["s-u2-360", "Repérer ce que le public voit selon sa place", "Suis la passerelle autour de la scène et compare la vue sur le plateau depuis deux secteurs."],
-  lumcoul: ["w-direction-couleur-relative", "Rendre le sujet lisible avec la lumière et la couleur", "Compare l’effet d’un même ton sur deux fonds avant de choisir le contraste de ton plateau."],
+  lumcoul: ["w-direction-couleur-relative", "Hiérarchiser artiste, décor et écrans", "Dans la leçon Lumière, compare les états d’Arcade en répétition, puis isole un réglage à tester au moniteur."],
   monde: ["s-daftpunk-alive", "Faire du décor un repère à l’échelle de la salle", "Compare le triangle de près à Bercy et de loin à RockNess. Repère ce qui reste lisible et ce qui se perd à distance."],
   temps: ["c-aroundtheworld", "Donner un rythme lisible à une séquence", "Suis un groupe de danseurs à la fois et relie la répétition de ses gestes à la musique."],
-  besoin: ["w-insight-privation", "Extraire du brief un problème concret à résoudre", "Distingue le comportement observé de l’explication qu’on lui donne avant de proposer un dispositif."],
+  besoin: ["w-intention-brief", "Définir ce que le dispositif doit permettre", "Distingue l’effet attendu, le plan à livrer et la contrainte de plateau avant de dessiner le décor."],
   intention: ["s-thewall", "Dire ce que le public doit ressentir à un moment précis", "Observe comment la construction progressive du mur matérialise la séparation entre la salle et le groupe."],
   concept: ["w-direction-concept-visuel", "Trouver une règle qui guide plusieurs choix visuels", "Repère le principe qui reste reconnaissable quand la forme ou le support change."],
   decider: ["w-intention-garder-une-idee", "Défendre une piste et expliquer ce que tu acceptes de perdre", "Compare les pistes selon leur effet sur le public et leur faisabilité en production."]
@@ -1877,8 +1882,20 @@ function vAtlas(sel) {
   const _H = hst(), _tot = HUES.reduce((a, u) => a + u.lecons.length, 0), _done = HUES.reduce((a, u) => a + hRead(u.id), 0);
   const _res = _H.last || (HUES[0] ? HUES[0].id + "-1" : "");
   return `<div class="page is-entry" data-word="Cursus">${curBar(CURSUS.indexOf(_nm))}
-    <div class="n-head"><div class="eyebrow">Apprendre</div><h1 class="h1">Le cursus</h1>
-    <p class="lede">Un parcours en ${CURSUS.length} étapes, à suivre dans l'ordre. D'abord les bases du métier : éduquer l'œil, lumière et couleur, matière et espace, rythme et son. Ensuite la démarche : comprendre le besoin, formuler l'intention, trouver le concept, décider et présenter.</p>
+    <div class="n-head"><div class="eyebrow">Apprendre</div><h1 class="h1">Direction artistique de grands dispositifs</h1>
+    <p class="lede">Huit étapes pour concevoir un dispositif qui guide le regard en salle et à l’écran, du premier cadre à la répétition.</p>
+    <section class="panel production-brief">
+      <p class="eyebrow">Commande fil rouge · exercice</p>
+      <h2>Ouvrir un show en 45 secondes</h2>
+      <p>Le dernier rang doit repérer l’entrée. Au premier refrain, le visage doit se lire à l’antenne. Le décor doit pouvoir libérer le plateau rapidement. Ces trois critères servent à comparer tes choix tout au long du parcours.</p>
+      <a class="chip" href="#n-brief">Lire la commande →</a>
+    </section>
+    <section class="production-fields" aria-label="Terrains du cursus">
+      <div><b>Concert</b><p>Vérifier les lignes de vue depuis la salle.</p><a href="#c-s-u2-360">U2 360° →</a></div>
+      <div><b>Show TV</b><p>Faire tenir le décor au large et le sujet en gros plan.</p><a href="#n-cadrage">Eurovision · Arcade →</a></div>
+      <div><b>Spectacle</b><p>Faire évoluer le sens du décor à vue.</p><a href="#c-s-thewall">The Wall →</a></div>
+      <div><b>Lancement produit</b><p>Faire passer le regard du dispositif à l’objet.</p><a href="https://www.lciproductions.com/our-work/honda-conference-product-launch/" target="_blank" rel="noopener">Honda · dossier et visuels ↗</a></div>
+    </section>
     <div class="cursus-next"><div class="cn-bar" aria-hidden="true"><i style="width:${Math.round(100 * _doneN / _all.length)}%"></i></div>
       <span class="eyebrow gel">${_doneN ? "Ton prochain pas" : "Pour commencer"} · ${_doneN}/${_all.length} notions ouvertes</span>
       ${_nx ? `<a class="cn-t" href="#n-${_nx}">${esc(_nm.t)} · ${esc(NOT[_nx].titre)}</a><span class="row"><a class="btn gel" href="#n-${_nx}">${_doneN ? "Continuer le cursus" : "Commencer le cursus"} →</a></span>` : `<b class="cn-t">Cursus terminé : reprends n'importe quelle notion.</b>`}</div>
