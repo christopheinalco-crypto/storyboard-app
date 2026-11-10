@@ -9,8 +9,9 @@
 .atelier textarea { display: block; width: 100%; padding: .7rem; color: #f2f7ef; background: #0b120c; border: 1px solid #6a8069; border-radius: .45rem; font: inherit; }
 .atelier [data-quiz][aria-pressed="true"] { border-color: #b9ff48; color: #b9ff48; }
 .atelier [data-quiz] { min-height: 44px; white-space: normal; }
-.radar-page { max-width: none; }
-.radar-frame { display: block; width: 100%; height: 80dvh; border: 0; background: transparent; }
+.main:has(> .radar-page) { padding-inline: 0; padding-top: 0; }
+.page.radar-page { max-width: none; width: 100%; }
+.radar-frame { display: block; width: 100%; height: 85dvh; border: 0; background: transparent; }
 .atelier dt { color: #b9ff48; margin-top: .8rem; }
 .atelier dd { margin: .2rem 0 .8rem; }
 .atelier summary { min-height: 44px; cursor: pointer; }
@@ -3619,7 +3620,9 @@ document.addEventListener("click", async ev => {
 // ---------- Routeur ----------
 const root = document.getElementById("app");
 function route() { const h = (location.hash || "#accueil").slice(1); const [a, b] = h.split("--"); return { a, b }; }
+let radarResize;
 function render() {
+  radarResize?.disconnect();
   const { a, b } = route();
   let html, nav = "accueil";
   if ((a === "atlas" && b === "ressources") || (a === "veille" && b === "tendances")) { html = vVeilleResources(); nav = "atlas"; }
@@ -3664,6 +3667,15 @@ function render() {
     if (!radar?.body) return;
     radar.documentElement.style.setProperty("background", "transparent", "important");
     radar.body.style.setProperty("background", "transparent", "important");
+    radar.body.style.setProperty("min-height", "0", "important");
+    const fitRadar = () => {
+      const height = Math.ceil(radar.body.getBoundingClientRect().height);
+      if (height > 0) radarFrame.style.height = height + "px";
+    };
+    radarResize?.disconnect();
+    radarResize = new ResizeObserver(fitRadar);
+    radarResize.observe(radar.body);
+    fitRadar();
   });
   document.documentElement.dataset.mode = document.querySelector(".page.is-entry") ? "entry" : "read";
   if (ENTER) { const m = document.getElementById("main"); if (m) m.classList.add("enter"); ENTER = false; }
