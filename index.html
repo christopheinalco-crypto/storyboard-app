@@ -1719,7 +1719,7 @@ function radarContents() {
     '<h2>Publications repérées · ' + feed.items.length + '</h2>' +
     (publications ? '<p class="small muted">Publications collectées. Les extraits proviennent des sources.</p><ul class="ul">' + publications + '</ul>' :
       '<p>Aucune publication dans le flux disponible.</p>') +
-    '<h2>Répertoire · ' + sources.length + ' sources</h2>' + sourceGroups;
+    '<details class="fold"><summary>Sources · ' + sources.length + '</summary>' + sourceGroups + '</details>';
 }
 
 function loadRadar() {
@@ -1739,7 +1739,7 @@ function loadRadar() {
     };
     const panel = document.getElementById("radar-contents");
     if (panel) {
-      const open = new Set([...panel.querySelectorAll("details[open] summary")].map(summary => summary.textContent));
+      const open = new Set([...panel.querySelectorAll("details[open] > summary")].map(summary => summary.textContent));
       panel.innerHTML = radarContents();
       panel.querySelectorAll("details").forEach(group => {
         group.open = open.has(group.querySelector("summary").textContent);
@@ -1748,34 +1748,17 @@ function loadRadar() {
   });
 }
 
-function vVeille(rub) {
-  if (rub === "radar") {
-    loadRadar();
-    return '<div class="page"><a class="chip" href="#veille">← Veille STORYBOARD</a>' +
-      '<div class="n-head"><p class="eyebrow">Veille</p><h1 class="h1">RADAR DA</h1></div>' +
-      '<section class="panel" id="radar-contents">' + radarContents() + '</section></div>';
-  }
-  let head = rub ? `<div class="n-head"><span class="eyebrow">Veille · ${esc(rub === "gardes" ? "Gardés" : rub === "tendances" ? "Tendances du mois" : rub)}</span>${rub === "tendances" ? `<h1 class="h1">Les tendances du mois</h1><p class="lede">Une fois par mois, les tendances visuelles qui reviennent dans la scène, la pub, le clip et l'image : ce que c'est, d'où ça vient, comment t'en servir, et quand l'éviter.</p>` : ""}</div>` : `<div class="n-head"><span class="eyebrow">Veille · mise à jour chaque matin</span><h1 class="h1">Ce qui se fait en ce moment</h1><p class="lede">Quelques articles utiles à la DA, résumés en français. Chaque article reste une semaine. Touche « Garder » pour le conserver, ou « OK, vu » : il s'efface alors sous 24 heures.</p><details class="nt-more"><summary>Les sources suivies</summary><p class="muted small">${esc(VEILLE_SOURCES)}.</p></details></div>`;
-  const vw = !rub ? wheelMenu([["#veille--f:spectacle", "Spectacle", "Scène, lumière, expo", "coeur"], ["#veille--f:pub", "Pub", "Campagnes, marques", "sens"], ["#veille--f:film", "Film et clip", "Cinéma, clips, motion", "outils"], ["#veille--f:image", "Image", "Photo, identité, typo", "appui"]], ["#veille--tendances", "Ce mois-ci", "Tendances", "Ouvrir →"], "Rubriques de la veille") + `<div class="row" style="gap:8px;flex-wrap:wrap;justify-content:center"><a class="chip" href="#veille--f:musique">♪ Musique</a><a class="chip" href="#veille--gardes">★ Gardés</a><a class="chip" href="#buzz">Campagnes qui font parler</a></div>` : "";
-  head += vw + `<p><a class="btn gel" href="#veille--radar">RADAR DA · Publications et répertoire →</a></p>`;
-  if (rub === "tendances") return `<div class="page">${head}${tendHtml()}</div>`;
-  if (VEILLE === null && rub !== "tendances") return `<div class="page">${head}<div class="empty">${VEILLE_ERR ? "La veille n'est pas disponible dans cette vue (connexion nécessaire)." : "Chargement de la veille…"}</div></div>`;
-  if (VEILLE && !VEILLE.length && rub !== "tendances") return `<div class="page">${head}<div class="empty">Aucun article pour l'instant. La prochaine mise à jour arrive demain matin.</div></div>`;
-  const VV = VEILLE.filter(v => !isVu(v) && (isGarde(v) || (Date.parse(v.ajout || v.date || 0) || 0) > Date.now() - 7 * DAY)), nGarde = VEILLE.filter(isGarde).length, nVu = VEILLE.filter(isVu).length;
-  if (rub === "vus") head = `<div class="n-head"><span class="eyebrow">Veille · Vus</span><h1 class="h1">Déjà vus</h1><p class="lede">Quand tu touches « OK, vu » sur un article, il vient ici et disparaît du reste de ta veille. Il reste 24 heures, puis il est supprimé de ta liste. Tu peux le remettre avant.</p></div>`;
-  const fam = rub && rub.startsWith("f:") ? rub.slice(2) : rub && rub !== "gardes" ? vFam(rub) : "";
-  const famDef = VFAM.find(f => f[0] === fam);
-  let list = rub === "gardes" ? VEILLE.filter(isGarde) : rub === "vus" ? VEILLE.filter(isVu) : rub && rub.startsWith("f:") ? VV.filter(v => famDef && famDef[2].includes(v.rubrique)) : rub ? VV.filter(v => v.rubrique === rub) : VV;
-  const now = Date.now(), recent = now - 3 * DAY, week = now - 7 * DAY, month = now - 31 * DAY;
-  const cnt = f => VV.filter(v => f[2].includes(v.rubrique)).length;
-  const chips = `<div class="v-anchor"></div><div class="v-bar"><div class="filters v-filters"><a class="chip ${!rub ? "on" : ""}" href="#veille">Tout <span class="count">${VV.length}</span></a>${VFAM.filter(f => cnt(f)).map(f => `<a class="chip ${fam === f[0] && rub !== "gardes" ? "on" : ""}" href="#veille--f:${f[0]}">${esc(f[1])} <span class="count">${cnt(f)}</span></a>`).join("")}<a class="chip ${rub === "gardes" ? "on" : ""}" href="#veille--gardes">★ Gardés <span class="count">${nGarde}</span></a>${nVu || rub === "vus" ? `<a class="chip ${rub === "vus" ? "on" : ""}" href="#veille--vus">Vus <span class="count">${nVu}</span></a>` : ""}<a class="chip" href="#veille--tendances">Tendances du mois</a></div>
-    ${famDef && rub !== "gardes" && rub !== "vus" ? `<div class="filters v-sub">${famDef[2].filter(r => VV.some(v => v.rubrique === r)).map(r => `<a class="chip ${rub === r ? "on" : ""}" href="#veille--${encodeURIComponent(r)}">${esc(r)} <span class="count">${VV.filter(v => v.rubrique === r).length}</span></a>`).join("")}</div>` : ""}</div>`;
-  const when = v => Date.parse(v.ajout || v.date || 0) || 0;
-  const wk = list.filter(v => when(v) > week), mo = list.filter(v => when(v) <= week && when(v) > month), old = list.filter(v => when(v) <= month);
-  const sec = (t, arr, open) => arr.length ? fold(t, arr.length, `<div class="v-grid">${arr.map(v => veilleCard(v, recent)).join("")}</div>`, open) : "";
-  const body = sec("Cette semaine", wk, true) + sec("Ce mois-ci", mo, !wk.length) + sec("Plus ancien", old, false);
-  const showMusic = fam === "musique" && rub !== "gardes";
-  return `<div class="page${!rub ? " is-entry" : ""}" data-word="Veille">${head}${!rub ? dossiersHtml() : ""}${chips}<div data-autoscroll></div>${showMusic ? musicBlock(VEILLE) : ""}<div class="stack">${body || `<div class="empty">Rien dans cette rubrique.</div>`}</div></div>`;
+function vVeille() {
+  loadRadar();
+  return '<div class="page is-entry" data-word="Veille">' +
+    '<div class="n-head"><p class="eyebrow">Veille</p><h1 class="h1">RADAR DA</h1>' +
+    '<a class="chip" href="#atlas--ressources">Dossiers et tendances dans Apprendre →</a></div>' +
+    '<section class="panel" id="radar-contents">' + radarContents() + '</section></div>';
+}
+
+function vVeilleResources() {
+  return '<div class="page"><a class="chip" href="#atlas">← Cursus</a>' +
+    '<h1 class="h1">Dossiers et tendances</h1>' + dossiersHtml() + tendHtml() + '</div>';
 }
 document.addEventListener("click", ev => {
   const g = ev.target.closest("[data-vgarde]"), u = ev.target.closest("[data-vvu]"); if (!g && !u) return;
@@ -1927,6 +1910,7 @@ function vAtlas(sel) {
     <div class="cursus-next"><div class="cn-bar" aria-hidden="true"><i style="width:${Math.round(100 * _doneN / _all.length)}%"></i></div>
       <span class="eyebrow gel">${_doneN ? "Ton prochain pas" : "Pour commencer"} · ${_doneN}/${_all.length} notions ouvertes</span>
       ${_nx ? `<a class="cn-t" href="#n-${_nx}">${esc(_nm.t)} · ${esc(NOT[_nx].titre)}</a><span class="row"><a class="btn gel" href="#n-${_nx}">${_doneN ? "Continuer le cursus" : "Commencer le cursus"} →</a></span>` : `<b class="cn-t">Cursus terminé : reprends n'importe quelle notion.</b>`}</div>
+    <p><a class="chip" href="#atlas--ressources">Dossiers et tendances →</a></p>
     <p class="alt-learn"><a class="chip" href="#histoire">Apprendre en histoire</a><span class="small muted">Une autre façon d'apprendre : 15 histoires de direction artistique à lire quand tu veux.</span></p>
     <ol class="cur-list">${CURSUS.map((m, i) => { const d = m.n.filter(id => _lens(id) >= 1).length, fid = m.n.find(id => NOT[id] && _lens(id) < 1) || m.n.find(id => NOT[id]); return `<li class="cur-m ${d === m.n.length ? "done" : d ? "half" : ""}${_nx && m.n.includes(_nx) ? " next" : ""}"><span class="cur-n">${String(i + 1).padStart(2, "0")}</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#n-${fid}">${esc(m.t)}</a></h2><p class="cur-q">${esc(m.q)}</p><p class="cur-p">${esc(m.p)}</p><span class="row cur-chips">${m.n.filter(id => NOT[id]).map(id => `<a class="chip ${_lens(id) >= 1 ? "on" : ""}" href="#n-${id}">${_lens(id) >= 1 ? "✓ " : ""}${esc(NOT[id].titre)}</a>`).join("")}</span><a class="chip" href="#atelier--${m.id}">Atelier · observation et pratique →</a><span class="small muted">${d}/${m.n.length}</span></div></li>`; }).join("")}<li class="cur-m plus ${_doneN >= _all.length ? "half" : ""}"><span class="cur-n">+</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#plus">Pour aller plus loin</a></h2><p class="cur-q">Quand le cursus est fini.</p><p class="cur-p">Fiches techniques, paroles de praticiens, histoire de l'art, terrain : une page par notion.</p></div></li></ol>
     </div><details class="fold lib" ${sel ? "open" : ""}><summary><span class="h3">La bibliothèque : toutes les notions par famille</span></summary><div class="fold-body">
@@ -3701,7 +3685,8 @@ function route() { const h = (location.hash || "#accueil").slice(1); const [a, b
 function render() {
   const { a, b } = route();
   let html, nav = "accueil";
-  if (a === "atelier") { html = vAtelier(b); nav = "atlas"; }
+  if ((a === "atlas" && b === "ressources") || (a === "veille" && b === "tendances")) { html = vVeilleResources(); nav = "atlas"; }
+  else if (a === "atelier") { html = vAtelier(b); nav = "atlas"; }
   else if (a === "atlas") { html = vAtlas(b); nav = "atlas"; }
   else if (a === "histoire") { html = vHist(b); nav = "atlas"; }
   else if (a === "plus") { html = vPlus(); nav = "atlas"; }
@@ -3710,7 +3695,7 @@ function render() {
   else if (a === "entrainer") { html = vEntrainer(); nav = "entrainer"; }
   else if (a.startsWith("c-") && CAS[a.slice(2)]) { html = vCase(a.slice(2)); nav = "entrainer"; }
   else if (a === "studio") { html = vStudio(); nav = "studio"; }
-  else if (a === "veille") { html = vVeille(b ? decodeURIComponent(b) : ""); nav = "veille"; }
+  else if (a === "veille") { html = vVeille(); nav = "veille"; }
   else if (a === "boussole") { html = vBoussole(); nav = "studio"; }
   else if (a === "debloquer") { html = vDebloquer(b); nav = "studio"; }
   else if (a === "notes") { html = vNotes(); nav = "studio"; }
