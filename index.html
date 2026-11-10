@@ -44,6 +44,9 @@
 .production-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px;margin:16px 0}
 .production-fields>div{padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
 .production-fields p{margin:.4rem 0;color:var(--ink-2)}
+</style><style>
+.visual-reading{margin-top:18px;border-top:1px solid var(--line);padding-top:10px;font-size:17px;line-height:1.65}
+.visual-reading p{margin:10px 0}.theory-depth{line-height:1.65}.essentiel.one p{font-style:normal;font-family:var(--f-ui);font-size:clamp(19px,2.1vw,24px);line-height:1.4}.show-opening{margin-top:24px}
 </style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
@@ -1588,17 +1591,17 @@ const COUCHES = [
   { id: "appui", nom: "Appui : public et culture", role: "Comprendre ce qui touche les gens, lire les images, nourrir son regard." }
 ];
 const DOMS = { scene: "Scène", clip: "Clip", film: "Film", image: "Image", pub: "Pub", conf: "Conférence" };
-const LENSES = [ { k: "intuition", t: "Comprendre", m: "2 min" }, { k: "mecanisme", t: "Approfondir", m: "4 min" }, { k: "situations", t: "À l'œuvre", m: "5 min" }, { k: "liens", t: "Retenir", m: "3 min" } ];
+const LENSES = [ { k: "intuition", t: "Comprendre", m: "2 min" }, { k: "mecanisme", t: "Approfondir", m: "1 min" }, { k: "situations", t: "Sur le plateau", m: "1 min" }, { k: "liens", t: "Retenir", m: "30 s" } ];
 let ORDER = [];
 const CURSUS = [
-  { id: "voir", t: "Éduquer l'œil", q: "Où mon regard va-t-il, et pourquoi ?", p: "Tu sauras prévoir où l'œil se pose en premier (visages, lumière, netteté, regards), cadrer, et décrire une image avant de la juger.", n: ["composition", "cadrage", "lire-image", "culture-visuelle"], pr: { t: "Où va le regard ?", cas: "w-direction-regard" } },
-  { id: "lumcoul", t: "Lumière et couleur", q: "Comment je dirige l'attention et l'émotion ?", p: "Tu sauras choisir une source de lumière, composer une palette, placer une couleur d'accent et décider d'un look.", n: ["lumiere-source", "lumiere-designe", "couleur-relative", "palette", "couleur-accent", "look"], pr: { t: "La couleur est relative", cas: "w-direction-couleur-relative" } },
-  { id: "monde", t: "Matière, costume et espace", q: "Dans quel monde le spectateur entre-t-il ?", p: "Tu sauras construire un décor, un costume, un espace et un parcours qui parlent avant le premier mot.", n: ["matiere-decor", "costume-personnage", "espace-echelle", "seuils-parcours", "scenographie"], pr: { t: "Les objets d'un appartement", cas: "w-direction-objets" } },
-  { id: "temps", t: "Rythme, son et mots", q: "Comment j'organise le temps, le son et le texte ?", p: "Tu sauras construire une courbe d'intensité, régler un rythme de montage, marier image et musique, choisir une typographie.", n: ["courbe-intensite", "rythme-montage", "image-musique", "typographie"], pr: { t: "Around the World", cas: "c-aroundtheworld" } },
-  { id: "besoin", t: "Lire une commande de production", q: "Que doit voir le public et que doit livrer la réalisation ?", p: "Transforme la commande en critères de visibilité, de timing et de faisabilité.", n: ["brief", "questionner"], pr: { t: "Le brief en une phrase", cas: "w-intention-brief" } },
-  { id: "intention", t: "Formuler l'intention", q: "Que veut-on faire ressentir, et à qui ?", p: "Tu sauras écrire une intention en une phrase et la traduire en décisions de point de vue, d'émotion et de dévoilement.", n: ["formuler-intention", "intention-decisions", "point-de-vue", "emotion-ecart", "reveler-cacher"], pr: { t: "Le brief en une phrase", cas: "w-intention-brief" } },
-  { id: "concept", t: "Trouver le concept", q: "Quelle idée visuelle porte l'intention ?", p: "Tu sauras chercher plusieurs pistes, choisir un concept, t'appuyer sur des références sans copier et bâtir un univers.", n: ["methode", "concept-visuel", "references", "univers-visuel"], pr: { t: "Vingt idées avant la bonne", cas: "w-intention-vingt-idees" } },
-  { id: "decider", t: "Décider, réaliser, présenter", q: "Que je garde, que je sacrifie, comment je convaincs ?", p: "Tu sauras renoncer, tenir la cohérence, composer avec les contraintes, travailler en équipe et défendre ta proposition.", n: ["contraste-affinite", "choisir", "coherence", "contraintes", "collaborer", "presenter"], pr: { t: "Garder une idée", cas: "w-intention-garder-une-idee" } }
+  { id: "voir", t: "Guider le regard", q: "Que doit-on voir en premier ?", p: "Composer et cadrer pour rendre l’action lisible en salle et à l’écran.", n: ["composition", "cadrage", "lire-image", "culture-visuelle"], pr: { t: "Où va le regard ?", cas: "w-direction-regard" } },
+  { id: "lumcoul", t: "Lumière et couleur", q: "Comment faire ressortir le sujet ?", p: "Éclairer les visages, choisir les couleurs et vérifier le rendu caméra.", n: ["lumiere-source", "lumiere-designe", "couleur-relative", "palette", "couleur-accent", "look"], pr: { t: "La couleur est relative", cas: "w-direction-couleur-relative" } },
+  { id: "monde", t: "Construire l’espace du show", q: "Comment le décor accueille-t-il l’action ?", p: "Relier volumes, matières, costumes et déplacements à l’échelle du public.", n: ["matiere-decor", "costume-personnage", "espace-echelle", "seuils-parcours", "scenographie"], pr: { t: "Les objets d'un appartement", cas: "w-direction-objets" } },
+  { id: "temps", t: "Donner du rythme", q: "Quand faut-il monter, couper ou respirer ?", p: "Préparer les temps forts et accorder musique, images et changements de scène.", n: ["courbe-intensite", "rythme-montage", "image-musique", "typographie"], pr: { t: "Around the World", cas: "c-aroundtheworld" } },
+  { id: "besoin", t: "Comprendre la commande", q: "Que doit réussir cet événement ?", p: "Préciser le public, le résultat attendu et les contraintes avant de dessiner.", n: ["brief", "questionner"], pr: { t: "Le brief en une phrase", cas: "w-intention-brief" } },
+  { id: "intention", t: "Donner une intention", q: "Que veut-on faire ressentir ?", p: "Choisir un effet précis, puis le traduire en lumière, espace et mouvement.", n: ["formuler-intention", "intention-decisions", "point-de-vue", "emotion-ecart", "reveler-cacher"], pr: { t: "Le brief en une phrase", cas: "w-intention-brief" } },
+  { id: "concept", t: "Trouver le concept", q: "Quelle idée relie les tableaux ?", p: "Explorer plusieurs pistes et choisir une règle visuelle qui tient le show.", n: ["methode", "concept-visuel", "references", "univers-visuel"], pr: { t: "Vingt idées avant la bonne", cas: "w-intention-vingt-idees" } },
+  { id: "decider", t: "Choisir et réaliser", q: "Que faut-il préserver jusqu’au plateau ?", p: "Arbitrer, travailler avec les équipes et défendre les choix essentiels.", n: ["contraste-affinite", "choisir", "coherence", "contraintes", "collaborer", "presenter"], pr: { t: "Garder une idée", cas: "w-intention-garder-une-idee" } }
 ];
 ORDER = CURSUS.flatMap(m => m.n);
 const DAY = 864e5;
@@ -1871,7 +1874,7 @@ function courseModule(module, index, lens) {
   const next = module.n.find(id => lens(id) < 1) || module.n[0];
   return '<li class="course-module"><span class="course-number" aria-hidden="true">' + String(index + 1).padStart(2,"0") +
     '</span><div class="course-body"><h2 class="h2">' + esc(module.t) + '</h2><p class="course-objective">' + esc(objective) +
-    '</p>' + (photo ? '<div class="course-photo">' + img(photo.key,photo.caption) + '<a class="chip" href="#n-' + photo.id + '">Observer : ' + esc(photo.title) + ' →</a></div>' : '') + '<div class="course-case">' + '<div><p class="eyebrow">Référence à observer</p><a href="#c-' + caseId + '"><b>' + esc(reference.titre) +
+    '</p>' + (photo ? '<div class="course-photo">' + img(photo.key,photo.caption) + '<a class="chip" href="#n-' + photo.id + '">Observer : ' + esc(photo.title) + ' →</a></div>' : '') + '<div class="course-case">' + '<div><p class="eyebrow">Un cas pour aller plus loin</p><a href="#c-' + caseId + '"><b>' + esc(reference.titre) +
     ' →</b></a><p>' + esc(cue) + '</p></div></div><div class="row course-actions"><a class="btn gel" href="#n-' + next +
     '">Ouvrir la leçon →</a><span class="small muted">' + completed + '/' + module.n.length + ' notions ouvertes</span></div>' +
     '<details><summary>Toutes les notions de l’étape</summary><div class="row">' + module.n.map(n => '<a class="chip" href="#n-' + n + '">' +
@@ -1885,8 +1888,8 @@ function vAtlas(sel) {
   const _H = hst(), _tot = HUES.reduce((a, u) => a + u.lecons.length, 0), _done = HUES.reduce((a, u) => a + hRead(u.id), 0);
   const _res = _H.last || (HUES[0] ? HUES[0].id + "-1" : "");
   return `<div class="page is-entry" data-word="Cursus">${curBar(CURSUS.indexOf(_nm))}
-    <div class="n-head"><div class="eyebrow">Apprendre</div><h1 class="h1">Direction artistique de grands dispositifs</h1>
-    <p class="lede">Huit étapes pour concevoir un dispositif qui guide le regard en salle et à l’écran, du premier cadre à la répétition.</p>
+    <div class="n-head"><div class="eyebrow">Apprendre</div><h1 class="h1">Concevoir un show</h1>
+    <p class="lede">Concerts, shows TV, spectacles et lancements de produits avec de grands décors. Huit étapes pour apprendre à regarder, concevoir et choisir.</p>
     <section class="panel production-brief">
       <p class="eyebrow">Commande fil rouge · exercice</p>
       <h2>Ouvrir un show en 45 secondes</h2>
@@ -1969,8 +1972,8 @@ function visualLesson(lesson) {
     : '<a class="btn ghost visual-clip" href="' + esc(lesson.clip) + '" target="_blank" rel="noopener">Voir le clip officiel ↗</a>';
   return '<section class="panel visual-lesson"><p class="eyebrow">Étude visuelle</p><h2>' + esc(lesson.title) +
     '</h2><p class="visual-question">' + esc(lesson.prompt) + '</p>' + media +
-    '<details class="visual-reading"><summary>Voir l’analyse</summary><p><b>Ce qui guide le regard.</b> ' + esc(lesson.read) +
-    '</p><p><b>À tester sur ton projet.</b> ' + esc(lesson.apply) + '</p></details></section>';
+    '<div class="visual-reading"><p><b>Ce que l’on voit.</b> ' + esc(lesson.read) +
+    '</p><p><b>Le choix de DA.</b> ' + esc(lesson.apply) + '</p></div></section>';
 }
 
 function showOpening(module) {
@@ -1987,10 +1990,10 @@ function vNotion(id, lensIdx) {
   const couche = COUCHES.find(c => c.id === n.couche);
   let body = "";
   const _mo = modOf(id);
-  if (L === 0) body = `<p class="eyebrow gel">C'est quoi, en simple ?</p><aside class="essentiel one"><span class="eyebrow gel">En une phrase</span><p>${esc(n.resume)}</p></aside><p class="prose" style="font-size:19px">${md(n.intuition)}</p>${(n.schema || []).map(s => img(s.img, s.cap)).join("")}${(() => { const K = n.mecanisme.map(m => (/\*\*([^*]{3,60}?)\*\*/.exec(m) || [])[1]).filter(Boolean).map(t => t.replace(/[.:,]+$/, "")); return K.length ? `<section class="keys"><p class="eyebrow gel">Les idées à retenir</p><ul class="keys-l">${K.map(t => `<li>${esc(t)}</li>`).join("")}</ul><p class="small muted">Chacune est expliquée dans l'étape « Approfondir ».</p></section>` : ""; })()}`;
+  if (L === 0) body = `<p class="eyebrow gel">Comprendre</p><aside class="essentiel one"><span class="eyebrow gel">En une phrase</span><p>${esc(n.resume)}</p></aside><p class="prose" style="font-size:19px">${md(n.intuition)}</p>${(n.schema || []).map(s => img(s.img, s.cap)).join("")}${(() => { const K = n.mecanisme.map(m => (/\*\*([^*]{3,60}?)\*\*/.exec(m) || [])[1]).filter(t => t && !/^Le choix|^Le piège/.test(t)).map(t => t.replace(/[.:,]+$/, "")); return K.length ? `<section class="keys"><p class="eyebrow gel">Le terme à connaître</p><ul class="keys-l">${K.map(t => `<li>${esc(t)}</li>`).join("")}</ul><p class="small muted">Définition et exemple dans « Approfondir ».</p></section>` : ""; })()}`;
   if (L === 1) { const MP = n.mecanisme.map(splitSrc), refs = [...new Set(MP.flatMap(x => x.refs))];
-    body = `<p class="prose">${esc(n.resume)}</p><details class="theory-depth"><summary>Déplier les mécanismes · ${MP.length} points</summary><ol class="pts">${MP.map((x, i) => { const [ld, rest] = leadOf(x.t); return `<li class="pt"><span class="pt-n">${i + 1}</span><div>${ld ? `<p class="pt-l">${mdr(ld)}</p>` : ""}${rest ? ptRest(rest) : ""}</div></li>`; }).join("")}</ol>${refs.length ? `<details class="srcs"><summary>source</summary><p>${refs.map(esc).join(" · ")}</p></details>` : ""}`; }
-  if (L === 2) body = `<p class="eyebrow gel">La notion à l'œuvre</p><div class="situ">${n.situations.map(s => { const c = s.cas && CAS[s.cas]; return `<div class="situ-item"><span class="situ-dom">${esc(DOMS[s.dom] || s.dom)}</span><div class="stack" style="gap:6px"><span class="h3">${md(s.titre)}</span><p style="font-family:var(--f-read);font-size:16.5px">${mdr(s.texte)}</p>${c ? `<span class="row">${caseSee(c)}<a class="chip" href="#c-${c.id}">Analyser le cas →</a></span>` : ""}</div>${s.img ? img(s.img) : ""}</div>`; }).join("")}</div>${voirHtml(id, n)}`;
+    body = `<p class="prose">${esc(n.resume)}</p><section class="theory-depth"><h2 class="h3">Trois repères pour décider</h2><ol class="pts">${MP.map((x, i) => { const [ld, rest] = leadOf(x.t); return `<li class="pt"><span class="pt-n">${i + 1}</span><div>${ld ? `<p class="pt-l">${mdr(ld)}</p>` : ""}${rest ? ptRest(rest) : ""}</div></li>`; }).join("")}</ol>${refs.length ? `<details class="srcs"><summary>source</summary><p>${refs.map(esc).join(" · ")}</p></details>` : ""}</section>`; }
+  if (L === 2) body = `<p class="eyebrow gel">Sur le plateau</p><div class="situ">${n.situations.map(s => { const c = s.cas && CAS[s.cas]; return `<div class="situ-item"><span class="situ-dom">${esc(DOMS[s.dom] || s.dom)}</span><div class="stack" style="gap:6px"><span class="h3">${md(s.titre)}</span><p style="font-family:var(--f-read);font-size:16.5px">${mdr(s.texte)}</p>${c ? `<span class="row">${caseSee(c)}<a class="chip" href="#c-${c.id}">Analyser le cas →</a></span>` : ""}</div>${s.img ? img(s.img) : ""}</div>`; }).join("")}</div>${voirHtml(id, n)}`;
   let relier = ""; {
     const others = D.cases.filter(c => c.notions.includes(id) && !n.situations.some(s => s.cas === c.id));
     const why = l => { const a = NOT[l];
@@ -2004,7 +2007,7 @@ function vNotion(id, lensIdx) {
     ${others.length ? `<p class="eyebrow">D'autres cas où la notion agit</p><div class="row">${others.map(c => `<a class="chip d-${c.dom}" href="#c-${c.id}"><span class="dot"></span>${esc(c.titre)}</a>`).join("")}</div>` : ""}`;
   }
   const g = n.geste, gs = S.gestes[id];
-  const gesteHtml = `<div class="geste c-${n.couche}"><span class="eyebrow gel">Test rapide · 2 minutes</span><span class="h3">${md(g.q)}</span>${g.img ? img(g.img) : ""}${g.cas && CAS[g.cas] ? `<a class="chip" href="#c-${g.cas}">Voir le cas : ${esc(CAS[g.cas].titre)}</a>` : ""}
+  const gesteHtml = `<div class="geste c-${n.couche}"><span class="eyebrow gel">Choix rapide · sans rédaction</span><span class="h3">${md(g.q)}</span>${g.img ? img(g.img) : ""}${g.cas && CAS[g.cas] ? `<a class="chip" href="#c-${g.cas}">Voir le cas : ${esc(CAS[g.cas].titre)}</a>` : ""}
     <div class="opts">${g.options.map((o, i) => `<button class="opt ${gs != null ? (o.ok ? "ok" : "") + (gs === i ? " picked" : "") : ""}" data-geste="${id}" data-i="${i}" ${gs != null ? "disabled" : ""}>${md(o.t)}</button>`).join("")}</div>
     ${gs != null ? `<div class="expl">${md(g.expl)}</div><button class="btn ghost" data-geste-reset="${id}" style="align-self:flex-start">Recommencer</button>` : ""}</div>`;
   const DP = [[], [], [], []];
@@ -2033,11 +2036,12 @@ function vNotion(id, lensIdx) {
     <div class="n-head"><div class="crumbs"><a href="#atlas">Cursus</a><span>/</span><span class="tag">${esc(couche.nom)}</span></div>
     <h1 class="h1">${esc(n.titre)}</h1></div>
     <nav class="lenses" aria-label="Étapes de la notion">${LENSES.map((l, i) => `<a class="lens ${i === L ? "on" : ""} ${st.lens > i ? "seen" : ""}" href="#n-${id}--${i}" style="text-decoration:none"><b>${l.t}</b><span>${l.m}</span></a>`).join("")}</nav>
-    ${L === 0 && _mo && _mo.m.n[0] === id ? showOpening(_mo.m) : ""}
+    
     ${L === 0 && D.visualLessons[id] ? visualLesson(D.visualLessons[id]) : L === 0 && _mo && _mo.m.n[0] === id ? reflexLesson(_mo.m) : ""}
     <section class="panel">${body}
       <div class="panel-foot">${L > 0 ? `<a class="btn ghost" href="#n-${id}--${L - 1}">← ${LENSES[L - 1].t}</a>` : "<span></span>"}${nextBtn}</div>
     </section>
+    ${L === 0 && _mo && _mo.m.n[0] === id ? showOpening(_mo.m) : ""}
     ${modDone}
     ${L === 3 && SEC.length ? `<nav class="savoir" aria-label="Pour en savoir plus"><span class="eyebrow">Pour en savoir plus</span><span class="row">${SEC.filter(s => s.k !== "liens").map(s => `<a class="chip" href="#n-${id}--plus-${s.k}">${esc(s.t)}${s.c ? ` <span class="count">${s.c}</span>` : ""}</a>`).join("")}</span></nav>` : ""}
   </div>`;
