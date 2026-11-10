@@ -37,7 +37,7 @@
 .visual-reading summary { cursor:pointer; padding:.7rem 0; color:var(--volt); font-weight:600; }
 .visual-reading p { max-width:67ch; }
 .visual-clip { margin:.4rem 0; }
-</style></head><body>
+</style><style>.theory-depth summary { cursor:pointer; padding:.65rem 0; color:var(--ink-2); }</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>STORYBOARD</title>
@@ -1963,7 +1963,7 @@ function vNotion(id, lensIdx) {
   const _mo = modOf(id);
   if (L === 0) body = `<p class="eyebrow gel">C'est quoi, en simple ?</p><aside class="essentiel one"><span class="eyebrow gel">En une phrase</span><p>${esc(n.resume)}</p></aside><p class="prose" style="font-size:19px">${md(n.intuition)}</p>${(n.schema || []).map(s => img(s.img, s.cap)).join("")}${(() => { const K = n.mecanisme.map(m => (/\*\*([^*]{3,60}?)\*\*/.exec(m) || [])[1]).filter(Boolean).map(t => t.replace(/[.:,]+$/, "")); return K.length ? `<section class="keys"><p class="eyebrow gel">Les idées à retenir</p><ul class="keys-l">${K.map(t => `<li>${esc(t)}</li>`).join("")}</ul><p class="small muted">Chacune est expliquée dans l'étape « Approfondir ».</p></section>` : ""; })()}`;
   if (L === 1) { const MP = n.mecanisme.map(splitSrc), refs = [...new Set(MP.flatMap(x => x.refs))];
-    body = `<p class="eyebrow gel">Comment ça marche, en ${MP.length} points</p><ol class="pts">${MP.map((x, i) => { const [ld, rest] = leadOf(x.t); return `<li class="pt"><span class="pt-n">${i + 1}</span><div>${ld ? `<p class="pt-l">${mdr(ld)}</p>` : ""}${rest ? ptRest(rest) : ""}</div></li>`; }).join("")}</ol>${refs.length ? `<details class="srcs"><summary>source</summary><p>${refs.map(esc).join(" · ")}</p></details>` : ""}`; }
+    body = `<p class="prose">${esc(n.resume)}</p><details class="theory-depth"><summary>Déplier les mécanismes · ${MP.length} points</summary><ol class="pts">${MP.map((x, i) => { const [ld, rest] = leadOf(x.t); return `<li class="pt"><span class="pt-n">${i + 1}</span><div>${ld ? `<p class="pt-l">${mdr(ld)}</p>` : ""}${rest ? ptRest(rest) : ""}</div></li>`; }).join("")}</ol>${refs.length ? `<details class="srcs"><summary>source</summary><p>${refs.map(esc).join(" · ")}</p></details>` : ""}`; }
   if (L === 2) body = `<p class="eyebrow gel">La notion à l'œuvre</p><div class="situ">${n.situations.map(s => { const c = s.cas && CAS[s.cas]; return `<div class="situ-item"><span class="situ-dom">${esc(DOMS[s.dom] || s.dom)}</span><div class="stack" style="gap:6px"><span class="h3">${md(s.titre)}</span><p style="font-family:var(--f-read);font-size:16.5px">${mdr(s.texte)}</p>${c ? `<span class="row">${caseSee(c)}<a class="chip" href="#c-${c.id}">Analyser le cas →</a></span>` : ""}</div>${s.img ? img(s.img) : ""}</div>`; }).join("")}</div>${voirHtml(id, n)}`;
   let relier = ""; {
     const others = D.cases.filter(c => c.notions.includes(id) && !n.situations.some(s => s.cas === c.id));
@@ -3729,6 +3729,7 @@ function render() {
   if (ENTER) { const m = document.getElementById("main"); if (m) m.classList.add("enter"); ENTER = false; }
   decorate();
   try { rhythm(document.getElementById("main")); } catch (e) {}
+  removeRepeatedFigures(root);
   revealInit();
 }
 /* Rythme de lecture sur tout le texte long : mots-clés, conséquence/pivot (rh), première phrase en sans-serif gras, paragraphes de 80 mots et plus coupés en deux. Texte brut seulement. */
@@ -3763,6 +3764,27 @@ function decorate() {
     if (first && first.nodeType === 3) { const m = first.nodeValue.match(/^\s*(←)\s*([\s\S]*)$/); if (m) { first.nodeValue = " " + m[2]; const a = document.createElement("span"); a.className = "arr l"; a.setAttribute("aria-hidden", "true"); a.textContent = m[1]; b.insertBefore(a, first); } }
   });
 }
+function removeRepeatedFigures(container) {
+  const seen = new Set();
+  for (const figure of container.querySelectorAll("main figure.figure")) {
+    const image = figure.querySelector("svg image, img");
+    const graphic = figure.querySelector("svg");
+    if (!image && !graphic) continue;
+    const key = image
+      ? [image.getAttribute("href") || image.getAttribute("src"), graphic?.getAttribute("viewBox")].join("|")
+      : graphic.outerHTML;
+    if (seen.has(key)) {
+      const caption = figure.querySelector("figcaption");
+      if (caption?.textContent.trim()) {
+        const note = document.createElement("p");
+        note.className = "small muted";
+        note.textContent = caption.textContent;
+        figure.replaceWith(note);
+      } else figure.remove();
+    } else seen.add(key);
+  }
+}
+
 let ENTER = true;
 /* Le bouton son s'efface quand on lit vers le bas, revient en remontant */
 (() => { let y = 0; addEventListener("scroll", () => { const d = scrollY - y; y = scrollY; const w = document.getElementById("snd"); if (!w) return; if (scrollY < 80 || d < -6) w.classList.remove("away"); else if (d > 6) w.classList.add("away"); }, { passive: true }); })();
