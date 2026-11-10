@@ -3,7 +3,11 @@
 .page.radar-page { max-width:none; width:100%; }
 .radar-frame { display:block; width:100%; height:85dvh; border:0; background:transparent; }
 .photo-credit, .src, .srcs, .cite { text-transform:lowercase; letter-spacing:normal; }
-.photo-credit { margin:.25rem 0; }
+.photo-credit { margin:.25rem 0; font-size:.75rem; color:var(--muted); }
+.photo-credit summary, .srcs summary { display:list-item; width:fit-content; font-size:.75rem; font-weight:400; cursor:pointer; }
+.photo-credit p { font-size:.75rem; }
+.reflex-lesson h2 { margin:.15em 0; }
+.reflex-lesson p { max-width:72ch; }
 .page .course-sequence { display:grid; grid-template-columns:1fr; max-width:none; gap:0; }
 .course-module { display:grid; grid-template-columns:clamp(2.3rem,7vw,5.3rem) minmax(0,1fr); gap:clamp(.6rem,2vw,1.6rem); padding:clamp(1.3rem,3vw,2.8rem) 0; border-top:1px solid var(--line); }
 .course-number { color:var(--volt); font:600 clamp(1.25rem,3vw,2.7rem) var(--f-mono); }
@@ -1827,7 +1831,7 @@ function vPlus() {
 const COURSE_CASES = {
   voir: ["s-u2-360", "Repérer ce que le public voit selon sa place", "Suis la passerelle autour de la scène et compare la vue sur le plateau depuis deux secteurs."],
   lumcoul: ["w-direction-couleur-relative", "Rendre le sujet lisible avec la lumière et la couleur", "Compare l’effet d’un même ton sur deux fonds avant de choisir le contraste de ton plateau."],
-  monde: ["s-daftpunk-alive", "Faire du décor un repère à l’échelle de la salle", "Regarde comment la pyramide reste identifiable depuis le public et où les interprètes se placent dans cette silhouette."],
+  monde: ["s-daftpunk-alive", "Faire du décor un repère à l’échelle de la salle", "Compare le triangle de près à Bercy et de loin à RockNess. Repère ce qui reste lisible et ce qui se perd à distance."],
   temps: ["c-aroundtheworld", "Donner un rythme lisible à une séquence", "Suis un groupe de danseurs à la fois et relie la répétition de ses gestes à la musique."],
   besoin: ["w-insight-privation", "Extraire du brief un problème concret à résoudre", "Distingue le comportement observé de l’explication qu’on lui donne avant de proposer un dispositif."],
   intention: ["s-thewall", "Dire ce que le public doit ressentir à un moment précis", "Observe comment la construction progressive du mur matérialise la séparation entre la salle et le groupe."],
@@ -1913,6 +1917,15 @@ function splitSrc(p) { const refs = []; const t = String(p).replace(/\s*\(([^()]
 function leadOf(t) { const m = /^(.{25,170}?[.!?:])\s+(?=[A-ZÀ-ÖØ-Þ«*])/.exec(t); if (!m || ((m[1].match(/\*\*/g) || []).length % 2)) return ["", t]; return [m[1], t.slice(m[0].length)]; }
 function nextOf(id) { const flat = CURSUS.flatMap(m => m.n).filter(x => NOT[x]); const i = flat.indexOf(id); return i >= 0 && i < flat.length - 1 ? flat[i + 1] : ""; }
 function modOf(id) { const k = CURSUS.findIndex(m => m.n.includes(id)); return k >= 0 ? { i: k, m: CURSUS[k] } : null; }
+function reflexLesson(module) {
+  const [title, observe, decide, source, url] = D.reflexes[module.id];
+  const [caseId] = COURSE_CASES[module.id];
+  return '<section class="panel reflex-lesson"><p class="eyebrow">Réflexe DA · ' + esc(module.t) + '</p><h2>' + esc(title) +
+    '</h2><p><b>À regarder.</b> ' + esc(observe) + '</p><p><b>À vérifier en production.</b> ' + esc(decide) +
+    '</p><a class="chip" href="#c-' + caseId + '">Voir le cas →</a><details class="photo-credit"><summary>source</summary><p>' +
+    (url ? '<a href="' + esc(url) + '">' + esc(source) + '</a>' : esc(source)) + '</p></details></section>';
+}
+
 function vNotion(id, lensIdx) {
   const n = NOT[id]; if (!n) return vAtlas();
   const plus = typeof lensIdx === "string" && lensIdx.startsWith("plus"), ptab = plus ? lensIdx.slice(5).replace(/^-/, "") : ""; const st = nState(id); const L = plus ? 3 : Math.max(0, Math.min(3, lensIdx || 0));
@@ -1923,7 +1936,7 @@ function vNotion(id, lensIdx) {
   const _mo = modOf(id);
   if (L === 0) body = `<p class="eyebrow gel">C'est quoi, en simple ?</p><aside class="essentiel one"><span class="eyebrow gel">En une phrase</span><p>${esc(n.resume)}</p></aside><p class="prose" style="font-size:19px">${md(n.intuition)}</p>${(n.schema || []).map(s => img(s.img, s.cap)).join("")}${(() => { const K = n.mecanisme.map(m => (/\*\*([^*]{3,60}?)\*\*/.exec(m) || [])[1]).filter(Boolean).map(t => t.replace(/[.:,]+$/, "")); return K.length ? `<section class="keys"><p class="eyebrow gel">Les idées à retenir</p><ul class="keys-l">${K.map(t => `<li>${esc(t)}</li>`).join("")}</ul><p class="small muted">Chacune est expliquée dans l'étape « Approfondir ».</p></section>` : ""; })()}`;
   if (L === 1) { const MP = n.mecanisme.map(splitSrc), refs = [...new Set(MP.flatMap(x => x.refs))];
-    body = `<p class="eyebrow gel">Comment ça marche, en ${MP.length} points</p><ol class="pts">${MP.map((x, i) => { const [ld, rest] = leadOf(x.t); return `<li class="pt"><span class="pt-n">${i + 1}</span><div>${ld ? `<p class="pt-l">${mdr(ld)}</p>` : ""}${rest ? ptRest(rest) : ""}</div></li>`; }).join("")}</ol>${refs.length ? `<details class="srcs"><summary>Sources</summary><p>${refs.map(esc).join(" · ")}</p></details>` : ""}`; }
+    body = `<p class="eyebrow gel">Comment ça marche, en ${MP.length} points</p><ol class="pts">${MP.map((x, i) => { const [ld, rest] = leadOf(x.t); return `<li class="pt"><span class="pt-n">${i + 1}</span><div>${ld ? `<p class="pt-l">${mdr(ld)}</p>` : ""}${rest ? ptRest(rest) : ""}</div></li>`; }).join("")}</ol>${refs.length ? `<details class="srcs"><summary>source</summary><p>${refs.map(esc).join(" · ")}</p></details>` : ""}`; }
   if (L === 2) body = `<p class="eyebrow gel">La notion à l'œuvre</p><div class="situ">${n.situations.map(s => { const c = s.cas && CAS[s.cas]; return `<div class="situ-item"><span class="situ-dom">${esc(DOMS[s.dom] || s.dom)}</span><div class="stack" style="gap:6px"><span class="h3">${md(s.titre)}</span><p style="font-family:var(--f-read);font-size:16.5px">${mdr(s.texte)}</p>${c ? `<span class="row">${caseSee(c)}<a class="chip" href="#c-${c.id}">Analyser le cas →</a></span>` : ""}</div>${s.img ? img(s.img) : ""}</div>`; }).join("")}</div>${voirHtml(id, n)}`;
   let relier = ""; {
     const others = D.cases.filter(c => c.notions.includes(id) && !n.situations.some(s => s.cas === c.id));
@@ -1967,6 +1980,7 @@ function vNotion(id, lensIdx) {
     <div class="n-head"><div class="crumbs"><a href="#atlas">Cursus</a><span>/</span><span class="tag">${esc(couche.nom)}</span></div>
     <h1 class="h1">${esc(n.titre)}</h1></div>
     <nav class="lenses" aria-label="Étapes de la notion">${LENSES.map((l, i) => `<a class="lens ${i === L ? "on" : ""} ${st.lens > i ? "seen" : ""}" href="#n-${id}--${i}" style="text-decoration:none"><b>${l.t}</b><span>${l.m}</span></a>`).join("")}</nav>
+    ${L === 0 && _mo && _mo.m.n[0] === id ? reflexLesson(_mo.m) : ""}
     <section class="panel">${body}
       <div class="panel-foot">${L > 0 ? `<a class="btn ghost" href="#n-${id}--${L - 1}">← ${LENSES[L - 1].t}</a>` : "<span></span>"}${nextBtn}</div>
     </section>
