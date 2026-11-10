@@ -111,6 +111,12 @@
   .atlas-page .atlas-cover { grid-template-columns: minmax(0,1fr); }
   .atlas-stage { margin: 0 18px 18px; }
 }
+</style><style>
+.plateau > svg { display: block; width: 100%; max-height: 180px; background: #101614; border-radius: 8px; }
+.plateau summary { min-height: 44px; }
+.plateau [data-plateau] { min-height: 44px; white-space: normal; text-align: left; }
+.plateau [aria-pressed="true"] { border-color: var(--volt); color: var(--volt); }
+.plateau-feedback:empty { display: none; }
 </style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
@@ -1897,6 +1903,21 @@ function vPlus() {
     ${CURSUS.map((m, i) => `<section class="card" style="gap:8px"><span class="eyebrow gel">Étape ${i + 1} · ${esc(m.t)}</span><span class="row" style="gap:6px">${m.n.filter(id => NOT[id]).map(id => `<a class="chip" href="#n-${id}--plus">${esc(NOT[id].titre)} <span class="count">${nx(id)}</span></a>`).join("")}</span></section>`).join("")}</div>`;
 }
 
+const PLATEAU_FORMATS = ["Spectacle", "Show TV", "Clip", "Lancement produit"];
+
+function vPlateau(id, situations) {
+  return '<section class="panel plateau"><p class="eyebrow">Cas fil rouge · Simulation</p>' +
+    '<h2>Un portail, quatre productions</h2><p>Un grand portail lumineux cadre le sujet. Choisis un format et décide comment le décor doit servir l’image ou la salle.</p>' +
+    '<svg viewBox="0 0 480 150" role="img" aria-label="Élévation du set fictif : un portail monumental encadre un petit sujet central"><path d="M35 122h410M102 122V27h276v95M150 122V55h180v67" fill="none" stroke="#84928a" stroke-width="2"/><circle cx="240" cy="101" r="9" fill="#c8ff1a"/><path d="M240 112v10" stroke="#c8ff1a"/><text x="250" y="110" fill="#eef0e6" font-size="14">Sujet</text></svg>' +
+    situations.map(([scenario, choice, alternative], format) => {
+      const options = format % 2 ? [alternative, choice] : [choice, alternative];
+      return '<details class="fold"><summary>' + PLATEAU_FORMATS[format] + '</summary><p>' + esc(scenario) + '</p>' +
+        '<div class="row" role="group" aria-label="Quelle décision prends-tu ?">' +
+        options.map((label,i) => '<button type="button" class="btn ghost" aria-pressed="false" data-plateau="' + id + '" data-format="' + format + '" data-i="' + i + '">' + esc(label) + '</button>').join("") +
+        '</div><p role="status" class="plateau-feedback"></p></details>';
+    }).join("") + '</section>';
+}
+
 function vAtelier(id) {
   const module = CURSUS.find(m => m.id === id);
   const a = module && D.ateliers[id];
@@ -1917,6 +1938,7 @@ function vAtelier(id) {
   const next = CURSUS[index + 1];
   return '<div class="page atelier">' + curBar(index) +
     '<p class="eyebrow">Atelier · étape ' + (index + 1) + '</p><h1 class="h1">' + esc(a.titre) + '</h1>' +
+    vPlateau(id, a.plateau) +
     '<section class="panel">' + (visual || img(gallery.image, gallery.credit) + '<p>' + esc(gallery.look) + '</p>') + '<p><a class="chip" href="#c-' + module.pr.cas + '">Cas du cursus · ' + esc(module.pr.t) + '</a></p>' +
     '<h2>Le geste technique</h2><p>' + esc(a.technique) + '</p>' +
     '<details class="fold"><summary>Dialogue d’atelier</summary><p><b>Apprenti DA</b> · ' + esc(a.dialogue[2]) +
@@ -3886,6 +3908,19 @@ window.addEventListener("hashchange", () => {
 });
 
 // ---------- Actions ----------
+document.addEventListener("click", ev => {
+  const button = ev.target.closest("[data-plateau]");
+  if (!button) return;
+  const { plateau, format, i } = button.dataset;
+  const situation = D.ateliers[plateau].plateau[Number(format)];
+  const correct = Number(i) === Number(format) % 2;
+  for (const option of button.parentElement.children) {
+    option.setAttribute("aria-pressed", String(option === button));
+  }
+  button.parentElement.nextElementSibling.textContent =
+    (correct ? "Mentor · Oui. " : "Mentor · Essaie plutôt ceci. ") + situation[3];
+});
+
 document.addEventListener("click", ev => {
   const button = ev.target.closest("[data-quiz]");
   if (!button) return;
