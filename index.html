@@ -47,6 +47,14 @@
 </style><style>
 .visual-reading{margin-top:18px;border-top:1px solid var(--line);padding-top:10px;font-size:17px;line-height:1.65}
 .visual-reading p{margin:10px 0}.theory-depth{line-height:1.65}.essentiel.one p{font-style:normal;font-family:var(--f-ui);font-size:clamp(19px,2.1vw,24px);line-height:1.4}.show-opening{margin-top:24px}
+</style><style>
+/* Calm reading, usable checklists and visual tools. */
+.h1,.n-head h1{font-size:clamp(30px,4vw,52px)!important;line-height:1.08;font-style:normal!important;max-width:24ch}
+.panel{box-shadow:none!important;border-color:rgba(255,255,255,.09)!important}.btn,.chip{box-shadow:none!important}
+.prose,.pt-t,.visual-reading{line-height:1.65}.rh{background:none!important}.nt-levs{display:grid;gap:12px;margin-top:16px}.nt-lev{display:flex!important;gap:12px;align-items:flex-start;line-height:1.55;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}.nt-lev input{flex:0 0 auto;margin-top:5px;width:18px;height:18px}
+.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:20px 0}.project-grid label{display:grid;gap:7px;font-size:15px}.project-grid input,.project-grid select{width:100%;min-height:44px;padding:10px;background:#10170e;color:#f2f4ec;border:1px solid #63705e;border-radius:6px;font:inherit;box-sizing:border-box}.project-ref{padding:18px 0;border-top:1px solid var(--line)}.project-ref p{margin:8px 0}.legacy-project{margin:32px 0}.legacy-project .page{padding:0}.showcase-link{display:block;padding:18px 0;margin-bottom:22px;border-bottom:1px solid var(--line);color:var(--volt)}.resume-reading{margin-top:18px}
+.photo-tools{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.photo-tools .btn{font-size:13px;padding:8px 12px;min-height:40px}.photo-dialog{width:min(1200px,94vw);max-height:94vh;background:#0e140d;color:#fff;border:1px solid #66715e;border-radius:12px;padding:16px}.photo-dialog::backdrop{background:#000d}.photo-dialog>img,.photo-dialog>svg{display:block;width:100%;height:auto;max-height:77vh;object-fit:contain;margin-top:12px}.photo-dialog>button{position:sticky;top:0}.photo-notes{padding-left:0;list-style:none;line-height:1.6;font-size:15px}.photo-notes li{margin:7px 0}.photo-map{position:relative}.photo-pin{position:absolute;transform:translate(-50%,-50%);width:27px;height:27px;background:#d0ff00;color:#10150a;border:2px solid #10150a;border-radius:50%;display:grid;place-items:center;font:bold 15px sans-serif;pointer-events:none}.study-step{padding:22px 0;border-bottom:1px solid var(--line);max-width:900px}.study-step h2{font-size:28px}.study-step p{max-width:65ch;line-height:1.7}.study-step .figure img{max-height:520px;object-fit:contain}.keep-lesson{margin:16px 0}.radar-save{margin-bottom:24px}.radar-save .project-grid{grid-template-columns:1fr 1fr 1fr}.radar-save h2{font-size:24px}.rail-foot a{font-size:11px;color:#94a18e}
+@media(max-width:650px){.project-grid,.radar-save .project-grid{grid-template-columns:1fr}.study-step h2{font-size:24px}.photo-dialog{padding:10px}.panel{padding:20px!important}.visual-pair{gap:18px}.nt-lev{font-size:16px}}
 </style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
@@ -1720,7 +1728,7 @@ function musicBlock(list) {
   return `<section class="card m-block"><span class="eyebrow">À écouter et à regarder · ${M.length} sur les 3 dernières semaines</span>${M.map(row).join("")}<p class="muted small">Le radar du vendredi retient les grosses sorties de la semaine, en France et à l'international. Chaque ligne ouvre directement le titre sur Spotify, le clip sur YouTube, ou l'article quand il n'y a pas de lien direct.</p></section>`;
 }
 function vLiveWatch() {
-  return '<div class="page radar-page"><iframe class="radar-frame" title="RADAR DA · Le regard du DA" src="https://christopheinalco-crypto.github.io/storyboard-radar-da./"></iframe></div>';
+  return '<div class="page radar-page">' + referenceForm() + '<iframe class="radar-frame" title="RADAR DA · Le regard du DA" src="https://christopheinalco-crypto.github.io/storyboard-radar-da./"></iframe></div>';
 }
 
 function vVeilleResources() {
@@ -1779,7 +1787,7 @@ function rh(h) {
   return h;
 }
 const mdr = s => rh(md(s));
-const img = (k, cap) => k && D.img[k] ? `<figure class="figure">${D.img[k]}${cap ? `<figcaption>${esc(cap)}</figcaption>` : ""}</figure>` : "";
+const img = (k, cap) => k && D.img[k] ? `<figure class="figure" data-media="${esc(k)}">${D.img[k]}${cap ? `<figcaption>${esc(cap)}</figcaption>` : ""}</figure>` : "";
 const fmtDate = ts => new Date(ts).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
 const linkOut = (url, label) => `<a class="link-row" href="${esc(url)}" target="_blank" rel="noopener"><span class="tag">Ouvrir</span><span>${esc(label)}</span></a>`;
 function toast(t) { const el = document.createElement("div"); el.className = "toast"; el.textContent = t; document.body.appendChild(el); setTimeout(() => el.remove(), 2200); }
@@ -2173,7 +2181,8 @@ function menuRow(href, k, t, sub, attrs) {
   const tag = href ? "a" : "button";
   return `<${tag} class="mrow c-${k}" ${href ? `href="${href}"` : ""} ${attrs || ""}><span class="mrow-dot"></span><span class="mrow-t"><b>${t}</b><small>${sub}</small></span><span class="mrow-go" aria-hidden="true">→</span></${tag}>`;
 }
-function vStudio() {
+function vStudio() { return `<div class="page"><div class="n-head"><h1>Mon show</h1><p class="lede">Concert, show TV, spectacle ou lancement produit : rassemble ici tes choix.</p></div>${projectForm()}<details class="legacy-project"><summary>Mes projets précédents et autres outils</summary>${vStudioLegacy()}</details></div>`; }
+function vStudioLegacy() {
   const projs = Object.values(S.projects || {}).sort((a, b) => b.updated - a.updated);
   const notes = Object.values(st("notes", {})).filter(n => !n.train).sort((a, b) => b.updated - a.updated).slice(0, 4);
   return `<div class="page is-entry" data-word="Projet">
@@ -2483,7 +2492,7 @@ function vCheck(id) {
   const c = OUT.check.find(x => x.id === id); if (!c) return vChecks();
   const C = st("checks", {})[id] || {};
   return `<div class="page"><div class="n-head"><div class="crumbs"><a href="#check">Check-lists</a></div><h1 class="h1">${esc(c.nom)}</h1><p class="lede">${esc(c.resume)}</p></div>
-    ${c.phases.map(([t, items], pi) => `<section class="panel"><span class="eyebrow">${esc(t)}</span><div class="nt-levs">${items.map(([txt, nid, src], i) => { const k = pi + "-" + i; return `<label class="nt-lev"><input type="checkbox" data-ck="${id}" value="${k}" ${C[k] ? "checked" : ""}><span>${esc(txt)} <span class="muted small">· ${esc(src)}${NOT[nid] ? ` · <a href="#n-${nid}">${esc(NOT[nid].titre)}</a>` : ""}</span></span></label>`; }).join("")}</div></section>`).join("")}
+    ${c.phases.map(([t, items], pi) => `<section class="panel"><span class="eyebrow">${esc(t)}</span><div class="nt-levs">${items.map(([txt, nid, src], i) => { const k = pi + "-" + i; return `<label class="nt-lev"><input type="checkbox" data-ck="${id}" value="${k}" ${C[k] ? "checked" : ""}><span>${esc(txt)}</span></label>`; }).join("")}</div></section>`).join("")}
     <span class="row"><button class="btn ghost" data-ck-reset="${id}">Tout décocher pour une nouvelle mission</button></span></div>`;
 }
 
@@ -3713,6 +3722,9 @@ function render() {
   else if (a === "analyse") { html = vAnalyse(); nav = "entrainer"; }
   else if (a === "entrainer") { html = vEntrainer(); nav = "entrainer"; }
   else if (a.startsWith("c-") && CAS[a.slice(2)]) { html = vCase(a.slice(2)); nav = "entrainer"; }
+  else if (a === "showcase") { html = vShowcase(); nav = "atlas"; }
+  else if (a === "visual-quiz") { html = vVisualQuiz(); nav = "entrainer"; }
+  else if (a === "credits") { html = vCredits(); }
   else if (a === "studio") { html = vStudio(); nav = "studio"; }
   else if (a === "veille") { html = vLiveWatch(); nav = "veille"; }
   else if (a === "boussole") { html = vBoussole(); nav = "studio"; }
@@ -3736,7 +3748,7 @@ function render() {
   else html = vAccueil();
   root.innerHTML = `<div class="shell"><aside class="rail"><a class="brand" href="#accueil"><span class="brand-gels"><i style="background:var(--gel-coeur)"></i><i style="background:var(--gel-sens)"></i><i style="background:var(--gel-outils)"></i><i style="background:var(--gel-appui)"></i></span><span class="brand-name">STORYBOARD</span></a>
     <nav class="nav">${NAV.map(([k, t]) => `<a href="#${k}" class="${nav === k ? "on" : ""}">${ICONS[k]}${NAV_LONG[k] || t}</a>`).join("")}</nav>
-    <div class="rail-foot">40 notions · ${D.cases.length} cas · 994 fiches</div></aside>
+    <div class="rail-foot"><a href="#credits">Crédits images</a></div></aside>
     <main class="main" id="main">${backBar()}${html}${backBar("bottom")}</main>
     <nav class="tabbar">${NAV.map(([k, t]) => `<a href="#${k}" class="${nav === k ? "on" : ""}">${ICONS[k]}<span>${t}</span></a>`).join("")}</nav></div>`;
   const radarFrame = root.querySelector(".radar-frame");
@@ -3762,6 +3774,7 @@ function render() {
   try { rhythm(document.getElementById("main")); } catch (e) {}
   removeRepeatedFigures(root);
   revealInit();
+  enhanceExperience();
 }
 /* Rythme de lecture sur tout le texte long : mots-clés, conséquence/pivot (rh), première phrase en sans-serif gras, paragraphes de 80 mots et plus coupés en deux. Texte brut seulement. */
 function rhythm(root) {
@@ -3918,8 +3931,59 @@ Phrases courtes, vocabulaire simple, pas de tirets longs.`;
   reviewBusy = false; save(); render();
 }
 
+// Reading position, visual studies and a compact show project.
+const readingStore='storyboard-reading-v1';
+let reading={positions:{},last:null};try{reading=JSON.parse(localStorage.getItem(readingStore))||reading;}catch{}
+let readingRoute=location.hash||'#accueil',restoreTimer;
+function rememberReading(){reading.positions[readingRoute]=scrollY;if(/^#(?:n-|showcase|c-)/.test(readingRoute))reading.last={hash:readingRoute,y:scrollY,title:document.querySelector('h1')?.textContent||'Ma lecture'};try{localStorage.setItem(readingStore,JSON.stringify(reading));}catch{}}
+addEventListener('scroll',()=>{clearTimeout(restoreTimer);restoreTimer=setTimeout(rememberReading,180)},{passive:true});
+addEventListener('pagehide',rememberReading);
+function restoreReading(){const y=reading.positions[location.hash]||0;requestAnimationFrame(()=>requestAnimationFrame(()=>scrollTo(0,y)));}
+addEventListener('hashchange',()=>{readingRoute=location.hash||'#accueil';clearTimeout(restoreTimer);restoreReading();});
+document.addEventListener('click',e=>{if(e.target.closest('a[href^="#"]'))rememberReading();},true);
+function readingLink(){return reading.last?`<a class="btn ghost resume-reading" href="${esc(reading.last.hash)}">Reprendre : ${esc(reading.last.title)} →</a>`:'';}
+function showProject(){return S.showProject||(S.showProject={type:'Concert',title:'',public:'',moment:'',intention:'',space:'',constraints:'',refs:[]});}
+function projectForm(){const p=showProject();return `<section class="panel project-sheet"><h2>La fiche de mon show</h2><p>Quelques mots par champ. Tout se conserve sur cet appareil.</p><div class="project-grid"><label>Format<select data-show-field="type">${['Concert','Show TV','Spectacle','Lancement produit'].map(v=>`<option ${p.type===v?'selected':''}>${v}</option>`).join('')}</select></label>${[['title','Nom du projet'],['public','Public et lieu'],['moment','Le moment fort'],['intention','Ce que le public doit ressentir'],['space','Décor et espace de jeu'],['constraints','La contrainte à anticiper']].map(([k,t])=>`<label>${t}<input maxlength="300" data-show-field="${k}" value="${esc(p[k]||'')}"></label>`).join('')}</div><p class="small" role="status" id="show-saved"></p><button class="btn ghost" data-show-export>Exporter ma fiche</button><h3>Mes références et mes choix</h3>${p.refs.length?p.refs.map((r,i)=>`<article class="project-ref"><a href="${esc(r.url)}" ${r.url.startsWith('https:')?'target="_blank" rel="noopener"':''}>${esc(r.title)}</a><p>${esc(r.note)}</p><button class="btn ghost" data-show-remove="${i}" aria-label="Retirer ${esc(r.title)}">Retirer</button></article>`).join(''):'<p>Garde une idée depuis une leçon, une étude de show ou la veille.</p>'}</section>`;}
+function referenceForm(){return `<form class="panel radar-save" id="radar-save"><h2>Garder une référence pour mon show</h2><p>Copie le lien repéré dans RADAR, puis note ce que tu en retiens.</p><div class="project-grid"><label>Titre<input name="title" required maxlength="120"></label><label>Lien<input name="url" type="url" required placeholder="https://…"></label><label>Ce que je retiens<input name="note" required maxlength="300"></label></div><button class="btn" type="submit">Ajouter à mon projet</button><span role="status" id="radar-feedback"></span></form>`;}
+function keepReference(r){const p=showProject();if(!p.refs.some(x=>x.url===r.url))p.refs.push(r);save();}
+const annotations={
+'show-photo-13':[[19,53,'1 · Les contours dessinent les volumes'],[68,25,'2 · Le grand cadre reste un repère'],[49,68,'3 · La zone centrale attend le sujet']],
+'show-photo-12':[[49,66,'1 · La voiture occupe la zone centrale'],[20,50,'2 · Les lignes guident le regard'],[69,60,'3 · Le fond coloré concurrence le sujet']],
+'show-photo-0':[[51,53,'1 · La soliste au centre'],[22,65,'2 · Le groupe forme une masse jaune'],[54,25,'3 · Une lumière marque l’axe']],
+'show-photo-4':[[49,40,'1 · Le cercle est le repère principal'],[17,64,'2 · La façade prolonge la forme'],[50,87,'3 · L’avancée relie scène et public']],
+'arcade-large':[[57,77,'1 · Le chanteur et son clavier'],[38,28,'2 · Le fond prend beaucoup de place'],[65,90,'3 · Le plateau reste peu éclairé']]
+};
+function enhanceExperience(){
+ // Remove references from the reading flow, retaining attribution in the credits view.
+ if(location.hash!=='#credits')root.querySelectorAll('.photo-credit,.src,.srcs,.srcfold,.cite').forEach(e=>e.remove());
+ root.querySelectorAll('figure.figure').forEach(f=>{if(!f.querySelector('img,svg image')||f.querySelector('.photo-tools'))return;const key=f.dataset.media;const media=f.querySelector('svg,img');const map=document.createElement('div');map.className='photo-map';media.before(map);map.append(media);const controls=document.createElement('div');controls.className='photo-tools';controls.innerHTML='<button class="btn ghost" data-photo-open>Agrandir</button>'+(annotations[key]?'<button class="btn ghost" data-photo-marks aria-expanded="false">Voir les repères</button>':'');f.append(controls);});
+ if(/^#(?:accueil|atlas)$/.test(location.hash)||!location.hash){const head=root.querySelector('.n-head');if(head){head.insertAdjacentHTML('beforeend',readingLink());head.insertAdjacentHTML('afterend','<a class="showcase-link" href="#showcase">Étude complète · Du brief au dévoilement Honda →</a>');}}
+ if(location.hash.startsWith('#n-')&&!location.hash.includes('plus')){let id=location.hash.slice(3).split('--')[0];root.querySelector('.panel-foot')?.insertAdjacentHTML('beforebegin',`<button class="btn ghost keep-lesson" data-keep-notion="${esc(id)}">Garder cette idée pour mon show</button>`);}
+ if(location.hash==='#entrainer')root.querySelector('.n-head')?.insertAdjacentHTML('afterend','<a class="showcase-link" href="#visual-quiz">Choix visuels · 3 situations de show, sans rédaction →</a>');
+}
+function openPhoto(f){const dlg=document.createElement('dialog');dlg.className='photo-dialog';const media=f.querySelector('svg,img').cloneNode(true);media.removeAttribute('loading');dlg.innerHTML='<button class="btn" data-photo-close>Fermer ×</button>';dlg.append(media);const caption=document.createElement('p');caption.textContent=f.querySelector('figcaption')?.textContent||'Étude visuelle';dlg.append(caption);document.body.append(dlg);dlg.addEventListener('close',()=>dlg.remove());dlg.addEventListener('click',e=>{if(e.target===dlg||e.target.closest('[data-photo-close]'))dlg.close();});dlg.showModal();}
+function marks(f,button){let notes=f.querySelector('.photo-notes');if(notes){notes.remove();f.querySelectorAll('.photo-pin').forEach(p=>p.remove());button.setAttribute('aria-expanded','false');button.textContent='Voir les repères';return;}notes=document.createElement('ol');notes.className='photo-notes';annotations[f.dataset.media].forEach(([x,y,text],i)=>{const pin=document.createElement('span');pin.className='photo-pin';pin.textContent=i+1;pin.setAttribute('aria-hidden','true');pin.style.left=x+'%';pin.style.top=y+'%';f.querySelector('.photo-map').append(pin);const li=document.createElement('li');li.textContent=text;notes.append(li);});f.insertBefore(notes,f.querySelector('.photo-tools'));button.textContent='Masquer les repères';button.setAttribute('aria-expanded','true');}
+function vShowcase(){return `<div class="page"><div class="n-head"><a href="#atlas">← Parcours</a><h1>Un lancement, plusieurs rôles pour le décor</h1><p class="lede">Honda Civic · Silverstone. Du brief à l’effet public.</p><p>Le dossier de production décrit une conférence suivie d’un dévoilement. Les observations ci-dessous s’appuient sur ses photos ; les tests proposés sont nos pistes de travail.</p></div><section class="study-step"><span class="eyebrow">01 · La commande documentée</span><h2>Informer, puis surprendre</h2><p>Le plateau doit accueillir des présentations et l’arrivée de la voiture. LCI décrit un besoin de contenus dynamiques et d’un dévoilement théâtral.</p>${img('show-photo-14','Conférence : l’intervenant et son écran doivent rester lisibles.')}</section><section class="study-step"><span class="eyebrow">02 · L’intention · lecture pédagogique</span><h2>Faire passer le regard du décor au produit</h2><p>Le décor peut préparer l’attente. À l’arrivée de la voiture, il doit lui laisser une place claire. Cette formulation est notre lecture du cas.</p></section><section class="study-step"><span class="eyebrow">03 · Le principe visible</span><h2>Transformer un même décor avec l’image</h2>${img('show-photo-13','Les projections suivent les contours des volumes.')}<p>Le mapping consiste à ajuster une projection aux surfaces du décor. Ici, les lignes rendent les volumes lisibles sans ajouter de nouvelle construction entre les tableaux.</p></section><section class="study-step"><span class="eyebrow">04 · Le moment de découverte</span><h2>Donner une place au véhicule</h2>${img('show-photo-12','Le véhicule apparaît au centre du dispositif.')}<p>La lumière et les surfaces colorées changent l’équilibre de l’image. Les photos montrent plusieurs états ; elles ne permettent pas de reconstituer le timing exact du show.</p></section><section class="study-step"><span class="eyebrow">05 · La production documentée</span><h2>Aligner la projection sur place</h2><p>LCI indique que la programmation et l’alignement final ont été réalisés à Silverstone la veille de l’événement. Le budget, le plan caméra et les dimensions ne sont pas précisés dans ce dossier.</p></section><section class="study-step"><span class="eyebrow">06 · Le test que nous proposons</span><h2>Que voit-on au moment clé ?</h2><p>Depuis la même place, compare un fond chargé et un fond plus calme. Lequel fait repérer la voiture plus vite ? Vérifie ensuite une place latérale et le cadre caméra.</p><button class="btn" data-keep-showcase>Garder ce principe pour mon show</button><a class="btn ghost" href="#visual-quiz">Faire les choix visuels →</a></section></div>`;}
+const visualQuestions=[{title:'Montrer l’espace ou l’expression ?',keys:['arcade-large','arcade-cadre'],q:'Pour comprendre la taille du plateau autour du chanteur, quel cadre choisis-tu ?',choices:['A · Le large','B · Le cadre rapproché'],answer:0,why:'Le large conserve le vide autour du chanteur. Le cadre rapproché aide plutôt à lire sa posture. B est un recadrage de la même photo.'},{title:'Lire un volume',keys:['show-photo-13','show-photo-12'],q:'Dans quelle vue les contours du décor se lisent-ils le plus directement ?',choices:['A · Les lignes lumineuses','B · Les surfaces colorées'],answer:0,why:'En A, les lignes isolent les arêtes. En B, les surfaces colorées et la voiture apportent d’autres points d’attention. Les cadres diffèrent : ce n’est pas un test technique A/B.'},{title:'Distinguer la soliste',keys:['show-photo-0'],q:'Quel choix visible distingue ici la soliste du groupe ?',choices:['Le même costume pour tout le monde','La place centrale et le costume argenté'],answer:1,why:'La soliste se détache de la masse jaune par sa place et sa tenue. Ce contraste doit aussi fonctionner dans le plan large.'}];
+let visualAnswers={};
+function vVisualQuiz(){return `<div class="page"><div class="n-head"><a href="#entrainer">← S’exercer</a><h1>Trois choix de DA</h1><p>Observe, choisis, puis compare avec l’explication.</p></div>${visualQuestions.map((q,i)=>`<section class="panel"><h2>${q.title}</h2><div class="visual-pair ${q.keys.length===1?'visual-single':''}">${q.keys.map((key,j)=>img(key,(q.keys.length>1?String.fromCharCode(65+j)+' · ':'')+q.title)).join('')}</div><p>${q.q}</p><div class="row">${q.choices.map((c,j)=>`<button class="btn ghost" data-vquiz="${i}" data-choice="${j}" ${visualAnswers[i]!=null?'disabled':''}>${c}</button>`).join('')}</div>${visualAnswers[i]!=null?`<p role="status"><b>${visualAnswers[i]===q.answer?'Oui.':'Regarde encore.'}</b> ${q.why}</p><button class="btn ghost" data-vquiz-reset="${i}">Recommencer</button>`:''}</section>`).join('')}</div>`;}
+function vCredits(){let credits=[];Object.values(D.img).forEach(markup=>{const t=document.createElement('template');t.innerHTML=markup;t.content.querySelectorAll('.photo-credit').forEach(c=>{const p=c.querySelector('p');if(p&&!credits.includes(p.innerHTML))credits.push(p.innerHTML);});});return `<div class="page"><h1>Crédits des images</h1><p>Les mentions sont regroupées ici pour laisser les leçons libres de références.</p>${credits.map(c=>'<p>'+c+'</p>').join('')}</div>`;}
+document.addEventListener('input',e=>{const k=e.target.dataset.showField;if(!k)return;showProject()[k]=e.target.value;save();document.getElementById('show-saved').textContent='Enregistré sur cet appareil.';});
+document.addEventListener('submit',e=>{if(e.target.id!=='radar-save')return;e.preventDefault();const f=new FormData(e.target),url=String(f.get('url'));if(!/^https?:\/\//i.test(url)){document.getElementById('radar-feedback').textContent='Utilise un lien http ou https.';return;}keepReference({title:String(f.get('title')),url,note:String(f.get('note'))});document.getElementById('radar-feedback').textContent='Référence ajoutée à Mon projet.';e.target.reset();});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+if(b.hasAttribute('data-photo-open'))openPhoto(b.closest('figure'));
+if(b.hasAttribute('data-photo-marks'))marks(b.closest('figure'),b);
+if(b.dataset.keepNotion){const n=NOT[b.dataset.keepNotion];keepReference({title:n.titre,url:'#n-'+n.id,note:n.resume});b.textContent='Gardé dans Mon projet';}
+if(b.hasAttribute('data-keep-showcase')){keepReference({title:'Honda · préparer le dévoilement',url:'#showcase',note:'Faire passer le regard du décor au produit au moment clé.'});b.textContent='Gardé dans Mon projet';}
+if(b.dataset.showRemove!=null){showProject().refs.splice(+b.dataset.showRemove,1);save();render();}
+if(b.dataset.vquiz!=null){const y=scrollY;visualAnswers[+b.dataset.vquiz]=+b.dataset.choice;render();scrollTo(0,y);}
+if(b.dataset.vquizReset!=null){const y=scrollY;delete visualAnswers[+b.dataset.vquizReset];render();scrollTo(0,y);}
+if(b.hasAttribute('data-show-export')){const p=showProject(),text=['MON SHOW',...Object.entries({Format:p.type,Projet:p.title,Public:p.public,'Moment fort':p.moment,Intention:p.intention,Espace:p.space,Contraintes:p.constraints}).map(([k,v])=>k+' : '+v),'RÉFÉRENCES',...p.refs.map(r=>r.title+'\n'+r.note+'\n'+r.url)].join('\n\n');const u=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download='Mon-show.txt';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+});
+
 markSession();
 render();
+restoreReading();
 lastHash = location.hash;
 })();
 
