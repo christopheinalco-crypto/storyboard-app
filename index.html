@@ -1,129 +1,11 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><style>
-.atelier { --gel: #b9ff48; }
-.atelier .panel { background-color: #121a12; }
-.atelier-posters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-.atelier-posters figure { margin: 0; min-width: 0; }
-.atelier-posters img { display: block; width: 100%; height: clamp(220px, 55vw, 490px); object-fit: contain; background: #0a100b; }
-.atelier figcaption { color: #c9d6c8; padding: .6rem 0; font-size: .875rem; }
-.atelier a { overflow-wrap: anywhere; }
-.atelier textarea { display: block; width: 100%; padding: .7rem; color: #f2f7ef; background: #0b120c; border: 1px solid #6a8069; border-radius: .45rem; font: inherit; }
-.atelier [data-quiz][aria-pressed="true"] { border-color: #b9ff48; color: #b9ff48; }
-.atelier [data-quiz] { min-height: 44px; white-space: normal; }
-.main:has(> .radar-page) { padding-inline: 0; padding-top: 0; }
-.page.radar-page { max-width: none; width: 100%; }
-.radar-frame { display: block; width: 100%; height: 85dvh; border: 0; background: transparent; }
-.atelier dt { color: #b9ff48; margin-top: .8rem; }
-.atelier dd { margin: .2rem 0 .8rem; }
-.atelier summary { min-height: 44px; cursor: pointer; }
-.atelier :focus-visible, .back:focus-visible { outline: 3px solid #b9ff48; outline-offset: 3px; }
-@media (max-width: 420px) { .atelier-posters { gap: .5rem; } .atelier-posters img { height: 54vw; } }
-</style><style>
-.page.atlas-page { max-width: 1180px; }
-.atlas-page .atlas-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
-  max-width: none;
-  gap: clamp(16px, 3vw, 32px);
-}
-.atlas-grid .cur-m:not(.plus) {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: var(--paper);
-  border-radius: 18px;
-}
-.atlas-grid .cur-b { padding: clamp(16px, 3vw, 25px); }
-.atlas-visual { display: block; position: relative; color: var(--ink); text-decoration: none; }
-.atlas-visual:focus-visible { outline: 3px solid var(--volt); outline-offset: -4px; }
-.atlas-image {
-  display: block;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: var(--deep-1);
-}
-.atlas-image svg { display: block; width: 100%; height: 100%; }
-.atlas-credit {
-  position: absolute;
-  inset: auto 0 0;
-  padding: 26px 14px 10px;
-  background: linear-gradient(transparent, rgba(0,0,0,.92));
-  color: #fff;
-  font-size: .82rem;
-}
-.atlas-grid .cur-t { font-size: clamp(1.3rem, 3vw, 1.8rem); }
-.atlas-grid .cur-m.plus { grid-column: 1 / -1; }
-.atelier-gallery .figure { margin-block: 14px; }
-</style><style>
-.atlas-page .atlas-cover {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  display: grid;
-  min-height: clamp(360px, 46vw, 560px);
-  align-content: end;
-  background: #0c150e;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-}
-.atlas-cover-image { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
-.atlas-cover-image svg { width: 100%; height: 100%; display: block; }
-.atlas-cover::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(90deg,#060c08 2%,rgba(6,12,8,.9) 33%,rgba(6,12,8,.18) 85%), linear-gradient(0deg,#060c08,transparent 45%);
-}
-.atlas-cover-copy { padding: clamp(22px, 5vw, 66px); color: #f2f6ed; }
-.atlas-cover-copy .eyebrow { color: #c8ff1a; }
-.atlas-cover-copy .h1 { font-size: clamp(3rem, 8vw, 7.4rem); line-height: .86; letter-spacing: -.07em; margin: .18em 0; color: inherit; }
-.atlas-cover-copy em { color: #c8ff1a; font-family: var(--f-edit); font-weight: 500; }
-.atlas-cover-copy > p:last-child { max-width: 32ch; font-size: clamp(1rem, 2vw, 1.3rem); line-height: 1.45; }
-.atlas-cover-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; padding: 12px clamp(22px,5vw,66px); border-top: 1px solid #ffffff36; color: #e1e8db; font: .74rem var(--f-mono); }
-.atlas-index-title { font-size: clamp(1.5rem, 3vw, 2.4rem); display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
-.atlas-index-title span { font: .8rem var(--f-mono); color: var(--muted); }
-.atlas-notions summary { cursor: pointer; padding-block: .65rem; color: var(--ink-2); }
-.atlas-notions .cur-chips { padding-bottom: .75rem; }
-.atlas-atelier { align-self: start; margin-top: .5rem; color: var(--volt); }
-@media (min-width: 1100px) {
-  .atlas-page .atlas-grid { grid-template-columns: repeat(6,minmax(0,1fr)); }
-  .atlas-grid .cur-m:not(.plus) { grid-column: span 3; }
-  .atlas-grid .cur-m:nth-child(4n + 1):not(.plus) { grid-column: span 4; }
-  .atlas-grid .cur-m:nth-child(4n + 2):not(.plus) { grid-column: span 2; }
-  .atlas-grid .atlas-image { height: 245px; aspect-ratio: auto; }
-}
-</style><style>
-.atlas-page .atlas-cover { grid-template-columns: minmax(0,1fr) minmax(0,.95fr); min-height: 0; align-items: center; background: #101312; border-color: #343d38; border-radius: 8px; }
-.atlas-cover::before { display: none; }
-.atlas-cover-copy { padding: clamp(24px,4vw,54px); }
-.atlas-cover-copy .eyebrow { color: #bfcac4; }
-.atlas-cover-copy .h1 { font: 760 clamp(2rem,4.1vw,4.35rem)/1.03 var(--f-display); letter-spacing: -.045em; }
-.atlas-cover-copy .h1 em { color: inherit; font: inherit; }
-.atlas-cover-copy > p:last-child { color: #c5cec9; }
-.atlas-stage { margin: 20px; background: #141917; border: 1px solid #3a4740; min-width: 0; }
-.atlas-stage svg { display: block; width: 100%; height: auto; }
-.atlas-stage figcaption { padding: 9px 12px; border-top: 1px solid #3a4740; color: #bac7bf; font: .72rem/1.5 var(--f-mono); }
-.atlas-cover-caption { grid-column: 1 / -1; justify-content: start; align-items: center; }
-.atlas-cover-caption a { color: #f0f4f1; text-underline-offset: 4px; padding-block: 8px; }
-@media (max-width: 700px) {
-  .atlas-page .atlas-cover { grid-template-columns: minmax(0,1fr); }
-  .atlas-stage { margin: 0 18px 18px; }
-}
-</style><style>
-.plateau > svg { display: block; width: 100%; max-height: 180px; background: #101614; border-radius: 8px; }
-.plateau-label { display: block; margin-top: 1rem; }
-.plateau select { min-height: 44px; max-width: 100%; padding: .5rem; font: inherit; }
-.plateau-situation { margin-top: 1rem; }
-.plateau [data-plateau] { min-height: 44px; white-space: normal; text-align: left; }
-.plateau [aria-pressed="true"] { border-color: var(--volt); color: var(--volt); }
-.plateau-feedback:empty { display: none; }
-</style><style>
-.stage-plans { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-.stage-compare { margin:0; }
-.stage-compare svg { width:100%; height:auto; display:block; }
-@media(max-width:480px){.stage-plans{grid-template-columns:1fr}}
+.main:has(> .radar-page) { padding-inline:0; padding-top:0; }
+.page.radar-page { max-width:none; width:100%; }
+.radar-frame { display:block; width:100%; height:85dvh; border:0; background:transparent; }
+.v1-photos { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.v1-photos .figure { margin:0 0 8px; }
+.photo-credit { margin:.25rem 0; }
+@media(max-width:550px){.v1-photos{grid-template-columns:1fr}}
 </style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
@@ -1796,14 +1678,36 @@ function musicBlock(list) {
     return `<a class="m-row" href="${esc(href)}" target="_blank" rel="noopener"><span class="m-pic">${p ? `<img src="${esc(p.src)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}</span><span class="m-txt"><b>${esc(v.titre || "")}</b><small>${esc(v.rubrique)} · ${esc(String(v.source || "").split(" · ")[1] || "")}</small></span><span class="tag">${lab} ↗</span></a>`; };
   return `<section class="card m-block"><span class="eyebrow">À écouter et à regarder · ${M.length} sur les 3 dernières semaines</span>${M.map(row).join("")}<p class="muted small">Le radar du vendredi retient les grosses sorties de la semaine, en France et à l'international. Chaque ligne ouvre directement le titre sur Spotify, le clip sur YouTube, ou l'article quand il n'y a pas de lien direct.</p></section>`;
 }
-
-function vVeille() {
+function vLiveWatch() {
   return '<div class="page radar-page"><iframe class="radar-frame" title="RADAR DA · Le regard du DA" src="https://christopheinalco-crypto.github.io/storyboard-radar-da./"></iframe></div>';
 }
 
 function vVeilleResources() {
   return '<div class="page"><a class="chip" href="#atlas">← Cursus</a>' +
     '<h1 class="h1">Dossiers et tendances</h1>' + dossiersHtml() + tendHtml() + '</div>';
+}
+function vVeille(rub) {
+  let head = rub ? `<div class="n-head"><span class="eyebrow">Veille · ${esc(rub === "gardes" ? "Gardés" : rub === "tendances" ? "Tendances du mois" : rub)}</span>${rub === "tendances" ? `<h1 class="h1">Les tendances du mois</h1><p class="lede">Une fois par mois, les tendances visuelles qui reviennent dans la scène, la pub, le clip et l'image : ce que c'est, d'où ça vient, comment t'en servir, et quand l'éviter.</p>` : ""}</div>` : `<div class="n-head"><span class="eyebrow">Veille · mise à jour chaque matin</span><h1 class="h1">Ce qui se fait en ce moment</h1><p class="lede">Quelques articles utiles à la DA, résumés en français. Chaque article reste une semaine. Touche « Garder » pour le conserver, ou « OK, vu » : il s'efface alors sous 24 heures.</p><details class="nt-more"><summary>Les sources suivies</summary><p class="muted small">${esc(VEILLE_SOURCES)}.</p></details></div>`;
+  const vw = !rub ? wheelMenu([["#veille--f:spectacle", "Spectacle", "Scène, lumière, expo", "coeur"], ["#veille--f:pub", "Pub", "Campagnes, marques", "sens"], ["#veille--f:film", "Film et clip", "Cinéma, clips, motion", "outils"], ["#veille--f:image", "Image", "Photo, identité, typo", "appui"]], ["#veille--tendances", "Ce mois-ci", "Tendances", "Ouvrir →"], "Rubriques de la veille") + `<div class="row" style="gap:8px;flex-wrap:wrap;justify-content:center"><a class="chip" href="#veille--f:musique">♪ Musique</a><a class="chip" href="#veille--gardes">★ Gardés</a><a class="chip" href="#buzz">Campagnes qui font parler</a></div>` : "";
+  head += vw;
+  if (rub === "tendances") return `<div class="page">${head}${tendHtml()}</div>`;
+  if (VEILLE === null && rub !== "tendances") return `<div class="page">${head}<div class="empty">${VEILLE_ERR ? "La veille n'est pas disponible dans cette vue (connexion nécessaire)." : "Chargement de la veille…"}</div></div>`;
+  if (VEILLE && !VEILLE.length && rub !== "tendances") return `<div class="page">${head}<div class="empty">Aucun article pour l'instant. La prochaine mise à jour arrive demain matin.</div></div>`;
+  const VV = VEILLE.filter(v => !isVu(v) && (isGarde(v) || (Date.parse(v.ajout || v.date || 0) || 0) > Date.now() - 7 * DAY)), nGarde = VEILLE.filter(isGarde).length, nVu = VEILLE.filter(isVu).length;
+  if (rub === "vus") head = `<div class="n-head"><span class="eyebrow">Veille · Vus</span><h1 class="h1">Déjà vus</h1><p class="lede">Quand tu touches « OK, vu » sur un article, il vient ici et disparaît du reste de ta veille. Il reste 24 heures, puis il est supprimé de ta liste. Tu peux le remettre avant.</p></div>`;
+  const fam = rub && rub.startsWith("f:") ? rub.slice(2) : rub && rub !== "gardes" ? vFam(rub) : "";
+  const famDef = VFAM.find(f => f[0] === fam);
+  let list = rub === "gardes" ? VEILLE.filter(isGarde) : rub === "vus" ? VEILLE.filter(isVu) : rub && rub.startsWith("f:") ? VV.filter(v => famDef && famDef[2].includes(v.rubrique)) : rub ? VV.filter(v => v.rubrique === rub) : VV;
+  const now = Date.now(), recent = now - 3 * DAY, week = now - 7 * DAY, month = now - 31 * DAY;
+  const cnt = f => VV.filter(v => f[2].includes(v.rubrique)).length;
+  const chips = `<div class="v-anchor"></div><div class="v-bar"><div class="filters v-filters"><a class="chip ${!rub ? "on" : ""}" href="#veille">Tout <span class="count">${VV.length}</span></a>${VFAM.filter(f => cnt(f)).map(f => `<a class="chip ${fam === f[0] && rub !== "gardes" ? "on" : ""}" href="#veille--f:${f[0]}">${esc(f[1])} <span class="count">${cnt(f)}</span></a>`).join("")}<a class="chip ${rub === "gardes" ? "on" : ""}" href="#veille--gardes">★ Gardés <span class="count">${nGarde}</span></a>${nVu || rub === "vus" ? `<a class="chip ${rub === "vus" ? "on" : ""}" href="#veille--vus">Vus <span class="count">${nVu}</span></a>` : ""}<a class="chip" href="#veille--tendances">Tendances du mois</a></div>
+    ${famDef && rub !== "gardes" && rub !== "vus" ? `<div class="filters v-sub">${famDef[2].filter(r => VV.some(v => v.rubrique === r)).map(r => `<a class="chip ${rub === r ? "on" : ""}" href="#veille--${encodeURIComponent(r)}">${esc(r)} <span class="count">${VV.filter(v => v.rubrique === r).length}</span></a>`).join("")}</div>` : ""}</div>`;
+  const when = v => Date.parse(v.ajout || v.date || 0) || 0;
+  const wk = list.filter(v => when(v) > week), mo = list.filter(v => when(v) <= week && when(v) > month), old = list.filter(v => when(v) <= month);
+  const sec = (t, arr, open) => arr.length ? fold(t, arr.length, `<div class="v-grid">${arr.map(v => veilleCard(v, recent)).join("")}</div>`, open) : "";
+  const body = sec("Cette semaine", wk, true) + sec("Ce mois-ci", mo, !wk.length) + sec("Plus ancien", old, false);
+  const showMusic = fam === "musique" && rub !== "gardes";
+  return `<div class="page${!rub ? " is-entry" : ""}" data-word="Veille">${head}${!rub ? dossiersHtml() : ""}${chips}<div data-autoscroll></div>${showMusic ? musicBlock(VEILLE) : ""}<div class="stack">${body || `<div class="empty">Rien dans cette rubrique.</div>`}</div></div>`;
 }
 document.addEventListener("click", ev => {
   const g = ev.target.closest("[data-vgarde]"), u = ev.target.closest("[data-vvu]"); if (!g && !u) return;
@@ -1909,121 +1813,22 @@ function vPlus() {
     <p class="lede">Le cursus t'a donné les bases. Ici, une page par notion avec les fiches techniques, les paroles de praticiens, l'histoire de l'art et le terrain. ${done < all.length ? `Tu as ouvert ${done} notions sur ${all.length} : finis d'abord le cursus, ce sera plus utile.` : "Tu as fini le cursus : choisis une notion à creuser."}</p></div>
     ${CURSUS.map((m, i) => `<section class="card" style="gap:8px"><span class="eyebrow gel">Étape ${i + 1} · ${esc(m.t)}</span><span class="row" style="gap:6px">${m.n.filter(id => NOT[id]).map(id => `<a class="chip" href="#n-${id}--plus">${esc(NOT[id].titre)} <span class="count">${nx(id)}</span></a>`).join("")}</span></section>`).join("")}</div>`;
 }
-
-const PLATEAU_FORMATS = ["Spectacle", "Show TV", "Clip", "Lancement produit"];
-
-function stageSightlines() {
-  const diagram = (surround) => {
-    const label = surround ? "Scène entourée" : "Scène frontale";
-    return '<figure class="stage-compare"><svg viewBox="0 0 320 190" role="img" aria-label="' + label + '">' +
-      '<rect x="13" y="12" width="294" height="166" rx="20" fill="#101614" stroke="#66746d"/>' +
-      (surround
-        ? '<ellipse cx="160" cy="95" rx="118" ry="62" fill="none" stroke="#60746a" stroke-width="13"/><path d="M50 95h91m128 0h-90M160 35v43m0 75v-40" stroke="#a3afa8" stroke-dasharray="4 4"/><rect x="138" y="77" width="44" height="36" rx="7" fill="#c8ff1a"/>'
-        : '<path d="M54 78h212m-212 26h212m-212 26h212m-212 26h212" stroke="#60746a" stroke-width="10"/><path d="M89 154l52-103m90 103L179 51" stroke="#a3afa8" stroke-dasharray="4 4"/><rect x="104" y="26" width="112" height="28" rx="5" fill="#c8ff1a"/>') +
-      '</svg><figcaption><b>' + label + '</b> · ' + (surround ? 'Le public regarde depuis plusieurs côtés.' : 'La salle partage une direction de regard.') + '</figcaption></figure>';
-  };
-  return '<section class="panel stage-study"><p class="eyebrow">Cas documenté · U2 360° Tour</p>' +
-    '<h2>Où placer le spectacle quand le public l’entoure ?</h2>' +
-    '<p>Pour U2, la structure portait les équipements au-dessus de l’espace de jeu. Le groupe pouvait circuler entre les scènes et jouer pour des gradins répartis autour de lui.</p>' +
-    '<div class="stage-plans">' + diagram(false) + diagram(true) + '</div>' +
-    '<p class="small muted">Schémas de principe, hors échelle. Les pointillés indiquent quelques lignes de vue. <a href="https://stufish.com/project/360/" target="_blank" rel="noopener">Photos et dossier du concepteur STUFISH ↗</a></p>' +
-    '<p><b>Arbitrage.</b> Un dispositif frontal facilite une image commune pour tous. Une implantation entourée ouvre davantage de points de vue, mais impose de vérifier ce que chaque secteur peut voir quand les artistes se déplacent.</p></section>';
-}
-
-function vPlateau(id, situations) {
-  return '<section class="panel plateau"><p class="eyebrow">Cas fil rouge · Simulation</p>' +
-    '<h2>Un portail, quatre productions</h2><p>Un grand portail lumineux cadre le sujet. Choisis un format et décide comment le décor doit servir l’image ou la salle.</p>' +
-    '<svg viewBox="0 0 480 150" role="img" aria-label="Élévation du set fictif : un portail monumental encadre un petit sujet central"><path d="M35 122h410M102 122V27h276v95M150 122V55h180v67" fill="none" stroke="#84928a" stroke-width="2"/><circle cx="240" cy="101" r="9" fill="#c8ff1a"/><path d="M240 112v10" stroke="#c8ff1a"/><text x="250" y="110" fill="#eef0e6" font-size="14">Sujet</text></svg>' +
-    '<label class="plateau-label" for="plateau-format">Format</label><select id="plateau-format" data-plateau-format>' +
-    PLATEAU_FORMATS.map((name, i) => '<option value="' + i + '">' + name + '</option>').join("") + '</select>' +
-    situations.map(([scenario, choice, alternative], format) => {
-      const options = format % 2 ? [alternative, choice] : [choice, alternative];
-      return '<div class="plateau-situation"' + (format ? ' hidden' : '') + '><h3>' + esc(scenario) + '</h3>' +
-        '<div class="row" role="group" aria-label="Quelle décision prends-tu ?">' +
-        options.map((label,i) => '<button type="button" class="btn ghost" aria-pressed="false" data-plateau="' + id + '" data-format="' + format + '" data-i="' + i + '">' + esc(label) + '</button>').join("") +
-        '</div><p role="status" class="plateau-feedback"></p></div>';
-    }).join("") + '</section>';
-}
-
-function vAtelier(id) {
-  const module = CURSUS.find(m => m.id === id);
-  const a = module && D.ateliers[id];
-  if (!a) return vAtlas();
-  const posters = [
-    ["A", "See America. Visit the national parks", "Cascade encadrée par le relief", "98518589"],
-    ["B", "See America, Dux", "Deux visiteurs dans les grottes de Carlsbad", "96503125"]
-  ];
-  const visual = id === "voir" ? '<div class="atelier-posters">' + posters.map(([key, title, alt, source]) =>
-    '<figure><img src="assets/affiche-' + key.toLowerCase() + '.jpg" alt="' + esc(alt) + '"><figcaption><b>Affiche ' + key + '</b> · ' + esc(title) + ' · <a href="https://www.loc.gov/item/' + source + '/">Library of Congress</a></figcaption></figure>'
-  ).join("") + '</div>' : img(a.image, a.credit);
-  const fields = [["observation", "Observation"], ["effet", "Effet"], ["intention", "Intention"], ["arbitrage", "Arbitrage"]];
-  const quiz = a.quiz;
-  const gallery = a.gallery;
-  const fieldGuide = '<details class="fold atelier-gallery"><summary>À regarder de plus près</summary>' +
-    (gallery.image === a.image ? '' : img(gallery.image, gallery.credit)) + '<p>' + esc(gallery.look) + '</p></details>';
-  const index = CURSUS.indexOf(module);
-  const next = CURSUS[index + 1];
-  return '<div class="page atelier">' + curBar(index) +
-    '<p class="eyebrow">Atelier · étape ' + (index + 1) + '</p><h1 class="h1">' + esc(a.titre) + '</h1>' +
-    (id === 'voir' ? stageSightlines() : '') + vPlateau(id, a.plateau) +
-    '<details class="panel fold"><summary>Références et lecture du cas</summary>' + (visual || img(gallery.image, gallery.credit) + '<p>' + esc(gallery.look) + '</p>') + '<p><a class="chip" href="#c-' + module.pr.cas + '">Cas du cursus · ' + esc(module.pr.t) + '</a></p>' +
-    '<h2>Le geste technique</h2><p>' + esc(a.technique) + '</p>' +
-    '<h2>À toi de jouer · 20 secondes</h2><p>' + esc(quiz.question) + '</p>' +
-    '<div class="row" role="group" aria-label="Choisis une réponse">' + quiz.choices.map((choice, i) =>
-      '<button type="button" class="btn ghost" data-quiz="' + id + '" data-i="' + i + '" aria-pressed="false">' + esc(choice) + '</button>').join("") +
-    '</div><p class="quiz-feedback" role="status"></p>' +
-    '<details class="fold"><summary>Lecture commentée</summary><dl>' + fields.map(([key, label]) =>
-      '<dt><b>' + label + '</b></dt><dd>' + esc(a[key]) + '</dd>').join("") + '</dl></details>' +
-    (visual ? fieldGuide : '') + '</details><div class="panel-foot"><a class="btn ghost" href="#atlas">Voir le cursus</a>' +
-    (next ? '<a class="btn gel" href="#atelier--' + next.id + '">Atelier suivant →</a>' : '<a class="btn gel" href="#studio">Appliquer au Studio →</a>') + '</div></div>';
-}
-
-function atlasVisual(module) {
-  const visual = D.ateliers[module.id].gallery;
-  return '<a class="atlas-visual" href="#atelier--' + module.id + '" aria-label="Ouvrir l’atelier ' + esc(module.t) + '">' +
-    '<span class="atlas-image" aria-hidden="true">' + D.img[visual.image] + '</span>' +
-    '<span class="atlas-credit">' + esc(visual.credit) + '</span></a>';
-}
-
 function vAtlas(sel) {
   const CS = COUCHES.filter(c => !sel || c.id === sel);
   const _lens = id => (S.notions[id] || {}).lens || 0, _all = CURSUS.flatMap(m => m.n), _doneN = _all.filter(id => _lens(id) >= 1).length;
   const _nx = _all.find(id => _lens(id) < 1), _nm = _nx && CURSUS.find(m => m.n.includes(_nx));
   const _H = hst(), _tot = HUES.reduce((a, u) => a + u.lecons.length, 0), _done = HUES.reduce((a, u) => a + hRead(u.id), 0);
   const _res = _H.last || (HUES[0] ? HUES[0].id + "-1" : "");
-  return `<div class="page is-entry atlas-page" data-word="Cursus">${curBar(CURSUS.indexOf(_nm))}
-    <div class="n-head">
-    <div class="atlas-cover">
-      <div class="atlas-cover-copy">
-        <p class="eyebrow">STORYBOARD / Formation DA</p>
-        <h1 class="h1">Direction artistique<br><em>Spectacle &amp; show TV</em></h1>
-        <p>Construire une image qui fonctionne en salle et à l’écran. Du plan de plateau au dernier top lumière.</p>
-      </div>
-      <figure class="atlas-stage">
-        <svg viewBox="0 0 480 330" role="img" aria-label="Plan de plateau avec une entrée, une zone de jeu et trois positions caméra">
-          <defs><pattern id="atlas-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#212724"/></pattern></defs>
-          <rect width="480" height="330" fill="url(#atlas-grid)"/>
-          <path d="M92 100h296v116H92z M187 100V68h106v32" fill="none" stroke="#80908a"/>
-          <path d="M144 242l96-84 96 84 M240 270V158" fill="none" stroke="#74837c" stroke-dasharray="4 5"/>
-          <circle cx="240" cy="158" r="30" fill="#c8ff1a" fill-opacity=".09" stroke="#c8ff1a"/>
-          <circle cx="240" cy="158" r="3" fill="#c8ff1a"/>
-          <g fill="#d9e2dc" font-family="monospace" font-size="12">
-            <text x="211" y="58">ENTRÉE</text><text x="100" y="119">PLATEAU</text>
-            <text x="119" y="260">CAM 01</text><text x="216" y="291">CAM 02</text><text x="312" y="260">CAM 03</text>
-          </g>
-          <text x="264" y="154" fill="#c8ff1a" font-family="monospace" font-size="12">POINT FOCAL</text>
-        </svg>
-        <figcaption>PLAN 01 · Axe caméra et point focal · Schéma pédagogique</figcaption>
-      </figure>
-      <div class="atlas-cover-caption"><span>CAS DE PLATEAU</span><a href="#c-s-u2-360">U2 · Scène à 360° →</a><a href="#c-s-daftpunk-alive">Daft Punk · Alive →</a><a href="#c-s-thewall">The Wall →</a></div>
-    </div>
+  return `<div class="page is-entry" data-word="Cursus">${curBar(CURSUS.indexOf(_nm))}
+    <div class="n-head"><div class="eyebrow">Apprendre</div><h1 class="h1">Le cursus</h1>
+    <p class="lede">Un parcours en ${CURSUS.length} étapes, à suivre dans l'ordre. D'abord les bases du métier : éduquer l'œil, lumière et couleur, matière et espace, rythme et son. Ensuite la démarche : comprendre le besoin, formuler l'intention, trouver le concept, décider et présenter.</p>
     <div class="cursus-next"><div class="cn-bar" aria-hidden="true"><i style="width:${Math.round(100 * _doneN / _all.length)}%"></i></div>
       <span class="eyebrow gel">${_doneN ? "Ton prochain pas" : "Pour commencer"} · ${_doneN}/${_all.length} notions ouvertes</span>
       ${_nx ? `<a class="cn-t" href="#n-${_nx}">${esc(_nm.t)} · ${esc(NOT[_nx].titre)}</a><span class="row"><a class="btn gel" href="#n-${_nx}">${_doneN ? "Continuer le cursus" : "Commencer le cursus"} →</a></span>` : `<b class="cn-t">Cursus terminé : reprends n'importe quelle notion.</b>`}</div>
     <p><a class="chip" href="#atlas--ressources">Dossiers et tendances →</a></p>
     <p class="alt-learn"><a class="chip" href="#histoire">Apprendre en histoire</a><span class="small muted">Une autre façon d'apprendre : 15 histoires de direction artistique à lire quand tu veux.</span></p>
-    <h2 class="atlas-index-title">Les huit étapes <span>Observer → Décider</span></h2>
-    <ol class="cur-list atlas-grid">${CURSUS.map((m, i) => { const d = m.n.filter(id => _lens(id) >= 1).length, fid = m.n.find(id => NOT[id] && _lens(id) < 1) || m.n.find(id => NOT[id]); return `<li class="cur-m ${d === m.n.length ? "done" : d ? "half" : ""}${_nx && m.n.includes(_nx) ? " next" : ""}">${atlasVisual(m)}<div class="cur-b"><span class="eyebrow">Étape ${String(i + 1).padStart(2, "0")}</span><h2 class="cur-t"><a class="cur-ta" href="#n-${fid}">${esc(m.t)}</a></h2><p class="cur-q">${esc(m.q)}</p><p class="cur-p">${esc(m.p)}</p><details class="atlas-notions"><summary>${m.n.length} notions · ${d} ouvertes</summary><span class="row cur-chips">${m.n.filter(id => NOT[id]).map(id => `<a class="chip ${_lens(id) >= 1 ? "on" : ""}" href="#n-${id}">${_lens(id) >= 1 ? "✓ " : ""}${esc(NOT[id].titre)}</a>`).join("")}</span></details><a class="chip atlas-atelier" href="#atelier--${m.id}">Ouvrir l’atelier →</a></div></li>`; }).join("")}<li class="cur-m plus ${_doneN >= _all.length ? "half" : ""}"><span class="cur-n">+</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#plus">Pour aller plus loin</a></h2><p class="cur-q">Quand le cursus est fini.</p><p class="cur-p">Fiches techniques, paroles de praticiens, histoire de l'art, terrain : une page par notion.</p></div></li></ol>
+    <section class="panel v1-cases"><p class="eyebrow">Cas de scène · Photos de production</p><div class="v1-photos"><div>${img("u2-barcelona")}<a href="#c-s-u2-360"><strong>U2 · Une scène entourée →</strong></a></div><div>${img("daft-rockness")}<a href="#c-s-daftpunk-alive"><strong>Daft Punk · Un point focal dans la foule →</strong></a></div></div></section>
+    <ol class="cur-list">${CURSUS.map((m, i) => { const d = m.n.filter(id => _lens(id) >= 1).length, fid = m.n.find(id => NOT[id] && _lens(id) < 1) || m.n.find(id => NOT[id]); return `<li class="cur-m ${d === m.n.length ? "done" : d ? "half" : ""}${_nx && m.n.includes(_nx) ? " next" : ""}"><span class="cur-n">${String(i + 1).padStart(2, "0")}</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#n-${fid}">${esc(m.t)}</a></h2><p class="cur-q">${esc(m.q)}</p><p class="cur-p">${esc(m.p)}</p><span class="row cur-chips">${m.n.filter(id => NOT[id]).map(id => `<a class="chip ${_lens(id) >= 1 ? "on" : ""}" href="#n-${id}">${_lens(id) >= 1 ? "✓ " : ""}${esc(NOT[id].titre)}</a>`).join("")}</span><span class="small muted">${d}/${m.n.length}</span></div></li>`; }).join("")}<li class="cur-m plus ${_doneN >= _all.length ? "half" : ""}"><span class="cur-n">+</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#plus">Pour aller plus loin</a></h2><p class="cur-q">Quand le cursus est fini.</p><p class="cur-p">Fiches techniques, paroles de praticiens, histoire de l'art, terrain : une page par notion.</p></div></li></ol>
     </div><details class="fold lib" ${sel ? "open" : ""}><summary><span class="h3">La bibliothèque : toutes les notions par famille</span></summary><div class="fold-body">
     ${wheelMenu(COUCHES.map(c => ["#atlas--" + c.id, c.nom.split(" : ")[0], c.nom.split(" : ")[1] || "", c.id]), null, "Familles de notions")}
     ${sel ? `<span class="row"><a class="chip" href="#atlas">Toutes les familles</a></span>` : ""}<div data-autoscroll></div>
@@ -2127,7 +1932,6 @@ function vNotion(id, lensIdx) {
     <h1 class="h1">${esc(n.titre)}</h1></div>
     <nav class="lenses" aria-label="Étapes de la notion">${LENSES.map((l, i) => `<a class="lens ${i === L ? "on" : ""} ${st.lens > i ? "seen" : ""}" href="#n-${id}--${i}" style="text-decoration:none"><b>${l.t}</b><span>${l.m}</span></a>`).join("")}</nav>
     <section class="panel">${body}
-      ${_mo && D.ateliers[_mo.m.id] ? `<p><a class="chip" href="#atelier--${_mo.m.id}">Exercice de l’étape →</a></p>` : ""}
       <div class="panel-foot">${L > 0 ? `<a class="btn ghost" href="#n-${id}--${L - 1}">← ${LENSES[L - 1].t}</a>` : "<span></span>"}${nextBtn}</div>
     </section>
     ${modDone}
@@ -2304,7 +2108,7 @@ function vProject(pid, stepIdx) {
     const filled = E.filter(x => (p.steps[x.id] || "").trim()).length;
     const r = p.review;
     main = `<section class="panel"><span class="eyebrow">Revue de DA senior</span><h2 class="h2">Ta proposition relue</h2>
-      <p class="prose" style="font-size:17px">Si le service de revue est disponible, Claude relit ton projet comme un directeur artistique expérimenté : ce qui fonctionne, ce qui risque de casser en production, et la question qu'un client poserait. Aucune note.</p>
+      <p class="prose" style="font-size:17px">Claude relit ton projet comme un directeur artistique expérimenté : ce qui fonctionne, ce qui risque de casser en production, et la question qu'un client poserait. Aucune note.</p>
       ${filled < 4 ? `<p class="note">Remplis au moins quatre étapes pour une revue utile (${filled}/${E.length} pour l'instant).</p>` : ""}
       <span class="row"><button class="btn primary" data-review="${pid}" ${filled < 4 || reviewBusy ? "disabled" : ""}>${reviewBusy ? "Relecture en cours…" : r ? "Demander une nouvelle revue" : "Demander la revue"}</button><span class="small muted" id="review-status"></span></span>
       ${r ? `<div class="review"><span class="small muted">Revue du ${fmtDate(r.ts)}</span><div><h4 class="k-fait">Forces</h4><ul class="ul">${r.forces.map(x => `<li>${md(x)}</li>`).join("")}</ul></div><div><h4 class="k-interp">Risques</h4><ul class="ul">${r.risques.map(x => `<li>${md(x)}</li>`).join("")}</ul></div><div><h4 class="k-intent">La question du client</h4><p class="prose" style="font-size:16.5px">${md(r.question)}</p></div>${r.piste ? `<div><h4>Une piste pour la version 2</h4><p class="prose" style="font-size:16.5px">${md(r.piste)}</p></div>` : ""}</div>` : ""}
@@ -2469,11 +2273,7 @@ function vNote(id) {
   }
   const nav = `<div class="nt-nav">${cur > 1 ? `<button class="btn" data-nt-step="${id}" data-to="${cur - 1}">← ${esc(STEPS[cur - 2][1])}</button>` : "<span></span>"}${cur < 4 ? `<button class="btn primary" data-nt-step="${id}" data-to="${cur + 1}">${esc(STEPS[cur][1])} →</button>` : ""}</div>`;
   const finish = cur === 4 ? `<section class="panel"><span class="eyebrow">Relecture</span>
-      <details class="fold" open><summary>Mode mentor · relire ton projet</summary>
-        <ol class="ul"><li>Quel effet le public doit-il percevoir en premier ?</li><li>Quel choix concret crée cet effet ?</li><li>Que sacrifierais-tu si le temps de montage diminuait ?</li></ol>
-        <label class="nt-lab" for="mentor-revision">Mon changement prioritaire et le test prévu</label>
-        <textarea id="mentor-revision" data-nt="${id}" data-k="mentor" rows="3">${esc(n.f.mentor || "")}</textarea></details>
-      <p class="muted small">Si le service de revue est disponible, Claude relit ta proposition comme un DA senior : cohérence entre émotion, phrase unique et choix, faisabilité, et la question qu'un client poserait. Remplis au moins cinq rubriques.</p>
+      <p class="muted small">Claude relit ta proposition comme un DA senior : cohérence entre émotion, phrase unique et choix, faisabilité, et la question qu'un client poserait. Remplis au moins cinq rubriques.</p>
       <span class="row"><button class="btn primary" data-nt-rev="${id}" ${ntRevBusy ? "disabled" : ""}>${ntRevBusy ? "Relecture en cours…" : n.review ? "Nouvelle relecture" : "Demander la relecture"}</button><span class="small muted" id="nt-rev-status"></span></span>
       ${n.review ? `<div class="review"><span class="small muted">Relecture du ${new Date(n.review.ts).toLocaleDateString("fr-FR")}</span>
         <div><h4 class="k-fait">Forces</h4><ul class="ul">${n.review.forces.map(x => `<li>${md(x)}</li>`).join("")}</ul></div>
@@ -3064,14 +2864,13 @@ let backing = false, tabJump = false;
 function navSave() { try { sessionStorage.setItem("cl-nav", JSON.stringify(NAVST.slice(-40))); } catch (e) {} }
 function baseOf(h) { return (h || "#accueil").split("--")[0]; }
 function parentOf(a) {
-  if (a === "atelier" || a.startsWith("n-")) return "#atlas"; if (a.startsWith("c-") || a === "analyse" || a === "revision" || a === "jeu") return a.startsWith("c-") ? "#analyse" : "#entrainer";
+  if (a.startsWith("n-")) return "#atlas"; if (a.startsWith("c-") || a === "analyse" || a === "revision" || a === "jeu") return a.startsWith("c-") ? "#analyse" : "#entrainer";
   if (a.startsWith("e-")) return "#boussole"; if (a.startsWith("note-")) return "#notes"; if (a.startsWith("check-")) return "#check";
   if (a.startsWith("p-")) return "#studio"; if (a === "jour") return "#accueil"; if (a === "erreurs" || a === "labo") return "#studio"; if (a === "buzz") return "#entrainer"; if (a === "musee") return "#entrainer"; if (a === "histoire") return "#atlas"; return "#studio";
 }
 function hashLabel(h) {
   const [a, b] = (h || "#accueil").slice(1).split("--");
   if (!a || a === "accueil") return "Accueil";
-  if (a === "atelier") return D.ateliers[b]?.titre || "Atelier";
   if (a === "plus") return "Pour aller plus loin";
   if (a.startsWith("n-")) return NOT[a.slice(2)] ? NOT[a.slice(2)].titre : "Notion";
   if (a.startsWith("c-")) return CAS[a.slice(2)] ? CAS[a.slice(2)].titre : "Cas";
@@ -3799,7 +3598,6 @@ function render() {
   const { a, b } = route();
   let html, nav = "accueil";
   if ((a === "atlas" && b === "ressources") || (a === "veille" && b === "tendances")) { html = vVeilleResources(); nav = "atlas"; }
-  else if (a === "atelier") { html = vAtelier(b); nav = "atlas"; }
   else if (a === "atlas") { html = vAtlas(b); nav = "atlas"; }
   else if (a === "histoire") { html = vHist(b); nav = "atlas"; }
   else if (a === "plus") { html = vPlus(); nav = "atlas"; }
@@ -3808,7 +3606,7 @@ function render() {
   else if (a === "entrainer") { html = vEntrainer(); nav = "entrainer"; }
   else if (a.startsWith("c-") && CAS[a.slice(2)]) { html = vCase(a.slice(2)); nav = "entrainer"; }
   else if (a === "studio") { html = vStudio(); nav = "studio"; }
-  else if (a === "veille") { html = vVeille(); nav = "veille"; }
+  else if (a === "veille") { html = vLiveWatch(); nav = "veille"; }
   else if (a === "boussole") { html = vBoussole(); nav = "studio"; }
   else if (a === "debloquer") { html = vDebloquer(b); nav = "studio"; }
   else if (a === "notes") { html = vNotes(); nav = "studio"; }
@@ -3892,19 +3690,7 @@ let ENTER = true;
 /* Le bouton son s'efface quand on lit vers le bas, revient en remontant */
 (() => { let y = 0; addEventListener("scroll", () => { const d = scrollY - y; y = scrollY; const w = document.getElementById("snd"); if (!w) return; if (scrollY < 80 || d < -6) w.classList.remove("away"); else if (d > 6) w.classList.add("away"); }, { passive: true }); })();
 let lastHash = null;
-const reading = new Map();
-history.scrollRestoration = "manual";
-function rememberReading(hash) {
-  if (hash === null) return;
-  reading.set(hash, {
-    top: window.scrollY,
-    folds: [...root.querySelectorAll("main details")].map(fold => fold.open)
-  });
-}
-
 window.addEventListener("hashchange", () => {
-  rememberReading(lastHash);
-  const resume = reading.get(location.hash);
   if (tabJump) { NAVST = []; navSave(); }
   else if (!backing && lastHash && baseOf(lastHash) !== baseOf(location.hash)) { if (NAVST[NAVST.length - 1] !== lastHash) NAVST.push(lastHash); navSave(); }
   if (baseOf(location.hash) === "#jeu" && baseOf(lastHash) !== "#jeu") G = null;
@@ -3915,12 +3701,7 @@ window.addEventListener("hashchange", () => {
   const before = bar ? bar.getBoundingClientRect().top : null;
   ENTER = !isVeille;
   render();
-  if (resume && !isVeille) {
-    root.querySelectorAll("main details").forEach((fold, index) => {
-      if (index < resume.folds.length) fold.open = resume.folds[index];
-    });
-    window.scrollTo(0, resume.top);
-  } else if (isVeille) {
+  if (isVeille) {
     const nb = document.querySelector(".v-filters"); const anchor = document.querySelector(".v-anchor");
     if (anchor) { const top = anchor.getBoundingClientRect().top + window.scrollY - 8; if (window.scrollY > top) window.scrollTo(0, top); }
     else if (nb && before != null) window.scrollBy(0, nb.getBoundingClientRect().top - before);
@@ -3931,39 +3712,6 @@ window.addEventListener("hashchange", () => {
 });
 
 // ---------- Actions ----------
-document.addEventListener("change", ev => {
-  const select = ev.target.closest("[data-plateau-format]");
-  if (!select) return;
-  select.closest(".plateau").querySelectorAll(".plateau-situation").forEach((scenario, index) => {
-    scenario.hidden = index !== Number(select.value);
-  });
-});
-document.addEventListener("click", ev => {
-  const button = ev.target.closest("[data-plateau]");
-  if (!button) return;
-  const { plateau, format, i } = button.dataset;
-  const situation = D.ateliers[plateau].plateau[Number(format)];
-  const correct = Number(i) === Number(format) % 2;
-  for (const option of button.parentElement.children) {
-    option.setAttribute("aria-pressed", String(option === button));
-  }
-  button.parentElement.nextElementSibling.textContent =
-    (correct ? "Choix recommandé. " : "Autre piste. ") + situation[3];
-});
-
-document.addEventListener("click", ev => {
-  const button = ev.target.closest("[data-quiz]");
-  if (!button) return;
-  const a = D.ateliers[button.dataset.quiz];
-  const correct = Number(button.dataset.i) === a.quiz.answer;
-  for (const option of button.parentElement.children) {
-    option.setAttribute("aria-pressed", String(option === button));
-  }
-  button.parentElement.nextElementSibling.textContent = correct
-    ? "Oui. " + a.effet
-    : "Regarde encore. " + a.observation;
-});
-
 document.addEventListener("click", ev => {
   const t = ev.target.closest("[data-reveal],[data-geste],[data-geste-reset],[data-filter],[data-calque],[data-calque-all],[data-etsi],[data-an-save],[data-new],[data-step],[data-pnotion],[data-review],[data-export],[data-reset],[data-reset-ok],[data-go]");
   if (!t) return;
