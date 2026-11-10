@@ -10,7 +10,7 @@
 .atelier [data-quiz][aria-pressed="true"] { border-color: #b9ff48; color: #b9ff48; }
 .atelier [data-quiz] { min-height: 44px; white-space: normal; }
 .radar-page { max-width: none; }
-.radar-frame { display: block; width: 100%; height: 80dvh; border: 0; background: #0a110b; }
+.radar-frame { display: block; width: 100%; height: 80dvh; border: 0; background: transparent; }
 .atelier dt { color: #b9ff48; margin-top: .8rem; }
 .atelier dd { margin: .2rem 0 .8rem; }
 .atelier summary { min-height: 44px; cursor: pointer; }
@@ -3657,6 +3657,14 @@ function render() {
     <div class="rail-foot">40 notions · ${D.cases.length} cas · 994 fiches</div></aside>
     <main class="main" id="main">${backBar()}${html}${backBar("bottom")}</main>
     <nav class="tabbar">${NAV.map(([k, t]) => `<a href="#${k}" class="${nav === k ? "on" : ""}">${ICONS[k]}<span>${t}</span></a>`).join("")}</nav></div>`;
+  const radarFrame = root.querySelector(".radar-frame");
+  radarFrame?.addEventListener("load", () => {
+    // The published apps share an origin. A local preview keeps RADAR's own theme.
+    const radar = radarFrame.contentDocument;
+    if (!radar?.body) return;
+    radar.documentElement.style.setProperty("background", "transparent", "important");
+    radar.body.style.setProperty("background", "transparent", "important");
+  });
   document.documentElement.dataset.mode = document.querySelector(".page.is-entry") ? "entry" : "read";
   if (ENTER) { const m = document.getElementById("main"); if (m) m.classList.add("enter"); ENTER = false; }
   decorate();
