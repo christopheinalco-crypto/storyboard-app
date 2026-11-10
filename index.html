@@ -17,6 +17,100 @@
 .atelier summary { min-height: 44px; cursor: pointer; }
 .atelier :focus-visible, .back:focus-visible { outline: 3px solid #b9ff48; outline-offset: 3px; }
 @media (max-width: 420px) { .atelier-posters { gap: .5rem; } .atelier-posters img { height: 54vw; } }
+</style><style>
+.page.atlas-page { max-width: 1180px; }
+.atlas-page .atlas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
+  max-width: none;
+  gap: clamp(16px, 3vw, 32px);
+}
+.atlas-grid .cur-m:not(.plus) {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 18px;
+}
+.atlas-grid .cur-b { padding: clamp(16px, 3vw, 25px); }
+.atlas-visual { display: block; position: relative; color: var(--ink); text-decoration: none; }
+.atlas-visual:focus-visible { outline: 3px solid var(--volt); outline-offset: -4px; }
+.atlas-image {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--deep-1);
+}
+.atlas-image svg { display: block; width: 100%; height: 100%; }
+.atlas-credit {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 26px 14px 10px;
+  background: linear-gradient(transparent, rgba(0,0,0,.92));
+  color: #fff;
+  font-size: .82rem;
+}
+.atlas-grid .cur-t { font-size: clamp(1.3rem, 3vw, 1.8rem); }
+.atlas-grid .cur-m.plus { grid-column: 1 / -1; }
+.atelier-gallery .figure { margin-block: 14px; }
+</style><style>
+.atlas-page .atlas-cover {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  min-height: clamp(360px, 46vw, 560px);
+  align-content: end;
+  background: #0c150e;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.atlas-cover-image { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+.atlas-cover-image svg { width: 100%; height: 100%; display: block; }
+.atlas-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg,#060c08 2%,rgba(6,12,8,.9) 33%,rgba(6,12,8,.18) 85%), linear-gradient(0deg,#060c08,transparent 45%);
+}
+.atlas-cover-copy { padding: clamp(22px, 5vw, 66px); color: #f2f6ed; }
+.atlas-cover-copy .eyebrow { color: #c8ff1a; }
+.atlas-cover-copy .h1 { font-size: clamp(3rem, 8vw, 7.4rem); line-height: .86; letter-spacing: -.07em; margin: .18em 0; color: inherit; }
+.atlas-cover-copy em { color: #c8ff1a; font-family: var(--f-edit); font-weight: 500; }
+.atlas-cover-copy > p:last-child { max-width: 32ch; font-size: clamp(1rem, 2vw, 1.3rem); line-height: 1.45; }
+.atlas-cover-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; padding: 12px clamp(22px,5vw,66px); border-top: 1px solid #ffffff36; color: #e1e8db; font: .74rem var(--f-mono); }
+.atlas-index-title { font-size: clamp(1.5rem, 3vw, 2.4rem); display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 30px; }
+.atlas-index-title span { font: .8rem var(--f-mono); color: var(--muted); }
+.atlas-notions summary { cursor: pointer; padding-block: .65rem; color: var(--ink-2); }
+.atlas-notions .cur-chips { padding-bottom: .75rem; }
+.atlas-atelier { align-self: start; margin-top: .5rem; color: var(--volt); }
+@media (min-width: 1100px) {
+  .atlas-page .atlas-grid { grid-template-columns: repeat(6,minmax(0,1fr)); }
+  .atlas-grid .cur-m:not(.plus) { grid-column: span 3; }
+  .atlas-grid .cur-m:nth-child(4n + 1):not(.plus) { grid-column: span 4; }
+  .atlas-grid .cur-m:nth-child(4n + 2):not(.plus) { grid-column: span 2; }
+  .atlas-grid .atlas-image { height: 245px; aspect-ratio: auto; }
+}
+</style><style>
+.atlas-page .atlas-cover { grid-template-columns: minmax(0,1fr) minmax(0,.95fr); min-height: 0; align-items: center; background: #101312; border-color: #343d38; border-radius: 8px; }
+.atlas-cover::before { display: none; }
+.atlas-cover-copy { padding: clamp(24px,4vw,54px); }
+.atlas-cover-copy .eyebrow { color: #bfcac4; }
+.atlas-cover-copy .h1 { font: 760 clamp(2rem,4.1vw,4.35rem)/1.03 var(--f-display); letter-spacing: -.045em; }
+.atlas-cover-copy .h1 em { color: inherit; font: inherit; }
+.atlas-cover-copy > p:last-child { color: #c5cec9; }
+.atlas-stage { margin: 20px; background: #141917; border: 1px solid #3a4740; min-width: 0; }
+.atlas-stage svg { display: block; width: 100%; height: auto; }
+.atlas-stage figcaption { padding: 9px 12px; border-top: 1px solid #3a4740; color: #bac7bf; font: .72rem/1.5 var(--f-mono); }
+.atlas-cover-caption { grid-column: 1 / -1; justify-content: start; align-items: center; }
+.atlas-cover-caption a { color: #f0f4f1; text-underline-offset: 4px; padding-block: 8px; }
+@media (max-width: 700px) {
+  .atlas-page .atlas-cover { grid-template-columns: minmax(0,1fr); }
+  .atlas-stage { margin: 0 18px 18px; }
+}
 </style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
@@ -1816,11 +1910,14 @@ function vAtelier(id) {
   ).join("") + '</div>' : img(a.image, a.credit);
   const fields = [["observation", "Observation"], ["effet", "Effet"], ["intention", "Intention"], ["arbitrage", "Arbitrage"]];
   const quiz = a.quiz;
+  const gallery = a.gallery;
+  const fieldGuide = '<details class="fold atelier-gallery"><summary>À regarder de plus près</summary>' +
+    (gallery.image === a.image ? '' : img(gallery.image, gallery.credit)) + '<p>' + esc(gallery.look) + '</p></details>';
   const index = CURSUS.indexOf(module);
   const next = CURSUS[index + 1];
   return '<div class="page atelier">' + curBar(index) +
     '<p class="eyebrow">Atelier · étape ' + (index + 1) + '</p><h1 class="h1">' + esc(a.titre) + '</h1>' +
-    '<section class="panel">' + visual + '<p><a class="chip" href="#c-' + module.pr.cas + '">Cas du cursus · ' + esc(module.pr.t) + '</a></p>' +
+    '<section class="panel">' + (visual || img(gallery.image, gallery.credit) + '<p>' + esc(gallery.look) + '</p>') + '<p><a class="chip" href="#c-' + module.pr.cas + '">Cas du cursus · ' + esc(module.pr.t) + '</a></p>' +
     '<h2>Le geste technique</h2><p>' + esc(a.technique) + '</p>' +
     '<details class="fold"><summary>Dialogue d’atelier</summary><p><b>Apprenti DA</b> · ' + esc(a.dialogue[2]) +
     '</p><p><b>Mentor</b> · ' + esc(a.dialogue[3]) + '</p><p class="small muted">Dialogue reconstitué pour l’exercice, d’après ' +
@@ -1832,8 +1929,15 @@ function vAtelier(id) {
     '<details class="fold"><summary>Lecture commentée</summary><dl>' + fields.map(([key, label]) =>
       '<dt><b>' + label + '</b></dt><dd>' + esc(a[key]) + '</dd>').join("") + '</dl></details>' +
     '<details class="fold"><summary>Mode mentor · préparer ta deuxième version</summary><p>' + esc(a.mentor) +
-    '</p></details></section><div class="panel-foot"><a class="btn ghost" href="#atlas">Voir le cursus</a>' +
+    '</p></details>' + (visual ? fieldGuide : '') + '</section><div class="panel-foot"><a class="btn ghost" href="#atlas">Voir le cursus</a>' +
     (next ? '<a class="btn gel" href="#atelier--' + next.id + '">Atelier suivant →</a>' : '<a class="btn gel" href="#studio">Appliquer au Studio →</a>') + '</div></div>';
+}
+
+function atlasVisual(module) {
+  const visual = D.ateliers[module.id].gallery;
+  return '<a class="atlas-visual" href="#atelier--' + module.id + '" aria-label="Ouvrir l’atelier ' + esc(module.t) + '">' +
+    '<span class="atlas-image" aria-hidden="true">' + D.img[visual.image] + '</span>' +
+    '<span class="atlas-credit">' + esc(visual.credit) + '</span></a>';
 }
 
 function vAtlas(sel) {
@@ -1842,15 +1946,39 @@ function vAtlas(sel) {
   const _nx = _all.find(id => _lens(id) < 1), _nm = _nx && CURSUS.find(m => m.n.includes(_nx));
   const _H = hst(), _tot = HUES.reduce((a, u) => a + u.lecons.length, 0), _done = HUES.reduce((a, u) => a + hRead(u.id), 0);
   const _res = _H.last || (HUES[0] ? HUES[0].id + "-1" : "");
-  return `<div class="page is-entry" data-word="Cursus">${curBar(CURSUS.indexOf(_nm))}
-    <div class="n-head"><div class="eyebrow">Apprendre</div><h1 class="h1">Le cursus</h1>
-    <p class="lede">Un parcours en ${CURSUS.length} étapes, à suivre dans l'ordre. D'abord les bases du métier : éduquer l'œil, lumière et couleur, matière et espace, rythme et son. Ensuite la démarche : comprendre le besoin, formuler l'intention, trouver le concept, décider et présenter.</p>
+  return `<div class="page is-entry atlas-page" data-word="Cursus">${curBar(CURSUS.indexOf(_nm))}
+    <div class="n-head">
+    <div class="atlas-cover">
+      <div class="atlas-cover-copy">
+        <p class="eyebrow">STORYBOARD / Formation DA</p>
+        <h1 class="h1">Direction artistique<br><em>Spectacle &amp; show TV</em></h1>
+        <p>Construire une image qui fonctionne en salle et à l’écran. Du plan de plateau au dernier top lumière.</p>
+      </div>
+      <figure class="atlas-stage">
+        <svg viewBox="0 0 480 330" role="img" aria-label="Plan de plateau avec une entrée, une zone de jeu et trois positions caméra">
+          <defs><pattern id="atlas-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#212724"/></pattern></defs>
+          <rect width="480" height="330" fill="url(#atlas-grid)"/>
+          <path d="M92 100h296v116H92z M187 100V68h106v32" fill="none" stroke="#80908a"/>
+          <path d="M144 242l96-84 96 84 M240 270V158" fill="none" stroke="#74837c" stroke-dasharray="4 5"/>
+          <circle cx="240" cy="158" r="30" fill="#c8ff1a" fill-opacity=".09" stroke="#c8ff1a"/>
+          <circle cx="240" cy="158" r="3" fill="#c8ff1a"/>
+          <g fill="#d9e2dc" font-family="monospace" font-size="12">
+            <text x="211" y="58">ENTRÉE</text><text x="100" y="119">PLATEAU</text>
+            <text x="119" y="260">CAM 01</text><text x="216" y="291">CAM 02</text><text x="312" y="260">CAM 03</text>
+          </g>
+          <text x="264" y="154" fill="#c8ff1a" font-family="monospace" font-size="12">POINT FOCAL</text>
+        </svg>
+        <figcaption>PLAN 01 · Axe caméra et point focal · Schéma pédagogique</figcaption>
+      </figure>
+      <div class="atlas-cover-caption"><span>CAS DE PLATEAU</span><a href="#c-s-u2-360">U2 · Scène à 360° →</a><a href="#c-s-daftpunk-alive">Daft Punk · Alive →</a><a href="#c-s-thewall">The Wall →</a></div>
+    </div>
     <div class="cursus-next"><div class="cn-bar" aria-hidden="true"><i style="width:${Math.round(100 * _doneN / _all.length)}%"></i></div>
       <span class="eyebrow gel">${_doneN ? "Ton prochain pas" : "Pour commencer"} · ${_doneN}/${_all.length} notions ouvertes</span>
       ${_nx ? `<a class="cn-t" href="#n-${_nx}">${esc(_nm.t)} · ${esc(NOT[_nx].titre)}</a><span class="row"><a class="btn gel" href="#n-${_nx}">${_doneN ? "Continuer le cursus" : "Commencer le cursus"} →</a></span>` : `<b class="cn-t">Cursus terminé : reprends n'importe quelle notion.</b>`}</div>
     <p><a class="chip" href="#atlas--ressources">Dossiers et tendances →</a></p>
     <p class="alt-learn"><a class="chip" href="#histoire">Apprendre en histoire</a><span class="small muted">Une autre façon d'apprendre : 15 histoires de direction artistique à lire quand tu veux.</span></p>
-    <ol class="cur-list">${CURSUS.map((m, i) => { const d = m.n.filter(id => _lens(id) >= 1).length, fid = m.n.find(id => NOT[id] && _lens(id) < 1) || m.n.find(id => NOT[id]); return `<li class="cur-m ${d === m.n.length ? "done" : d ? "half" : ""}${_nx && m.n.includes(_nx) ? " next" : ""}"><span class="cur-n">${String(i + 1).padStart(2, "0")}</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#n-${fid}">${esc(m.t)}</a></h2><p class="cur-q">${esc(m.q)}</p><p class="cur-p">${esc(m.p)}</p><span class="row cur-chips">${m.n.filter(id => NOT[id]).map(id => `<a class="chip ${_lens(id) >= 1 ? "on" : ""}" href="#n-${id}">${_lens(id) >= 1 ? "✓ " : ""}${esc(NOT[id].titre)}</a>`).join("")}</span><a class="chip" href="#atelier--${m.id}">Atelier · observation et pratique →</a><span class="small muted">${d}/${m.n.length}</span></div></li>`; }).join("")}<li class="cur-m plus ${_doneN >= _all.length ? "half" : ""}"><span class="cur-n">+</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#plus">Pour aller plus loin</a></h2><p class="cur-q">Quand le cursus est fini.</p><p class="cur-p">Fiches techniques, paroles de praticiens, histoire de l'art, terrain : une page par notion.</p></div></li></ol>
+    <h2 class="atlas-index-title">Les huit étapes <span>Observer → Décider</span></h2>
+    <ol class="cur-list atlas-grid">${CURSUS.map((m, i) => { const d = m.n.filter(id => _lens(id) >= 1).length, fid = m.n.find(id => NOT[id] && _lens(id) < 1) || m.n.find(id => NOT[id]); return `<li class="cur-m ${d === m.n.length ? "done" : d ? "half" : ""}${_nx && m.n.includes(_nx) ? " next" : ""}">${atlasVisual(m)}<div class="cur-b"><span class="eyebrow">Étape ${String(i + 1).padStart(2, "0")}</span><h2 class="cur-t"><a class="cur-ta" href="#n-${fid}">${esc(m.t)}</a></h2><p class="cur-q">${esc(m.q)}</p><p class="cur-p">${esc(m.p)}</p><details class="atlas-notions"><summary>${m.n.length} notions · ${d} ouvertes</summary><span class="row cur-chips">${m.n.filter(id => NOT[id]).map(id => `<a class="chip ${_lens(id) >= 1 ? "on" : ""}" href="#n-${id}">${_lens(id) >= 1 ? "✓ " : ""}${esc(NOT[id].titre)}</a>`).join("")}</span></details><a class="chip atlas-atelier" href="#atelier--${m.id}">Ouvrir l’atelier →</a></div></li>`; }).join("")}<li class="cur-m plus ${_doneN >= _all.length ? "half" : ""}"><span class="cur-n">+</span><div class="cur-b"><h2 class="cur-t"><a class="cur-ta" href="#plus">Pour aller plus loin</a></h2><p class="cur-q">Quand le cursus est fini.</p><p class="cur-p">Fiches techniques, paroles de praticiens, histoire de l'art, terrain : une page par notion.</p></div></li></ol>
     </div><details class="fold lib" ${sel ? "open" : ""}><summary><span class="h3">La bibliothèque : toutes les notions par famille</span></summary><div class="fold-body">
     ${wheelMenu(COUCHES.map(c => ["#atlas--" + c.id, c.nom.split(" : ")[0], c.nom.split(" : ")[1] || "", c.id]), null, "Familles de notions")}
     ${sel ? `<span class="row"><a class="chip" href="#atlas">Toutes les familles</a></span>` : ""}<div data-autoscroll></div>
