@@ -9,6 +9,8 @@
 .atelier textarea { display: block; width: 100%; padding: .7rem; color: #f2f7ef; background: #0b120c; border: 1px solid #6a8069; border-radius: .45rem; font: inherit; }
 .atelier [data-quiz][aria-pressed="true"] { border-color: #b9ff48; color: #b9ff48; }
 .atelier [data-quiz] { min-height: 44px; white-space: normal; }
+.radar-page { max-width: none; }
+.radar-frame { display: block; width: 100%; height: 80dvh; border: 0; background: #0a110b; }
 .atelier dt { color: #b9ff48; margin-top: .8rem; }
 .atelier dd { margin: .2rem 0 .8rem; }
 .atelier summary { min-height: 44px; cursor: pointer; }
@@ -1687,73 +1689,8 @@ function musicBlock(list) {
   return `<section class="card m-block"><span class="eyebrow">À écouter et à regarder · ${M.length} sur les 3 dernières semaines</span>${M.map(row).join("")}<p class="muted small">Le radar du vendredi retient les grosses sorties de la semaine, en France et à l'international. Chaque ligne ouvre directement le titre sur Spotify, le clip sur YouTube, ou l'article quand il n'y a pas de lien direct.</p></section>`;
 }
 
-const RADAR_URL = "https://christopheinalco-crypto.github.io/storyboard-radar-da/";
-let radarData, radarLoad, radarOffline = false;
-
-function radarLink(value, label) {
-  try {
-    const url = new URL(value);
-    if (url.protocol === "https:" || url.protocol === "http:") {
-      return '<a href="' + esc(url.href) + '" target="_blank" rel="noopener noreferrer">' + esc(label) + ' ↗</a>';
-    }
-  } catch {}
-  return esc(label);
-}
-
-function radarContents() {
-  const { sources, feed } = radarData || D.radar;
-  const categories = [...new Set(sources.map(s => s.category))];
-  const sourceGroups = categories.map(category => {
-    const group = sources.filter(s => s.category === category);
-    return '<details class="fold"><summary>' + esc(category) + ' · ' + group.length + '</summary><ul class="ul">' +
-      group.map(s => '<li><b>' + radarLink(s.url,s.name) + '</b> · ' + esc(s.specialty) +
-        '<br><span class="small muted">' + esc(s.interest) + '</span></li>').join("") + '</ul></details>';
-  }).join("");
-  const publications = feed.items.map(item =>
-    '<li><b>' + radarLink(item.url,item.title) + '</b><br><span class="small muted">' +
-    [item.source,item.category,item.published?.slice(0,10)].filter(Boolean).map(esc).join(" · ") +
-    '</span>' + (item.summary ? '<p>' + esc(item.summary) + '</p>' : '') + '</li>').join("");
-  return '<p class="small muted" role="status">' +
-    (radarOffline ? "Une partie des données RADAR DA est indisponible en ligne. Les données manquantes sont reprises de l’archive locale." :
-      radarData ? "Données chargées depuis RADAR DA." : "Vérification du flux RADAR DA…") + '</p>' +
-    '<h2>Publications repérées · ' + feed.items.length + '</h2>' +
-    (publications ? '<p class="small muted">Publications collectées. Les extraits proviennent des sources.</p><ul class="ul">' + publications + '</ul>' :
-      '<p>Aucune publication dans le flux disponible.</p>') +
-    '<details class="fold"><summary>Sources · ' + sources.length + '</summary>' + sourceGroups + '</details>';
-}
-
-function loadRadar() {
-  if (radarLoad) return;
-  const read = async file => {
-    const response = await fetch(RADAR_URL + "data/" + file + ".json", { signal: AbortSignal.timeout(7000) });
-    if (!response.ok) throw new Error("RADAR DA " + response.status);
-    return response.json();
-  };
-  radarLoad = Promise.allSettled([read("sources"), read("feed")]).then(([sources, feed]) => {
-    const liveSources = sources.status === "fulfilled" && Array.isArray(sources.value);
-    const liveFeed = feed.status === "fulfilled" && Array.isArray(feed.value?.items);
-    radarOffline = !liveSources || !liveFeed;
-    radarData = {
-      sources: liveSources ? sources.value : D.radar.sources,
-      feed: liveFeed ? feed.value : D.radar.feed
-    };
-    const panel = document.getElementById("radar-contents");
-    if (panel) {
-      const open = new Set([...panel.querySelectorAll("details[open] > summary")].map(summary => summary.textContent));
-      panel.innerHTML = radarContents();
-      panel.querySelectorAll("details").forEach(group => {
-        group.open = open.has(group.querySelector("summary").textContent);
-      });
-    }
-  });
-}
-
 function vVeille() {
-  loadRadar();
-  return '<div class="page is-entry" data-word="Veille">' +
-    '<div class="n-head"><p class="eyebrow">Veille</p><h1 class="h1">RADAR DA</h1>' +
-    '<a class="chip" href="#atlas--ressources">Dossiers et tendances dans Apprendre →</a></div>' +
-    '<section class="panel" id="radar-contents">' + radarContents() + '</section></div>';
+  return '<div class="page radar-page"><iframe class="radar-frame" title="RADAR DA · Le regard du DA" src="radar.html" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe></div>';
 }
 
 function vVeilleResources() {
