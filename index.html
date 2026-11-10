@@ -113,10 +113,17 @@
 }
 </style><style>
 .plateau > svg { display: block; width: 100%; max-height: 180px; background: #101614; border-radius: 8px; }
-.plateau summary { min-height: 44px; }
+.plateau-label { display: block; margin-top: 1rem; }
+.plateau select { min-height: 44px; max-width: 100%; padding: .5rem; font: inherit; }
+.plateau-situation { margin-top: 1rem; }
 .plateau [data-plateau] { min-height: 44px; white-space: normal; text-align: left; }
 .plateau [aria-pressed="true"] { border-color: var(--volt); color: var(--volt); }
 .plateau-feedback:empty { display: none; }
+</style><style>
+.stage-plans { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.stage-compare { margin:0; }
+.stage-compare svg { width:100%; height:auto; display:block; }
+@media(max-width:480px){.stage-plans{grid-template-columns:1fr}}
 </style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
@@ -1905,16 +1912,36 @@ function vPlus() {
 
 const PLATEAU_FORMATS = ["Spectacle", "Show TV", "Clip", "Lancement produit"];
 
+function stageSightlines() {
+  const diagram = (surround) => {
+    const label = surround ? "Scène entourée" : "Scène frontale";
+    return '<figure class="stage-compare"><svg viewBox="0 0 320 190" role="img" aria-label="' + label + '">' +
+      '<rect x="13" y="12" width="294" height="166" rx="20" fill="#101614" stroke="#66746d"/>' +
+      (surround
+        ? '<ellipse cx="160" cy="95" rx="118" ry="62" fill="none" stroke="#60746a" stroke-width="13"/><path d="M50 95h91m128 0h-90M160 35v43m0 75v-40" stroke="#a3afa8" stroke-dasharray="4 4"/><rect x="138" y="77" width="44" height="36" rx="7" fill="#c8ff1a"/>'
+        : '<path d="M54 78h212m-212 26h212m-212 26h212m-212 26h212" stroke="#60746a" stroke-width="10"/><path d="M89 154l52-103m90 103L179 51" stroke="#a3afa8" stroke-dasharray="4 4"/><rect x="104" y="26" width="112" height="28" rx="5" fill="#c8ff1a"/>') +
+      '</svg><figcaption><b>' + label + '</b> · ' + (surround ? 'Le public regarde depuis plusieurs côtés.' : 'La salle partage une direction de regard.') + '</figcaption></figure>';
+  };
+  return '<section class="panel stage-study"><p class="eyebrow">Cas documenté · U2 360° Tour</p>' +
+    '<h2>Où placer le spectacle quand le public l’entoure ?</h2>' +
+    '<p>Pour U2, la structure portait les équipements au-dessus de l’espace de jeu. Le groupe pouvait circuler entre les scènes et jouer pour des gradins répartis autour de lui.</p>' +
+    '<div class="stage-plans">' + diagram(false) + diagram(true) + '</div>' +
+    '<p class="small muted">Schémas de principe, hors échelle. Les pointillés indiquent quelques lignes de vue. <a href="https://stufish.com/project/360/" target="_blank" rel="noopener">Photos et dossier du concepteur STUFISH ↗</a></p>' +
+    '<p><b>Arbitrage.</b> Un dispositif frontal facilite une image commune pour tous. Une implantation entourée ouvre davantage de points de vue, mais impose de vérifier ce que chaque secteur peut voir quand les artistes se déplacent.</p></section>';
+}
+
 function vPlateau(id, situations) {
   return '<section class="panel plateau"><p class="eyebrow">Cas fil rouge · Simulation</p>' +
     '<h2>Un portail, quatre productions</h2><p>Un grand portail lumineux cadre le sujet. Choisis un format et décide comment le décor doit servir l’image ou la salle.</p>' +
     '<svg viewBox="0 0 480 150" role="img" aria-label="Élévation du set fictif : un portail monumental encadre un petit sujet central"><path d="M35 122h410M102 122V27h276v95M150 122V55h180v67" fill="none" stroke="#84928a" stroke-width="2"/><circle cx="240" cy="101" r="9" fill="#c8ff1a"/><path d="M240 112v10" stroke="#c8ff1a"/><text x="250" y="110" fill="#eef0e6" font-size="14">Sujet</text></svg>' +
+    '<label class="plateau-label" for="plateau-format">Format</label><select id="plateau-format" data-plateau-format>' +
+    PLATEAU_FORMATS.map((name, i) => '<option value="' + i + '">' + name + '</option>').join("") + '</select>' +
     situations.map(([scenario, choice, alternative], format) => {
       const options = format % 2 ? [alternative, choice] : [choice, alternative];
-      return '<details class="fold"><summary>' + PLATEAU_FORMATS[format] + '</summary><p>' + esc(scenario) + '</p>' +
+      return '<div class="plateau-situation"' + (format ? ' hidden' : '') + '><h3>' + esc(scenario) + '</h3>' +
         '<div class="row" role="group" aria-label="Quelle décision prends-tu ?">' +
         options.map((label,i) => '<button type="button" class="btn ghost" aria-pressed="false" data-plateau="' + id + '" data-format="' + format + '" data-i="' + i + '">' + esc(label) + '</button>').join("") +
-        '</div><p role="status" class="plateau-feedback"></p></details>';
+        '</div><p role="status" class="plateau-feedback"></p></div>';
     }).join("") + '</section>';
 }
 
@@ -1938,20 +1965,16 @@ function vAtelier(id) {
   const next = CURSUS[index + 1];
   return '<div class="page atelier">' + curBar(index) +
     '<p class="eyebrow">Atelier · étape ' + (index + 1) + '</p><h1 class="h1">' + esc(a.titre) + '</h1>' +
-    vPlateau(id, a.plateau) +
-    '<section class="panel">' + (visual || img(gallery.image, gallery.credit) + '<p>' + esc(gallery.look) + '</p>') + '<p><a class="chip" href="#c-' + module.pr.cas + '">Cas du cursus · ' + esc(module.pr.t) + '</a></p>' +
+    (id === 'voir' ? stageSightlines() : '') + vPlateau(id, a.plateau) +
+    '<details class="panel fold"><summary>Références et lecture du cas</summary>' + (visual || img(gallery.image, gallery.credit) + '<p>' + esc(gallery.look) + '</p>') + '<p><a class="chip" href="#c-' + module.pr.cas + '">Cas du cursus · ' + esc(module.pr.t) + '</a></p>' +
     '<h2>Le geste technique</h2><p>' + esc(a.technique) + '</p>' +
-    '<details class="fold"><summary>Dialogue d’atelier</summary><p><b>Apprenti DA</b> · ' + esc(a.dialogue[2]) +
-    '</p><p><b>Mentor</b> · ' + esc(a.dialogue[3]) + '</p><p class="small muted">Dialogue reconstitué pour l’exercice, d’après ' +
-    esc(a.dialogue[0]) + ', p. ' + a.dialogue[1] + '.</p></details>' +
     '<h2>À toi de jouer · 20 secondes</h2><p>' + esc(quiz.question) + '</p>' +
     '<div class="row" role="group" aria-label="Choisis une réponse">' + quiz.choices.map((choice, i) =>
       '<button type="button" class="btn ghost" data-quiz="' + id + '" data-i="' + i + '" aria-pressed="false">' + esc(choice) + '</button>').join("") +
     '</div><p class="quiz-feedback" role="status"></p>' +
     '<details class="fold"><summary>Lecture commentée</summary><dl>' + fields.map(([key, label]) =>
       '<dt><b>' + label + '</b></dt><dd>' + esc(a[key]) + '</dd>').join("") + '</dl></details>' +
-    '<details class="fold"><summary>Mode mentor · préparer ta deuxième version</summary><p>' + esc(a.mentor) +
-    '</p></details>' + (visual ? fieldGuide : '') + '</section><div class="panel-foot"><a class="btn ghost" href="#atlas">Voir le cursus</a>' +
+    (visual ? fieldGuide : '') + '</details><div class="panel-foot"><a class="btn ghost" href="#atlas">Voir le cursus</a>' +
     (next ? '<a class="btn gel" href="#atelier--' + next.id + '">Atelier suivant →</a>' : '<a class="btn gel" href="#studio">Appliquer au Studio →</a>') + '</div></div>';
 }
 
@@ -3908,6 +3931,13 @@ window.addEventListener("hashchange", () => {
 });
 
 // ---------- Actions ----------
+document.addEventListener("change", ev => {
+  const select = ev.target.closest("[data-plateau-format]");
+  if (!select) return;
+  select.closest(".plateau").querySelectorAll(".plateau-situation").forEach((scenario, index) => {
+    scenario.hidden = index !== Number(select.value);
+  });
+});
 document.addEventListener("click", ev => {
   const button = ev.target.closest("[data-plateau]");
   if (!button) return;
@@ -3918,7 +3948,7 @@ document.addEventListener("click", ev => {
     option.setAttribute("aria-pressed", String(option === button));
   }
   button.parentElement.nextElementSibling.textContent =
-    (correct ? "Mentor · Oui. " : "Mentor · Essaie plutôt ceci. ") + situation[3];
+    (correct ? "Choix recommandé. " : "Autre piste. ") + situation[3];
 });
 
 document.addEventListener("click", ev => {
