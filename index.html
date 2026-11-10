@@ -62,7 +62,7 @@
 </style><style>
 .continuous-course{max-width:900px!important;margin-inline:auto}.continuous-course h1{font-size:clamp(32px,4vw,50px);font-style:normal}.chapter-head{padding-bottom:26px;border-bottom:1px solid var(--line)}.chapter-map{margin-top:20px;font-size:14px}.chapter-map summary{cursor:pointer;color:var(--muted)}.chapter-map ol{list-style:none;padding:0;display:grid;gap:14px}.chapter-notion{padding:36px 0;border-bottom:1px solid rgba(255,255,255,.1);scroll-margin-top:24px}.chapter-notion h2,.chapter-recent h2,.chapter-check h2{font-size:clamp(24px,3vw,32px);line-height:1.2;margin:0 0 18px}.chapter-notion p,.chapter-recent p,.chapter-check p{font-family:var(--f-ui);font-size:17px;line-height:1.75;max-width:68ch;margin:16px 0}.chapter-notion .notion-principle{font-size:21px;font-weight:600;line-height:1.5;color:var(--ink)}.chapter-observation{margin:26px 0}.chapter-explanation{margin-top:24px}.chapter-explanation strong{font-weight:650}.chapter-example{border-left:2px solid #68784d;padding-left:18px}.chapter-transfer{color:var(--ink-2)}.chapter-recent{padding:32px 0;border-bottom:1px solid var(--line)}.chapter-check{padding:32px 0}.chapter-options{display:grid;gap:12px}.chapter-options button{white-space:normal;text-align:left;justify-content:flex-start;line-height:1.5}.chapter-footer{padding:24px 0 40px;display:flex;gap:16px;justify-content:space-between;flex-wrap:wrap}.continuous-course .figure{margin:0}.continuous-course .figure img{max-height:420px;object-fit:contain}.continuous-course .observation-prompt{font-size:16px;color:var(--ink-2)}.continuous-course .chapter-check .btn{box-shadow:none}.continuous-course .visual-pair{margin:18px 0}.continuous-course .photo-tools{margin:8px 0}
 @media(max-width:650px){.chapter-notion{padding:28px 0}.chapter-notion p,.chapter-recent p,.chapter-check p{font-size:16px}.chapter-notion .notion-principle{font-size:19px}.chapter-footer .btn{width:100%}.continuous-course .visual-pair{grid-template-columns:1fr}}
-</style></head><body>
+</style><style>@media(max-width:900px){.tabbar{grid-template-columns:repeat(2,minmax(0,1fr))!important;justify-content:center;max-width:400px;margin-inline:auto}.tabbar>a{flex:1}}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>STORYBOARD</title>
@@ -1809,7 +1809,7 @@ const ICONS = {
   carnet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6z"/><path d="M6 3v18M10 8h5M10 12h5"/></svg>'
 };
 ICONS.veille = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.4"/></svg>';
-const NAV = [ ["accueil", "Accueil"], ["atlas", "Apprendre"], ["entrainer", "S'exercer"], ["veille", "Veille"], ["studio", "Mon projet"] ];
+const NAV = [["atlas", "Cursus"], ["veille", "Veille"]];
 ICONS.entrainer = ICONS.analyse;
 const NAV_LONG = { entrainer: "S'exercer", studio: "Mon projet (aide à la création)" };
 
@@ -3717,12 +3717,17 @@ document.addEventListener("click", async ev => {
 
 // ---------- Routeur ----------
 const root = document.getElementById("app");
-function route() { const h = (location.hash || "#accueil").slice(1); const [a, b] = h.split("--"); return { a, b }; }
+function route() {
+  const hash = (location.hash || "#atlas").slice(1);
+  const [a, b] = hash.split("--");
+  if (["accueil", "entrainer", "studio"].includes(a)) return {a:"atlas", b:""};
+  return {a, b};
+}
 let radarResize;
 function render() {
   radarResize?.disconnect();
   const { a, b } = route();
-  let html, nav = "accueil";
+  let html, nav = "atlas";
   if ((a === "atlas" && b === "ressources") || (a === "veille" && b === "tendances")) { html = vVeilleResources(); nav = "atlas"; }
   else if (a === "atlas") { html = vAtlas(b); nav = "atlas"; }
   else if (a === "histoire") { html = vHist(b); nav = "atlas"; }
@@ -3731,7 +3736,7 @@ function render() {
   else if (a === "analyse") { html = vAnalyse(); nav = "entrainer"; }
   else if (a === "entrainer") { html = vEntrainer(); nav = "entrainer"; }
   else if (a.startsWith("c-") && CAS[a.slice(2)]) { html = vCase(a.slice(2)); nav = "entrainer"; }
-  else if (a === "veille2026") { html = vVeille2026(b); nav = "entrainer"; }
+  else if (a === "veille2026") { html = vVeille2026(b); nav = "atlas"; }
   else if (a === "cours") { html = continuousCourse(b); nav = "atlas"; }
   else if (a === "showcase") { html = vShowcase(); nav = "atlas"; }
   else if (a === "visual-quiz") { html = vVisualQuiz(); nav = "entrainer"; }
@@ -3756,8 +3761,8 @@ function render() {
   else if (a.startsWith("e-")) { html = vEmotion(a.slice(2)); nav = "studio"; }
   else if (a.startsWith("p-")) { html = vProject(a.slice(2), +b || 0); nav = "studio"; }
   else if (a === "carnet") { html = vCarnet(); nav = "carnet"; }
-  else html = vAccueil();
-  root.innerHTML = `<div class="shell"><aside class="rail"><a class="brand" href="#accueil"><span class="brand-gels"><i style="background:var(--gel-coeur)"></i><i style="background:var(--gel-sens)"></i><i style="background:var(--gel-outils)"></i><i style="background:var(--gel-appui)"></i></span><span class="brand-name">STORYBOARD</span></a>
+  else { html = vAtlas(); nav = "atlas"; }
+  root.innerHTML = `<div class="shell"><aside class="rail"><a class="brand" href="#atlas"><span class="brand-gels"><i style="background:var(--gel-coeur)"></i><i style="background:var(--gel-sens)"></i><i style="background:var(--gel-outils)"></i><i style="background:var(--gel-appui)"></i></span><span class="brand-name">STORYBOARD</span></a>
     <nav class="nav">${NAV.map(([k, t]) => `<a href="#${k}" class="${nav === k ? "on" : ""}">${ICONS[k]}${NAV_LONG[k] || t}</a>`).join("")}</nav>
     <div class="rail-foot"><a href="#credits">Crédits images</a></div></aside>
     <main class="main" id="main">${backBar()}${html}${backBar("bottom")}</main>
